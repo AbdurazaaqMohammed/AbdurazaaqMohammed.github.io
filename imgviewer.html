@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Image Viewer</title>
+</head>
+<style>
+	body {
+		background-color: black;
+		color: white;
+	}
+</style>
+<body>
+	<input type="text" id="urlInput" placeholder="Enter image URLs separated by commas">
+	<button id="displayButton" onclick="displayImages()">Display Images</button>
+
+	<script>
+		function displayImages(imageUrls) {
+			if (!imageUrls) {
+				imageUrls = document.getElementById('urlInput').value;
+			}
+			if (imageUrls) {
+				const urls = imageUrls.split(',');
+				urls.forEach(url => {
+					const img = document.createElement('img');
+					img.src = url.replaceAll("preview.redd", "i.redd").replace('%3A', ':').replaceAll('%2F', '/').split('%3F')[0].trim();
+					img.alt = 'Image from URL';
+					document.body.appendChild(img);
+				});
+				document.getElementById('urlInput').style.display = 'none';
+				document.getElementById('displayButton').style.display = 'none';
+			} else {
+				document.body.textContent = "Please provide valid image URLs.";
+			}
+		}
+
+		const queryString = window.location.search;
+		const urlParams = new URLSearchParams(queryString);
+		const imageUrls = urlParams.get('viewimg');
+		if (imageUrls) {
+			displayImages(imageUrls);
+		}
+	</script>
+</body>
+</html>

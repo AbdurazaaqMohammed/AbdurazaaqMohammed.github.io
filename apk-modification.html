@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Abdurazaaq Mohammed - APK Modification</title>
+	<style>
+		@font-face {
+			font-family: 'MyCustomFont';
+			src: url('https://files.catbox.moe/ap02k1.ttf') format('truetype');
+		}
+		body {
+			font-family: 'MyCustomFont', 'Poppins', sans-serif;
+			margin: 0;
+			padding: 0;
+			background-color: #000000;
+			color: #d8d4ce;
+		}
+		header {
+			background-color: #00aaff;
+			color: #fff;
+			padding: 10px 0;
+			text-align: center;
+		}
+		nav ul {
+			list-style-type: none;
+			padding: 0;
+			display: flex;
+			justify-content: space-around;
+			background-color: #009933;
+			color: #ff0000;
+		}
+		nav ul li {
+			padding: 15px 0;
+		}
+		nav ul li a {
+			color: #e8e6e3;
+			text-decoration: none;
+			position: relative;
+		}
+		nav ul li a:hover {
+			transition: 0.3s;
+		}
+		nav ul li a:hover::after {
+			content: '';
+			position: absolute;
+			top: 100%;
+			left: 50%;
+			transform: translateX(-50%);
+			width: 100%;
+			height: 2px;
+			background-color: #e8e6e3;
+		}
+		main {
+			padding: 20px;
+			animation: slideIn 2s ease;
+		}
+		section {
+			margin-bottom: 20px;
+			background-color: #004ba9;
+			border-radius: 5px;
+			padding: 20px;
+			box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+		}
+		section h2 {
+			margin-top: 0;
+			color: #8E7DBE;
+		}
+		@keyframes slideIn {
+			from {
+				opacity: 0;
+				transform: translateY(-50px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<h1>Abdurazaaq Mohammed - APK Modification</h1>
+	</header>
+	<nav>
+		<ul>
+			<li><a href="/website/index.html">About Me</a></li>
+			<li><a href="/website/apk-modification">APK Modification</a></li>
+			<li><a href="/website/blog">Blog</a></li>
+		</ul>
+	</nav>
+	<main>
+		<section id="disclaimer">
+			<h2>Disclaimer</h2>
+			<p>Please note that the information provided here is intended for educational and research purposes only. Always respect the rights of software developers and abide by the terms of service of the applications you modify.</p>
+		</section>
+		<section id="introduction">
+			<h2>Introduction</h2>
+			<p>This repository does not relate to "cracking" or "pirating" applications which is often associated with "Modded APKs", but rather several modifications and optimizations to APKs, mainly aiming to improve performance and reduce file size. This includes deletion of certain packages from APKs, such as analytics, crashlytics, trackers etc. This requires removing all invokes and reliances on the packages from the code of the APK.</p>
+		</section>
+		<section id="tools">
+			<h2>Tools</h2>
+			<p>Here are some tools that can be used for APK modification:</p>
+			<ul>
+				<li>
+					<a href="https://mt2.cn/download/">MT Manager</a> - Extremely useful file manager, designed with a major focus on APKs. A paid version is available, but the free version is sufficient for most necessary functions, and alternative tools are available for some. The official website is in Chinese, and the app is also uploaded <a href="https://apkcombo.com/mt-manager/bin.mt.plus/">on APKCombo</a> by the developer, <a href=https://github.com/L-JINBIN">Lin Jin Bin</a>. Useful features include:
+					<ul>
+						<li>Quick extraction of APKs</li>
+						<li>DEX file editor with features such as:
+							<ul>
+								<li>Quick navigation between methods and classes</li>
+								<li>Quick search and replace in smali files, regex supported</li>
+								<li>Search strings in smali quickly</li>
+								<li>Quickly clear a method, also minimizing registers for optimization</li>
+								<li>Quickly clear all debug info (reduces size)</li>
+							</ul>
+						</li>
+						<li>Minification of resources</li>
+						<li>Obfuscation of resources (this effectively saves space; but has a chance to break some apps)</li>
+						<li>Optimization of APKs</li>
+						<li>Automatically signing APKs after modification</li>
+					</ul>
+				</li>
+				<li>
+					<a href="https://github.com/iBotPeaches/Apktool">Apktool</a> - A tool for reverse engineering Android APK files. It can decompile and recompile APKs, allowing you to modify the code and resources of an app. It is a command-line tool and requires Java to be installed on your system. Some of its features include:
+					<ul>
+						<li>Decoding and encoding of APK resources</li>
+						<li>Decompiling and recompiling APKs</li>
+						<li>Extracting and injecting resources</li>
+						<li>Debugging and analyzing APK files</li>
+					</ul>
+				</li>
+				<li>
+					<a href="https://github.com/skylot/jadx">JADX</a> - Another tool for decompiling and analyzing Android APK files. It provides a graphical interface and allows you to browse the source code of an app. Some features of JADX include:
+					<ul>
+						<li>Decompiling and analyzing APK files</li>
+						<li>Browsing source code</li>
+						<li>Searching for specific classes or methods</li>
+						<li>Inspecting resources and assets</li>
+						<li>Exporting source code</li>
+					</ul>
+				</li>
+				<li><a href="https://maximoff.su/apktool/?lang=en"><strong>Apktool M</strong></a> - Not to be confused with the Java program apktool, APKtool M is an app with many features, including:
+					<ul>
+						<li>Fast decompilation of APK files</li>
+						<li>Several optimizations for APKs. UltraZip is most effective; I have noticed it breaks media pickers in apps.</li>
+						<li>Antisplit - converting split .apks, .xapk, .apkm files to .apk</li>
+						<li>Integration with <a href="https://maximoff.su/mpatcher/">MPatcher</a>, another tool by the same developer, focusing on scripts to patch APKs in several ways, such as:
+							<ul>
+								<li>Optimizing images (it uses optipng and pngquant)</li>
+								<li>Disabling (not removing) analytics</li>
+								<li>Deleting languages except default language</li>
+								<li>Deleting files that are unnecessary for the current device; this includes files for different CPU architectures or display sizes.</li>
+								<li>Deleting some types of unused smali files</li>
+								<li>Quickly separating APK with multiple to versions with individual libs to reduce size</li>
+								<li>Support for writing custom scripts</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+				<li><a href="https://t.me/WSTprojects/1509"><strong>APK Editor</strong></a> - A very old app, maintained by WSTprojects. Supports decompilation and custom patches, but is quite slow nowadays. It is still fast for quickly modifying XML files, which is a paid feature in MT Manager and requires fully decompiling in APKTool M.</li>
+				<li><a href="https://github.com/AbdurazaaqMohammed/AntiSplit-M"><strong>AntiSplit M</strong></a> - An open source app worked on by me to convert split APKs to a single APK.</li>
+				<li><a href="https://github.com/AbdurazaaqMohammed/AXML-Editor"><strong>AXML Editor</strong></a> - Open source editor I worked on to edit Android binary XML files (AndroidManifest.xml and layout XML files).</li>
+				<li><a href="https://github.com/AbdurazaaqMohammed/InjectDocumentsProvider"><strong>InjectDocumentsProvider</strong></a> - Access /Android/data and all data files of an Android app without any permissions by patching its APK file. This feature was created by Lin Jin Bin the developer of MT Manager but I created an open source app to inject it.</li>
+				<li><a href = "https://abdurazaaqmohammed.github.io/website/packageremovalhelper">Package Removal Helper</a> - a website tool to assist in the removal of packages (like trackers) from an APK by allowing input of the names of packages to be removed, and outputting a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions">regular expression</a> that can be used to search for the usage of those packages in the APK's code.</li>
+			</ul>
+		</section>
+	</main>
+</body>
+</html>

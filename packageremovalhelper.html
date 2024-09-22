@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+	<title>Package Removal Helper</title>
+	<style>
+		@font-face {
+			font-family: 'MyCustomFont';
+			src: url('https://files.catbox.moe/ap02k1.ttf') format('truetype');
+		}
+		body {
+			font-family: 'MyCustomFont', 'Poppins', sans-serif;
+			margin: 0;
+			padding: 0;
+			background-color: #000000;
+			color: #d8d4ce;
+		}
+		header {
+			background-color: #00aaff;
+			color: #fff;
+			padding: 10px 0;
+			text-align: center;
+		}
+		nav ul {
+			list-style-type: none;
+			padding: 0;
+			display: flex;
+			justify-content: space-around;
+			background-color: #009933;
+			color: #ff0000;
+		}
+		nav ul li {
+			padding: 15px 0;
+		}
+		nav ul li a {
+			color: #e8e6e3;
+			text-decoration: none;
+			position: relative;
+		}
+		nav ul li a:hover {
+			transition: 0.3s;
+		}
+		nav ul li a:hover::after {
+			content: '';
+			position: absolute;
+			top: 100%;
+			left: 50%;
+			transform: translateX(-50%);
+			width: 100%;
+			height: 2px;
+			background-color: #e8e6e3;
+		}
+		main {
+			padding: 20px;
+			animation: slideIn 2s ease;
+		}
+		section {
+			margin-bottom: 20px;
+			background-color: #004ba9;
+			border-radius: 5px;
+			padding: 20px;
+			box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+		}
+		section h1 {
+			margin-top: 0;
+			color: #8E7DBE;
+		}
+		@keyframes slideIn {
+			from {
+				opacity: 0;
+				transform: translateY(-50px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+		.input-container input[type="text"] {
+			position: relative;
+			font-family: 'MyCustomFont', 'Poppins', sans-serif;
+			width: 99%;
+			padding: 10px;
+			margin-bottom: 10px;
+			color: #fff;
+			margin-top: 10px;
+			border: 1px solid #ccc;
+			background-color: #000000;
+			border-radius: 5px;
+			outline: none;
+			transition: border-color 0.3s ease;
+		}
+		.input-container input[type="text"]:focus {
+			border-color: #007BFF;
+		}
+		.input-container label {
+			font-size: 1.2em;
+			color: #333;
+		}
+		.code-container {
+			position: relative;
+			background-color: #2d2d2d;
+			padding: 20px;
+			border-radius: 10px;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			color: #f8f8f2;
+		}
+		.code-container pre {
+			margin: 20;
+			overflow-x: auto;
+		}
+		.btn {
+			font-family: 'MyCustomFont', 'Poppins', sans-serif;
+			position: relative;
+			right: 10px;
+			background-color: #007BFF;
+			color: white;
+			border: none;
+			padding: 5px 10px;
+			border-radius: 5px;
+			cursor: pointer;
+			transition: background-color 0.3s ease;
+		}
+		
+		.btn::before, .btn::after, 
+		.btn span::before, .btn span::after {
+			content: '';
+			position: absolute;
+			background-color: #FFFFFF;
+			transition: all 0.5s ease;
+		}
+		.btn::before, .btn::after {
+			height: 3px;
+			width: 0;
+		}
+		.btn span::before, .btn span::after {
+			width: 3px;
+			height: 0;
+		}
+		.btn::before {
+			top: 0;
+			left: 0;
+		}
+		.btn::after {
+			bottom: 0;
+			right: 0;
+		}
+		.btn span::before {
+			top: 0;
+			right: 0;
+		}
+		.btn span::after {
+			bottom: 0;
+			left: 0;
+		}
+		.btn:hover::before, .btn:hover::after {
+			width: 100%;
+		}
+		.btn:hover span::before, .btn:hover span::after {
+			height: 100%;
+		}
+		#info, #replace, #copy-rep-btn, #copy-btn {
+			display: none;
+		}
+	</style>
+</head>
+<body>
+	<script>
+		function copyToClipboard(which) {
+			navigator.clipboard.writeText(document.getElementById(which ? 'output' : 'replace').textContent);
+			const copybtn = document.getElementById(which ? 'copy-btn' : 'copy-rep-btn');
+			copybtn.textContent = 'Copied';
+			setTimeout(() => {
+					copybtn.textContent = 'Copy';
+			}, 1500);
+		}
+		function update() {
+			const input = document.getElementById('styled-input').value.replaceAll(',', '|');
+			document.getElementById('output').textContent = "(\\n\\s+)invoke.*(?:" + input + ").*><init>\\(\\)|(?:\\n.super.*(?:" + input + ").*(\\n))|(?:(\\n\\s+)(?:iget-object|sget|iget|sget-object|iget-boolean|sget-boolean|invoke.*\\{.*\\},\\s.*(?:" + input + ").*(?:\\n\\n|\\n|\\n\\.line.*\\n|\\n\\n\\s+\\.line \\d+\\n)\\s+move-result.*)) ([pv]\\d+)(, .*(" + input + ").*|\\n)|(\\n(((\\.method.*(" + input + "))([\\s\\S]*?)\\.end method)|(\\s+\\.|\\.)annotation.*(" + input + ")([\\s\\S]*?)\\.end annotation|.*(" + input + ")))";
+			document.getElementById('info').style.display = 'block';
+			document.getElementById('replace').style.display = 'block';
+			document.getElementById('copy-rep-btn').style.display = 'block';
+			document.getElementById('copy-btn').style.display = 'block';
+			document.getElementById('replace').textContent = '#$1invoke-direct {p0}, Ljava/lang/Object;-><init>()V#$2.super Ljava/lang/Object;#$3const $4, 0x0$3';
+		}
+	</script>
+	<header>
+		<h1>Abdurazaaq Mohammed - Portfolio</h1>
+	</header>
+	<nav>
+		<ul>
+			<li><a href="/website/index.html">About Me</a></li>
+			<li><a href="/website/apk-modification">APK Modification</a></li>
+			<li><a href="/website/blog">Blog</a></li>
+		</ul>
+	</nav>
+	<main>
+		<section id="main">
+			<h1>Package Removal Helper</h1>
+			<p>This website contains a tool that can help you in removing packages from an APK, such as trackers or analytics.</p>
+			<p>Enter the names of the packages you want to remove in the box below, separated by | or commas (,)</p>
+			<p>Upon clicking "Generate", a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions">regular expression</a> will be shown which can be used on a decompiled APK to search for the usage of those packages.</p>
+			<p>For more information on decompilation and modification of APKs, see my <a href="https://abdurazaaqmohammed.github.io/website/apk-modification">APK Modification page</a>.</p>
+			<div class="input-container">
+				<input type="text" id="styled-input" placeholder="Enter packages to remove">
+			</div>
+			<div class="code-container">
+			<button class="btn" onclick="update()">Generate</button>
+			<br/>
+			<br/>
+			<button class="btn" id="copy-btn" onclick="copyToClipboard(true)">Copy</button>
+			<p id="output">Output will be displayed here</p>
+			<p id="info">Search for the above pattern and replace with this</p>
+			<button class="btn" id="copy-rep-btn" onclick="copyToClipboard(false)">Copy</button>
+			<p id="replace"></p>
+		</section>
+	</main>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Tap Counter</title>
+	<style>
+		@font-face {
+			font-family: 'MyCustomFont';
+			src: url('https://files.catbox.moe/ap02k1.ttf') format('truetype');
+		}
+		body, input {
+			font-family: 'MyCustomFont', 'Poppins', sans-serif;
+			color: #87CEEB;
+			text-align: center;
+			background-color: black;
+			margin: 20px;
+		}
+		body, #counter, label, .controls {
+			-webkit-touch-callout: none;
+			-webkit-user-select: none;
+			-khtml-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+		}
+		#counter {
+			font-size: 40px;
+			background-color: transparent;
+			padding: 20px;
+			margin: 20px auto;
+			display: inline-block;
+		}
+		.controls {
+			margin-top: 20px;
+		}
+		label {
+			color: #87CEEB;
+			display: inline-block;
+			margin: 10px;
+		}
+		.btn {
+			font-family: 'MyCustomFont', 'Poppins', sans-serif;
+			position: relative;
+			background-color: #007BFF;
+			color: white;
+			border: none;
+			padding: 5px 10px;
+			border-radius: 5px;
+			cursor: pointer;
+			transition: background-color 0.3s ease;
+		}
+		.btn::before, .btn::after, 
+		.btn span::before, .btn span::after {
+			content: '';
+			position: absolute;
+			background-color: #FFFFFF;
+			transition: all 0.5s ease;
+		}
+		.btn::before, .btn::after {
+			height: 3px;
+			width: 0;
+		}
+		.btn span::before, .btn span::after {
+			width: 3px;
+			height: 0;
+		}
+		.btn::before {
+			top: 0;
+			left: 0;
+		}
+		.btn::after {
+			bottom: 0;
+			right: 0;
+		}
+		.btn span::before {
+			top: 0;
+			right: 0;
+		}
+		.btn span::after {
+			bottom: 0;
+			left: 0;
+		}
+		.btn:hover::before, .btn:hover::after {
+			width: 100%;
+		}
+		.btn:hover span::before, .btn:hover span::after {
+			height: 100%;
+		}
+		.footer {
+			position: fixed;
+			bottom: 0;
+			width: 100%;
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+
+	<div id="counter">0</div>
+
+	<div class="footer">
+	<button class="btn" onclick="resetCounter()">Reset</button>
+		<div class="controls">
+			<label for="textSize">Text Size:</label>
+			<input type="range" id="textSize" min="20" max="400" value="100" oninput="updateTextSize()">
+			<br />
+			<label for="bgColor">Background Color:</label>
+			<input type="color" id="bgColor" value="#000000" onchange="updateBackgroundColor()">
+			<br />
+			<label for="textColor">Text Color:</label>
+			<input type="color" id="textColor" value="#87CEEB" onchange="updateTextColor()">
+		</div>
+	</div>
+
+	<script>
+		let count = 0;
+
+		function saveSettings() {
+			localStorage.setItem('textSize', document.getElementById('textSize').value);
+			localStorage.setItem('bgColor', document.getElementById('bgColor').value);
+			localStorage.setItem('textColor', document.getElementById('textColor').value);
+		}
+
+		function restoreSettings() {
+			count = parseInt(localStorage.getItem('counter')) || 0;
+			document.getElementById('counter').textContent = count;
+
+			const textSize = localStorage.getItem('textSize') || '100';
+			document.getElementById('textSize').value = textSize;
+			document.getElementById('counter').style.fontSize = textSize + 'px';
+
+			const bgColor = localStorage.getItem('bgColor') || '#000000';
+			document.getElementById('bgColor').value = bgColor;
+			document.body.style.backgroundColor = bgColor;
+
+			const textColor = localStorage.getItem('textColor') || '#87CEEB';
+			document.getElementById('textColor').value = textColor;
+			document.body.style.color = textColor;
+		}
+
+		function resetCounter() {
+			localStorage.setItem('counter', document.getElementById('counter').textContent = count = 0);
+		}
+
+		function updateTextSize() {
+			document.getElementById('counter').style.fontSize = document.getElementById('textSize').value + 'px';
+			saveSettings();
+		}
+
+		function updateBackgroundColor() {
+			document.body.style.backgroundColor = document.getElementById('bgColor').value;
+			saveSettings();
+		}
+
+		function updateTextColor() {
+			document.body.style.color = document.getElementById('textColor').value;
+			saveSettings();
+		}
+
+		window.onload = function() {
+			restoreSettings();
+		};
+
+		document.onclick = function(event) {
+			// Checking if the click is not on buttons or input elements
+			!event.target.matches('input, button, label') && localStorage.setItem('counter', document.getElementById('counter').textContent = count++);
+		}
+		
+		window.StatusBar && StatusBar.hide();
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+	<title>Abdurazaaq Mohammed - Portfolio</title>
+	<style>
+		@font-face {
+			font-family: 'MyCustomFont';
+			src: url('https://files.catbox.moe/ap02k1.ttf') format('truetype');
+		}
+		body {
+			font-family: 'MyCustomFont', 'Poppins', sans-serif;
+			margin: 0;
+			padding: 0;
+			background-color: #000000;
+			color: #d8d4ce;
+		}
+		header {
+			background-color: #00aaff;
+			color: #fff;
+			padding: 10px 0;
+			text-align: center;
+		}
+		nav ul {
+			list-style-type: none;
+			padding: 0;
+			display: flex;
+			justify-content: space-around;
+			background-color: #009933;
+			color: #ff0000;
+		}
+		nav ul li {
+			padding: 15px 0;
+		}
+		nav ul li a {
+			color: #e8e6e3;
+			text-decoration: none;
+			position: relative;
+		}
+		nav ul li a:hover {
+			transition: 0.3s;
+		}
+		nav ul li a:hover::after {
+			content: '';
+			position: absolute;
+			top: 100%;
+			left: 50%;
+			transform: translateX(-50%);
+			width: 100%;
+			height: 2px;
+			background-color: #e8e6e3;
+		}
+		main {
+			padding: 20px;
+			animation: slideIn 2s ease;
+		}
+		section {
+			margin-bottom: 20px;
+			background-color: #004ba9;
+			border-radius: 5px;
+			padding: 20px;
+			box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+		}
+		section h2 {
+			margin-top: 0;
+			color: #8E7DBE;
+		}
+		@keyframes slideIn {
+			from {
+				opacity: 0;
+				transform: translateY(-50px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<h1>Abdurazaaq Mohammed - Portfolio</h1>
+	</header>
+	<nav>
+		<ul>
+			<li><a href="/website/index.html">About Me</a></li>
+			<li><a href="/website/apk-modification">APK Modification</a></li>
+			<li><a href="/website/blog">Blog</a></li>
+		</ul>
+	</nav>
+	<main>
+		<section id="about-me">
+			<h2>About Me</h2>
+			<p>Muslim · Second Year Computing Student at SBCS · Aspiring Android Developer and Security Researcher · YouTuber</p>
+		</section>
+		<section id="qualifications">
+			<h2>My Qualifications</h2>
+			<ul>
+				<li><a href="https://drive.google.com/file/d/1Pu17qnicswwT0__X7767j3Ci520wbnwq/view?usp=sharing">Grade One with all As</a> in CSEC Information Technology</li>
+				<li>Completed SBCS Diploma in Computing</li>
+			</ul>
+		</section>
+		<section id="projects">
+			<h2>Projects</h2>
+			<p>Personal Projects</p>
+			<ul>
+		  		<li><a href="https://github.com/AbdurazaaqMohammed/AntiSplit-M">AntiSplit M</a> - App to AntiSplit (merge) split APKs (APKS/XAPK/APKM) to regular .APK file on Android</li>
+		  		<li><a href="https://github.com/AbdurazaaqMohammed/AXML-Editor">AXML Editor</a> - Android app to edit android binary XML files (AndroidManifest.xml and layout XML files)</li>
+		  		<li><a href="https://github.com/AbdurazaaqMohammed/discord-no-trackers">Discord No Trackers project</a> - Attempt to remove (not disable or block) as many trackers as possible from the code of Discord's Android app.</li>
+		  		<li><a href="https://github.com/AbdurazaaqMohammed/RestoreCRC32">Restore CRC32</a> - Android app to set the CRC32 and date modified of files in an APK or ZIP archive to those from another archive.</li>
+		  		<li><a href="https://github.com/AbdurazaaqMohammed/python-snake">Snake game</a> written in Python</li>
+			  	<li><a href="/website/apk-modification">APK Modification</a> - notes on modification of APKs (Android Packages)</li>
+				<li><a href="https://github.com/AbdurazaaqMohammed/rgbClock">RGB Clock</a> - Clock app written in Flutter</li>
+				<li><a href="https://github.com/AbdurazaaqMohammed/userscripts">Personal userscripts</a> - Userscripts written mostly for my personal use</li>
+				<li><a href="https://github.com/AbdurazaaqMohammed/JustDoodle">JustDoodle - simple drawing app made in App Inventor (Bruh)</a></li>
+				<li><a href="https://github.com/AbdurazaaqMohammed/hisnul-muslim-color">Hisnul Muslim Color</a> - Hisnul Muslim app with customizable colors written in Flutter</li>
+				<li><a href="https://github.com/AbdurazaaqMohammed/my-flutter-ui-skeleton">Flutter UI Skeleton</a> - A skeleton (UI elements only) base for my Flutter apps</li>
+			</ul>
+			<p>Other Contributions</p>
+			<ul>
+				<li><a href="https://github.com/AbdurazaaqMohammed/save-on-device">Fork of "Save on Device"</a> - Made optimizations reducing file size to under 100kb</li>
+			</ul>			
+		</section>
+		<section id="contact">
+			<h2>Contact Me</h2>
+			<ul>
+				<li>Email: <a href="mailto:zaqasar@gmail.com">zaqasar@gmail.com</a></li>
+				<li>Phone/WhatsApp Contact: +18684741809</li>
+				<li>Discord: faolan6430</li>
+			</ul>
+		</section>
+	</main>

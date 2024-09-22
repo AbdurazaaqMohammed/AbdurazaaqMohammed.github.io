@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Blog Post - Abdurazaaq Mohammed</title>
+	<style>
+		@font-face {
+			font-family: 'MyCustomFont';
+			src: url('https://files.catbox.moe/ap02k1.ttf') format('truetype');
+		}
+		body {
+			font-family: 'MyCustomFont', 'Poppins', sans-serif;
+			margin: 0;
+			padding: 0;
+			background-color: #000000;
+			color: #d8d4ce;
+		}
+		#table-of-contents a:link {
+			color: green;
+		}
+		#table-of-contents a:visited {
+			color: green;
+		}
+		header {
+			background-color: #3391ff;
+			color: #d8d4ce;
+			padding: 10px 0;
+			text-align: center;
+		}
+		nav ul {
+			list-style-type: none;
+			padding: 0;
+			display: flex;
+			justify-content: space-around;
+			background-color: #009933;
+			color: #ff0000;
+		}
+		nav ul li {
+			padding: 15px 0;
+		}
+		nav ul li a {
+			color: #e8e6e3;
+			text-decoration: none;
+			position: relative;
+		}
+		nav ul li a:hover {
+			transition: 0.3s;
+		}
+		nav ul li a:hover::after {
+			content: '';
+			position: absolute;
+			top: 100%;
+			left: 50%;
+			transform: translateX(-50%);
+			width: 100%;
+			height: 2px;
+			background-color: #e8e6e3;
+		}
+		main {
+			padding: 20px;
+			animation: slideIn 2s ease;
+		}
+		section {
+			margin-bottom: 20px;
+			background-color: #004ba9;
+			border-radius: 5px;
+			padding: 20px;
+			box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+			position: relative;
+		}
+		section h2 {
+			margin-top: 0;
+  			color: #8E7DBE;
+		}
+
+		.expand-button {
+			position: absolute;
+			top: 10px;
+			right: 10px;
+			width: 50px;
+			height: 50px;
+			float: right;
+			background-image: url(https://raw.githubusercontent.com/fxolan/website/main/arrow-204-512.png);
+			background-size: 100%;
+			background-color: transparent;
+			background-repeat: no-repeat;
+		}
+		
+		.expanded-content {
+			display: none;
+		}
+		
+		.expand-button.flipped {
+			transform: rotate(180deg);
+		}
+		
+		@keyframes slideIn {
+			from {
+				opacity: 0;
+				transform: translateY(-50px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+	</style>
+	<script>
+	fetch('https://api.github.com/repos/fxolan/website/contents/blogposts')
+		.then(response => response.json())
+		.then(data => {
+			console.log(data);
+
+			if (!Array.isArray(data)) {
+				throw new Error('Invalid response from GitHub API');
+			}
+
+			data.sort((a, b) => {
+				const dateA = new Date(a?.commit?.author?.date);
+				const dateB = new Date(b?.commit?.author?.date);
+				return dateA.toLocaleString().localeCompare(dateB.toLocaleString());
+			});
+
+			const promises = data.map(file => {
+				return fetch(file.download_url)
+					.then(response => response.text())
+					.then(content => {
+						const title = content.split('\n')[0];
+						const fileName = file.name.replace(".txt", "");
+						return {
+							title: title,
+							content: content.split(title)[1],
+							isOpen: false,
+							fileName: fileName
+						};
+					});
+			});
+			return Promise.all(promises);
+		})
+		.then(posts => {
+			const main = document.querySelector('main');
+			posts.forEach(post => {
+				const postElement = document.createElement('section');
+				postElement.innerHTML = `<h2>${post.title}</h2>`;
+				const expandButton = document.createElement('button');
+				expandButton.classList.add('expand-button');
+				const contentElement = document.createElement('div');
+				contentElement.classList.add('expanded-content');
+				contentElement.innerHTML = `${post.content}<p>${post.fileName}</p>`;
+				postElement.appendChild(expandButton);
+				postElement.appendChild(contentElement);
+				expandButton.addEventListener('click', () => {
+					post.isOpen = !post.isOpen;
+					expandButton.classList.toggle('flipped', post.isOpen);
+					contentElement.style.display = post.isOpen ? 'block' : 'none';
+				});
+				main.appendChild(postElement);
+			});
+		})
+		.catch(error => console.error(error));
+	</script>
+</head>
+<body>
+	<header>
+		<h1>Abdurazaaq Mohammed - Blog</h1>
+	</header>
+	<nav>
+		<ul>
+			<li><a href="/website">About Me</a></li>
+			<li><a href="/website/apk-modification">APK Modification</a></li>
+			<li><a href="/website/blog/main">Blog</a></li>
+		</ul>
+	</nav>
+	<main>
+	</main>
+</body>
+</html>
