@@ -79,7 +79,7 @@
 			width: 50px;
 			height: 50px;
 			float: right;
-			background-image: url(https://raw.githubusercontent.com/fxolan/website/main/arrow-204-512.png);
+			background-image: url(https://raw.githubusercontent.com/fxolan/main/arrow-204-512.png);
 			background-size: 100%;
 			background-color: transparent;
 			background-repeat: no-repeat;
@@ -105,7 +105,7 @@
 		}
 	</style>
 	<script>
-	fetch('https://api.github.com/repos/fxolan/website/contents/blogposts')
+	fetch('https://api.github.com/repos/fxolan/contents/blogposts')
 		.then(response => response.json())
 		.then(data => {
 			console.log(data);
@@ -166,8 +166,8 @@
 	<nav>
 		<ul>
 			<li><a href="/website">About Me</a></li>
-			<li><a href="/website/apk-modification">APK Modification</a></li>
-			<li><a href="/website/blog/main">Blog</a></li>
+			<li><a href="/apk-modification">APK Modification</a></li>
+			<li><a href="/blog/main">Blog</a></li>
 		</ul>
 	</nav>
 	<main>
