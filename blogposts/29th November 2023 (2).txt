@@ -1,0 +1,11 @@
+<h2>Order of optimizations to reduce file size of APKs</h2>
+<ol>
+  <li>Remove useless files from base folder of APK</li>
+  <li>Remove debug info and any unwanted packages from smali</li>
+  <li>If packages removed, use regex codes to remove all references to them (post coming soon)</li>
+  <li>Apply patches in MPatcher</li>
+  <li>Compress images</li>
+  <li>Apply resource minification then resource confusion in MT Manager</li>
+  <li>Apply UltraZip in Apktool M</li>
+  <li>Optimize APK in MT Manager</li>
+</ol>

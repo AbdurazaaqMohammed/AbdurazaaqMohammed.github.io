@@ -1,0 +1,4 @@
+<h2>Another issue after deletion of packages - &lt;init&gt; methods</h2>
+<p>When a class contains an &lt;init&gt; method, that method must call another &lt;init&gt; method or the app will crash. &lt;init&gt; methods will generally be calling others in a descending order until a Java type is called. For example:
+<code><pre>invoke-direct {p0}, Ljava/lang/Object;-&gt;&lt;init&gt;()V</pre></code>
+If a an &lt;init&gt; from a deleted package was called in a method from a remaining class, the app will crash as the method is missing an &lt;init&gt;. To solve this, simply add an &lt;init&gt; line like the one above in the &lt;init&gt; methods.</p>

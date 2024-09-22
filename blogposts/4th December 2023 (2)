@@ -1,0 +1,50 @@
+<h2>Fully removing a package from an APK, including analytics and trackers such as Google Measurement, Firebase Analytics & Crashlytics, etc.</h2>
+<ol>
+  <li>In MT Manager, view the APK, open all dex files in DEX Editor Plus. Delete the main folders of whatever package you want to remove. </li>
+  <li>Search the names of whatever packages you removed. If you removed multiple packages, search with regex on like this:
+  <code><pre>(gms/ads|Google/ads|internal/ads|gms/measurement|internal/measurement|firebase/analytics|firebase/crashlytics|Bytedance|applovin|ironsrc|ironsource|mmadbridge|mbridge/sdk|openvk)</pre></code>
+  Include the brackets if you are searching for multiple packages. You can add or remove anything you want from the regex. To edit all below at once, copy this message, create a text file in MT Manager, click Search then Replace in the text file with whatever you want.</li>
+  
+  <p>Apply the following by "Replace in current results" WITH REGEX. You must do it in the provided order or the app may crash or fail to compile.</p>
+
+  <li>Search
+<code><pre>invoke.*\{.*\},\s.*(gms/ads|Google/ads|internal/ads|gms/measurement|internal/measurement|firebase/analytics|firebase/crashlytics|Bytedance|applovin|ironsrc|ironsource|mmadbridge|mbridge/sdk|openvk).*\n\s*move-result.*([pv]\d+)</pre></code>
+Replace
+<code><pre>const $2, 0x0#</pre></code></li>
+
+  <li>Search
+<code><pre>(i|s)get-object ([pv]\d+), .*(gms/ads|Google/ads|internal/ads|gms/measurement|internal/measurement|firebase/analytics|firebase/crashlytics|Bytedance|applovin|ironsrc|ironsource|mmadbridge|mbridge/sdk|openvk)</pre></code>
+Replace
+<code><pre>const $2, 0x0#</pre></code></li>
+
+  <li>Search
+<code><pre>invoke.*\{.*\},\s.*(gms/ads|Google/ads|internal/ads|gms/measurement|internal/measurement|firebase/analytics|firebase/crashlytics|Bytedance|applovin|ironsrc|ironsource|mmadbridge|mbridge/sdk|openvk)</pre></code>
+Replace
+<code><pre>#</pre></code></li>
+  <li>Search
+<code><pre>(\.method.*(gms/ads|Google/ads|internal/ads|gms/measurement|internal/measurement|firebase/analytics|firebase/crashlytics|Bytedance|applovin|ironsrc|ironsource|mmadbridge|mbridge/sdk|openvk))([\s\S]*?)\.end method</pre></code>
+Replace
+<code><pre>#</pre></code></li>
+
+  <li>Search
+<code><pre>(\.annotation.*\n.*\n.*(gms/ads|Google/ads|internal/ads|gms/measurement|internal/measurement|firebase/analytics|firebase/crashlytics|Bytedance|applovin|ironsrc|ironsource|mmadbridge|mbridge/sdk|openvk))([\s\S]*?)\.end annotation</pre></code>
+Replace
+<code><pre>#</pre></code></li>
+  <li>Search
+<code><pre>super .*(gms/ads|Google/ads|internal/ads|gms/measurement|internal/measurement|firebase/analytics|firebase/crashlytics|Bytedance|applovin|ironsrc|ironsource|mmadbridge|mbridge/sdk|openvk).*</pre></code>
+Replace it with any class from the application just copy a class name that is not final and put it</li>
+
+  <li>Search
+<code><pre>.*(gms/ads|Google/ads|internal/ads|gms/measurement|internal/measurement|firebase/analytics|firebase/crashlytics|Bytedance|applovin|ironsrc|ironsource|mmadbridge|mbridge/sdk|openvk)</pre></code>
+Replace
+<code><pre>#</pre></code></li>
+
+  <li>
+    <p>a) Decompile with Apktool M or just open AndroidManifest.xml in MT VIP or APK Editor</p>
+    <p>b) In AndroidManifest.xml delete everything with the name of what you just deleted from dex (eg. if you deleted applovin just search applovin and delete all methods with it</p>
+    <p>Note: You must delete the entire method. For example:
+    <code><pre>&lt;receiver android:enabled="true" android:exported="false" android:name="com.google.android.gms.analytics.AnalyticsReceiver"/&gt;</pre></code></p>
+
+    <p>You have to delete the entire method wherever you see it. Delete everything between &lt;whatever and /&gt;</li></p>
+    
+    <p>Note: There's still a high chance that the app will crash. Check the crash log and try to fix the problem. I have documented some of the problems in the blog posts above. Another simple one is a view from a removed package being present in an XML file but not available in the DEX files. Hopefully, there will only be 1-2 problems, but if the app has a deep implementation of he package or actually relies on something from a deleted package, it will keep crashing</p>
