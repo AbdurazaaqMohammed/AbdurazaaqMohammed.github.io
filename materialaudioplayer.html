@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Material Audio Player</title>
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<script type="importmap">
+		{
+			"imports": {
+				"@material/web/": "https://esm.run/@material/web/"
+			}
+		}
+	</script>
+	<script type="module">
+		import '@material/web/all.js';
+		import {styles as typescaleStyles} from '@material/web/typography/md-typescale-styles.js';
+		
+		document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
+	</script>
+	<style>
+		body {
+			font-family: 'Roboto', sans-serif;
+			background-color: #fafafa;
+			margin: 0;
+			padding: 0;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+		}
+		
+		.player-container {
+			width: 80%;
+			padding: 20px;
+			background-color: #ffffff;
+			border-radius: 12px;
+			box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+			text-align: center;
+		}
+		
+		.controls {
+			display: flex;
+			justify-content: space-between;
+			margin: 20px 0;
+		}
+		
+		.playlist {
+			list-style: none;
+			padding: 0;
+			margin: 10px 0;
+			overflow-y: auto;
+		}
+		
+		.playlist li {
+			display: flex;
+			justify-content: space-between;
+			padding: 10px;
+			border-bottom: 1px solid #ddd;
+			cursor: pointer;
+		}
+		
+		.playlist li.active {
+			background-color: #f0f0f0;
+		}
+		
+		.add-track-container {
+			display: flex;
+			flex-direction: row;
+			justify-content: center;	
+			align-items: center;			
+			margin-top: 0;						
+			gap: 10px;								 
+		}
+		
+		.add-track-container input {
+			flex-grow: 1;
+			border-radius: 4px;
+			border: 1px solid #ddd;
+			max-width: 300px;				 
+		}
+		
+		.add-track-container button {
+			border-radius: 4px;
+			background-color: #6200ee; 
+			color: white;
+			border: none;
+			cursor: pointer;
+		}
+		
+		.seekbar-container {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+		}
+		
+		.seekbar {
+			flex-grow: 1;
+		}
+		
+		input[type="range"] {
+			width: 100%;
+			cursor: pointer;
+		}
+		
+		input[type="range"]::-webkit-slider-runnable-track {
+			background: #ddd;
+			height: 4px;
+			border-radius: 5px;
+		}
+		
+		input[type="range"]::-webkit-slider-thumb {
+			-webkit-appearance: none;
+			height: 15px;
+			width: 15px;
+			border-radius: 50%;
+			background: #6200ee;
+			margin-top: -6px;
+		}
+		.theme-slider-container {
+			width: 25%; 
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			margin: 20px auto; 
+		}
+		
+		#themeSlider {
+			margin: 10px 0;
+			appearance: none;
+			background: #ddd;
+			height: 5px;
+			border-radius: 5px;
+		}
+		
+		#themeSlider::-webkit-slider-thumb {
+			appearance: none;
+			width: 20px;
+			height: 20px;
+			border-radius: 50%;
+			background-color: #666;
+			cursor: pointer;
+			transition: background-color 0.3s;
+		}
+		
+		.theme-icons {
+			display: flex;
+			justify-content: space-between;
+			width: 100%;
+		}
+		
+		.theme-icon {
+			font-size: 24px;
+			opacity: 0.5;
+			transition: opacity 0.3s;
+		}
+		
+		.theme-icon.active {
+			opacity: 1;
+		}
+		
+		body.light-mode {
+			background-color: #fff;
+			color: #000;
+		}
+		
+		body.dark-mode {
+			background-color: #333;
+			color: #fff;
+		}
+		* {
+			-webkit-touch-callout: none;
+			-webkit-user-select: none;
+			-khtml-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+		}
+		body.black-mode {
+			background-color: #000;
+			color: #fff;
+		}
+		.snackbar {
+			visibility: hidden;
+			min-width: 250px;
+			background-color: red;
+			text-align: center;
+			border-radius: 4px;
+			padding: 16px;
+			position: fixed;
+			left: 50%;
+			bottom: 30px;
+			transform: translateX(-50%);
+			z-index: 100;
+			box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+			opacity: 0;
+			transition: opacity 0.6s ease-in-out, bottom 0.6s ease-in-out;
+		}
+		
+		.snackbar.show {
+			visibility: visible;
+			opacity: 1;
+			bottom: 50px; 
+		}
+		
+		.snackbar.hide {
+			opacity: 0;
+			bottom: 30px; 
+			transition: opacity 0.6s ease-in-out, bottom 0.6s ease-in-out;
+		}
+	</style>
+</head>
+<body>
+	<div class="player-container" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
+		<h2 class="mdc-typescale--headline-small">Material Audio Player</h2>
+		
+		<audio id="audio-player" controls style="display:none;"></audio>
+		<div class="theme-slider-container">
+			<label for="themeSlider">Theme</label>
+			<input type="range" id="themeSlider" min="0" max="2" step="1" value="0">
+			<div class="theme-icons">
+				<span class="theme-icon light-theme">☀️</span>
+				<span class="theme-icon dark-theme">🌙</span>
+				<span class="theme-icon black-theme">🌑</span>
+			</div>
+		</div>
+		<ul class="playlist" id="playlist"></ul>
+		
+		<div class="add-track-container">
+			<md-outlined-text-field label="Enter music URL" id="track-url" type="text" placeholder="Enter URL"></md-outlined-text-field>
+			<md-filled-button id="add-btn" label="Add Track">Add</md-filled-button>
+		</div>
+		<br />
+		<md-filled-button id="upload-btn" label="Upload Track">Upload from files</md-filled-button>
+		<input id="file-input" type="file" accept="audio/*" style="display: none;" />
+		
+		<div class="seekbar-container">
+			<span id="current-time">0:00</span>
+			<input type="range" id="seekbar" class="seekbar" value="0" min="0" max="100" step="1">
+			<span id="duration">0:00</span>
+		</div>
+		
+		<div class="controls">
+			<md-standard-icon-button id="backward-btn" aria-label="Previous track">
+				<i class="material-icons">skip_previous</i>
+			</md-standard-icon-button>
+			
+			<md-standard-icon-button id="play-pause-btn" aria-label="Play/Pause">
+				<i class="material-icons">play_arrow</i>
+			</md-standard-icon-button>
+			
+			<md-standard-icon-button id="forward-btn" aria-label="Next track">
+				<i class="material-icons">skip_next</i>
+			</md-standard-icon-button>
+		</div>
+		
+		<div>
+			<md-standard-icon-button id="loop-btn" aria-label="Loop">
+				<i class="material-icons">repeat</i>
+			</md-standard-icon-button>
+		</div>
+	</div>
+	
+	<div id="snackbar" class="snackbar">
+		<span id="snackbar-text"></span>
+	</div>
+	<script>
+		function dragOverHandler(event) {
+			event.preventDefault();
+			event.dataTransfer.dropEffect = 'copy';
+		}
+		
+		function dropHandler(event) {
+			event.preventDefault();
+			var file = event.dataTransfer.files[0];
+			storeFileInIndexedDB(file);
+		}
+		
+		function showSnackbar(message) {
+			const snackbar = document.getElementById('snackbar');
+			const snackbarText = document.getElementById('snackbar-text');
+			snackbarText.textContent = message;
+			snackbar.classList.add('show');
+			snackbar.style.visibility = 'visible';
+			setTimeout(() => {
+				snackbar.classList.remove('show');
+				snackbar.classList.add('hide');
+			}, 3000); 
+			
+			setTimeout(() => {
+				snackbar.classList.remove('hide');
+				snackbar.style.visibility = 'hidden'; 
+			}, 3600); 
+		}
+		document.querySelector("body > div.player-container > div.theme-slider-container > div > span.theme-icon.light-theme").addEventListener('click', function(){ let previousStyleTag = document.getElementById('themeStyles');
+		if (previousStyleTag) previousStyleTag.remove();
+		document.getElementById('themeSlider').value	= 0;
+		
+		let styleTag = document.createElement('style');
+		styleTag.id = 'themeStyles'; 
+		document.head.appendChild(styleTag);document.body.classList.add('light-mode');		 styleTag.innerHTML = '*, .player-container * { background-color: white !important; color: black !important; }';});
+		document.querySelector("body > div.player-container > div.theme-slider-container > div > span.theme-icon.dark-theme").addEventListener('click', function(){let previousStyleTag = document.getElementById('themeStyles');
+		if (previousStyleTag) previousStyleTag.remove();
+		document.getElementById('themeSlider').value	= 1;
+		
+		let styleTag = document.createElement('style');
+		styleTag.id = 'themeStyles'; 
+		document.head.appendChild(styleTag);document.body.classList.add('dark-mode');		styleTag.innerHTML = `*:not(.player-container *) { background-color: #222222 !important; color: black !important; }
+													.player-container { background-color: #3b3b3b !important; color: white !important; }`});
+		document.querySelector("body > div.player-container > div.theme-slider-container > div > span.theme-icon.black-theme").addEventListener('click', function(){let previousStyleTag = document.getElementById('themeStyles');
+		if (previousStyleTag) previousStyleTag.remove();
+		document.getElementById('themeSlider').value	= 2;
+		
+		let styleTag = document.createElement('style');
+		styleTag.id = 'themeStyles'; 
+		document.head.appendChild(styleTag); document.body.classList.add('black-mode');		 styleTag.innerHTML = '*, .player-container, .player-container * { background-color: black !important; color: white !important; }';});
+		function showError(message) {
+			showSnackbar('⚠️ ' + message);
+			document.getElementById('snackbar').style.backgroundColor = '#FF0000';
+			
+		}
+		function showInfo(message) {
+			showSnackbar('ℹ️ ' + message);
+			document.getElementById('snackbar').style.backgroundColor = '#808080';
+		}
+		document.getElementById('themeSlider').addEventListener('input', changeTheme);
+		
+		function changeTheme() {
+			const themeSlider = document.getElementById('themeSlider');
+			const themeValue = parseInt(themeSlider.value);
+			const themeIcons = document.querySelectorAll('.theme-icon');
+			
+			document.body.classList.remove('light-mode', 'dark-mode', 'black-mode');
+			themeIcons.forEach(icon => icon.classList.remove('active'));
+			themeIcons[themeValue].classList.add('active');
+			
+				let previousStyleTag = document.getElementById('themeStyles');
+				if (previousStyleTag) previousStyleTag.remove();
+					 
+				let styleTag = document.createElement('style');
+				styleTag.id = 'themeStyles'; 
+				document.head.appendChild(styleTag);
+				
+				if (themeValue === 0) {
+					
+					document.body.classList.add('light-mode');
+					styleTag.innerHTML = '*, .player-container * { background-color: white !important; color: black !important; }';
+				} else if (themeValue === 1) {
+					
+					document.body.classList.add('dark-mode');
+					styleTag.innerHTML = `*:not(.player-container *) { background-color: #222222 !important; color: black !important; }
+													.player-container { background-color: #3b3b3b !important; color: white !important; }`;
+				} else if (themeValue === 2) {
+					
+					document.body.classList.add('black-mode');
+					styleTag.innerHTML = '*, .player-container, .player-container * { background-color: black !important; color: white !important; }';
+				}
+			}
+			const audioPlayer = document.getElementById('audio-player');
+			const playPauseBtn = document.getElementById('play-pause-btn');
+			const loopBtn = document.getElementById('loop-btn');
+			const backwardBtn = document.getElementById('backward-btn');
+			const forwardBtn = document.getElementById('forward-btn');
+			const playlistEl = document.getElementById('playlist');
+			const trackUrlInput = document.getElementById('track-url');
+			const addBtn = document.getElementById('add-btn');
+			const uploadBtn = document.getElementById('upload-btn');
+			const fileInput = document.getElementById('file-input');
+			const seekbar = document.getElementById('seekbar');
+			const currentTimeEl = document.getElementById('current-time');
+			const durationEl = document.getElementById('duration');
+			
+			let playlist = JSON.parse(localStorage.getItem('playlist')) || [];
+			let currentIndex = 0;
+			let isLooping = false;
+			addBtn.addEventListener('click', async function() {
+				const db = await openDatabase();
+				const trackUrl = trackUrlInput.value.trim();
+				if (trackUrl) {
+					fetch(trackUrl)
+					.then(response => {
+						if (!response.ok) throw new Error('Network response was not ok');
+						return response.blob();
+					})
+					.then(blob => {
+						const reader = new FileReader();
+						reader.onload = function(event) {
+							const base64String = event.target.result.split(',')[1];
+							const trackData = { name: trackUrl, base64: base64String };
+							
+							const transaction = db.transaction(['files'], 'readwrite');
+							const objectStore = transaction.objectStore('files');
+							const request = objectStore.add(trackData);
+							
+							request.onsuccess = function() {
+								showInfo('Added ' + trackData.name);
+								loadPlaylist(); 
+							};
+							
+							request.onerror = function(event) {
+								console.error('Error adding track to IndexedDB:', event.target.errorCode);
+							};
+						};
+						reader.readAsDataURL(blob);
+					})
+					.catch(error => console.error('Error fetching track:', error));
+				}
+				trackUrlInput.value = ''; 
+			});
+			
+			function openDatabase() {
+				return new Promise((resolve, reject) => {
+					const request = indexedDB.open('MusicPlayerDB', 1);
+					
+					request.onupgradeneeded = function(event) {
+						const db = event.target.result;
+						const store = db.createObjectStore('files', { keyPath: 'name' });
+						store.createIndex('name', 'name', { unique: true });
+					};
+					
+					request.onsuccess = function(event) {
+						resolve(event.target.result);
+					};
+					
+					request.onerror = function(event) {
+						reject('Database error: ' + event.target.errorCode);
+					};
+				});
+			}
+			
+			function storeFileInIndexedDB(file) {
+				const reader = new FileReader();
+				reader.onload = async function(event) {
+					const base64String = event.target.result.split(',')[1];
+					const db = await openDatabase();
+					
+					const transaction = db.transaction(['files'], 'readwrite');
+					const store = transaction.objectStore('files');
+					const request = store.put({ name: file.name, base64: base64String });
+					
+					request.onsuccess = function() {
+						showInfo('Added ' + file.name);
+						loadPlaylist();
+					};
+					
+					request.onerror = function() {
+						console.error('Error storing file in IndexedDB');
+					};
+				};
+				reader.readAsDataURL(file);
+			}
+			
+			async function loadPlaylist() {
+				const db = await openDatabase();
+				const transaction = db.transaction(['files'], 'readonly');
+				const store = transaction.objectStore('files');
+				
+				playlistEl.innerHTML = '';
+				
+				store.openCursor().onsuccess = function(event) {
+					const cursor = event.target.result;
+					if (cursor) {
+						const track = cursor.value;
+						const li = document.createElement('li');
+						li.classList.add('playlist-item');
+						li.textContent = track.name;
+						
+						const deleteButton = document.createElement('md-standard-icon-button');
+						deleteButton.innerHTML = '<i class="material-icons">delete</i>';
+						deleteButton.addEventListener('click', (event) => { event.stopPropagation(); deleteTrack(track.name); });
+						
+						li.appendChild(deleteButton);
+						li.addEventListener('click', () => {
+							playBase64Track(track.base64, track.name);
+						});
+						playlistEl.appendChild(li);
+						
+						cursor.continue();
+					}
+				};
+			}
+			async function deleteTrack(name) {
+				const db = await openDatabase();
+				const transaction = db.transaction(['files'], 'readwrite');
+				const store = transaction.objectStore('files');
+				const request = store.delete(name);
+				
+				request.onsuccess = function() {
+					showInfo('Removed' + name);
+					loadPlaylist(); 
+				};
+				
+				request.onerror = function() {
+					console.error('Error deleting track from IndexedDB');
+				};
+			}
+			
+			async function playBase64Track(base64, fileName) {
+				const byteCharacters = atob(base64);
+				const byteNumbers = new Array(byteCharacters.length);
+				for (let i = 0; i < byteCharacters.length; i++) {
+					byteNumbers[i] = byteCharacters.charCodeAt(i);
+				}
+				const byteArray = new Uint8Array(byteNumbers);
+				const blob = new Blob([byteArray], { type: 'audio/mpeg' });
+				const url = URL.createObjectURL(blob);
+				
+				audioPlayer.src = url;
+				audioPlayer.play();
+				
+				const items = playlistEl.querySelectorAll('li');
+				items.forEach(item => item.classList.remove('active'));
+				const activeItem = [...items].find(item => item.textContent.includes(fileName));
+				if (activeItem) activeItem.classList.add('active');
+				playPauseBtn.innerHTML = '<i class="material-icons">pause</i>';		}
+			
+			playPauseBtn.addEventListener('click', function() {
+				if (audioPlayer.paused) {
+					audioPlayer.play();
+					playPauseBtn.innerHTML = '<i class="material-icons">pause</i>';
+				} else {
+					audioPlayer.pause();
+					playPauseBtn.innerHTML = '<i class="material-icons">play_arrow</i>';
+				}
+			});
+			
+			loopBtn.addEventListener('click', function() {
+				isLooping = !isLooping;
+				loopBtn.style.color = isLooping ? '#6200ee' : '#000000';
+			});
+			
+			uploadBtn.addEventListener('click', () => fileInput.click());
+			fileInput.addEventListener('change', function(event) {
+				const file = event.target.files[0];
+				if (file) {
+					storeFileInIndexedDB(file);
+				}
+			});
+			
+			audioPlayer.addEventListener('ended', function() {
+				if (isLooping) {
+					audioPlayer.currentTime = 0;
+					audioPlayer.play();
+				}
+			});
+			
+			seekbar.addEventListener('input', (e) => {
+				const seekTo = audioPlayer.duration * (seekbar.value / 100);
+				audioPlayer.currentTime = seekTo;
+			});
+			
+			audioPlayer.addEventListener('timeupdate', () => {
+				const currentTime = Math.floor(audioPlayer.currentTime);
+				const duration = Math.floor(audioPlayer.duration);
+				seekbar.value = (audioPlayer.currentTime / audioPlayer.duration) * 100 || 0;
+				currentTimeEl.textContent = formatTime(currentTime);
+				durationEl.textContent = formatTime(duration);
+			});
+			
+			function formatTime(seconds) {
+				const minutes = Math.floor(seconds / 60);
+				const remainingSeconds = seconds % 60;
+				return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+			}
+			
+			loadPlaylist(); 
+		</script>
+	</body>
+	</html>
+	
