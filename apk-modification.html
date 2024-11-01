@@ -2,89 +2,20 @@
 <html lang="en">
 <head>
 	<title>Abdurazaaq Mohammed - APK Modification</title>
-	<style>
-		@font-face {
-			font-family: 'MyCustomFont';
-			src: url('https://files.catbox.moe/ap02k1.ttf') format('truetype');
-		}
-		body {
-			font-family: 'MyCustomFont', 'Poppins', sans-serif;
-			margin: 0;
-			padding: 0;
-			background-color: #000000;
-			color: #d8d4ce;
-		}
-		header {
-			background-color: #00aaff;
-			color: #fff;
-			padding: 10px 0;
-			text-align: center;
-		}
-		nav ul {
-			list-style-type: none;
-			padding: 0;
-			display: flex;
-			justify-content: space-around;
-			background-color: #009933;
-			color: #ff0000;
-		}
-		nav ul li {
-			padding: 15px 0;
-		}
-		nav ul li a {
-			color: #e8e6e3;
-			text-decoration: none;
-			position: relative;
-		}
-		nav ul li a:hover {
-			transition: 0.3s;
-		}
-		nav ul li a:hover::after {
-			content: '';
-			position: absolute;
-			top: 100%;
-			left: 50%;
-			transform: translateX(-50%);
-			width: 100%;
-			height: 2px;
-			background-color: #e8e6e3;
-		}
-		main {
-			padding: 20px;
-			animation: slideIn 2s ease;
-		}
-		section {
-			margin-bottom: 20px;
-			background-color: #004ba9;
-			border-radius: 5px;
-			padding: 20px;
-			box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
-		}
-		section h2 {
-			margin-top: 0;
-			color: #8E7DBE;
-		}
-		@keyframes slideIn {
-			from {
-				opacity: 0;
-				transform: translateY(-50px);
-			}
-			to {
-				opacity: 1;
-				transform: translateY(0);
-			}
-		}
-	</style>
+	<link rel="stylesheet" href="style.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
 <body>
+	<script src="script.js"></script>
 	<header>
 		<h1>Abdurazaaq Mohammed - APK Modification</h1>
 	</header>
 	<nav>
 		<ul>
-			<li><a href="/index.html">About Me</a></li>
-			<li><a href="/apk-modification">APK Modification</a></li>
-			<li><a href="/blog">Blog</a></li>
+			<li><a href="index.html">About Me</a></li>
+			<li><a href="apk-modification.html">APK Modification</a></li>
+			<li><a href="blog.html">Blog</a></li>
 		</ul>
 	</nav>
 	<main>
@@ -94,7 +25,7 @@
 		</section>
 		<section id="introduction">
 			<h2>Introduction</h2>
-			<p>This repository does not relate to "cracking" or "pirating" applications which is often associated with "Modded APKs", but rather several modifications and optimizations to APKs, mainly aiming to improve performance and reduce file size. This includes deletion of certain packages from APKs, such as analytics, crashlytics, trackers etc. This requires removing all invokes and reliances on the packages from the code of the APK.</p>
+			<p>The discussion provided does not relate to "cracking" or "pirating" applications which is often associated with "Modded APKs", but rather several modifications and optimizations to APKs, mainly aiming to improve performance and reduce file size. This includes deletion of certain packages from APKs, such as analytics, crashlytics, trackers etc. This requires removing all invokes and reliances on the packages from the code of the APK.</p>
 		</section>
 		<section id="tools">
 			<h2>Tools</h2>
@@ -159,8 +90,8 @@
 				<li><a href="https://t.me/WSTprojects/1509"><strong>APK Editor</strong></a> - A very old app, maintained by WSTprojects. Supports decompilation and custom patches, but is quite slow nowadays. It is still fast for quickly modifying XML files, which is a paid feature in MT Manager and requires fully decompiling in APKTool M.</li>
 				<li><a href="https://github.com/AbdurazaaqMohammed/AntiSplit-M"><strong>AntiSplit M</strong></a> - An open source app worked on by me to convert split APKs to a single APK.</li>
 				<li><a href="https://github.com/AbdurazaaqMohammed/AXML-Editor"><strong>AXML Editor</strong></a> - Open source editor I worked on to edit Android binary XML files (AndroidManifest.xml and layout XML files).</li>
-				<li><a href="https://github.com/AbdurazaaqMohammed/InjectDocumentsProvider"><strong>InjectDocumentsProvider</strong></a> - Access /Android/data and all data files of an Android app without any permissions by patching its APK file. This feature was created by Lin Jin Bin the developer of MT Manager but I created an open source app to inject it.</li>
-				<li><a href = "https://abdurazaaqmohammed.github.io/packageremovalhelper">Package Removal Helper</a> - a website tool to assist in the removal of packages (like trackers) from an APK by allowing input of the names of packages to be removed, and outputting a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions">regular expression</a> that can be used to search for the usage of those packages in the APK's code.</li>
+				<li><a href="https://github.com/AbdurazaaqMohammed/InjectDocumentsProvider"><strong>InjectDocumentsProvider</strong></a> - Access /Android/data and all data files of an Android app without any permissions by patching its APK file. This is a feature in MT Manager. Due to the lack of existing open source tools to utilize this, I created an app and Java program to inject it.</li>
+				<li><a href="https://abdurazaaqmohammed.github.io/packageremovalhelper">Package Removal Helper</a> - a website tool to assist in the removal of packages (like trackers) from an APK by allowing input of the names of packages to be removed, and outputting a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions">regular expression</a> that can be used to search for the usage of those packages in the APK's code.</li>
 			</ul>
 		</section>
 	</main>

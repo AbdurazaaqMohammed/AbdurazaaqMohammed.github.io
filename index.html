@@ -2,77 +2,110 @@
 <html lang=en>
 <head>
 	<title>Abdurazaaq Mohammed - Portfolio</title>
+	<link rel="stylesheet" href="style.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<style>
-		@font-face {
-			font-family: 'MyCustomFont';
-			src: url('https://files.catbox.moe/ap02k1.ttf') format('truetype');
+		@keyframes slideInLeft {
+			from { transform: translateX(-100%); opacity: 0; }
+			to { transform: translateX(0); opacity: 1; }
 		}
-		body {
-			font-family: 'MyCustomFont', 'Poppins', sans-serif;
-			margin: 0;
-			padding: 0;
-			background-color: #000000;
-			color: #d8d4ce;
+
+		@keyframes slideInRight {
+			from { transform: translateX(100%); opacity: 0; }
+			to { transform: translateX(0); opacity: 1; }
 		}
-		header {
-			background-color: #00aaff;
-			color: #fff;
-			padding: 10px 0;
+
+		.project-card {
+			opacity: 0;
+			transition: opacity 0.3s ease;
+		}
+
+		.project-card.slide-in-left {
+			animation: slideInLeft 1s forwards;
+		}
+
+		.project-card.slide-in-right {
+			animation: slideInRight 1s forwards;
+		}
+
+		.projects-section {
+			max-width: 80%;
+			margin: 0 auto;
+		}
+
+		.project-card {
+			display: flex;
+			height: 30vh;
+			min-height: 300px;
+			background-color: rgba(0, 0, 0, 0.5);
+			backdrop-filter: blur(10px);
+			border-radius: 8px;
+			overflow: hidden;
+			margin-bottom: 2rem;
+			transition: all 0.3s ease;
+		}
+
+		.project-card:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 5px 20px rgba(142, 125, 190, 0.3);
+		}
+
+		.project-image {
+			width: 33%;
+			background-color: #2a2a2a;
+			position: relative;
+			overflow: hidden;
+		}
+
+		.project-image img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+
+		.project-content {
+			width: 67%;
+			padding: 2rem;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
 			text-align: center;
 		}
-		nav ul {
-			list-style-type: none;
-			padding: 0;
-			display: flex;
-			justify-content: space-around;
-			background-color: #009933;
-			color: #ff0000;
-		}
-		nav ul li {
-			padding: 15px 0;
-		}
-		nav ul li a {
-			color: #e8e6e3;
-			text-decoration: none;
-			position: relative;
-		}
-		nav ul li a:hover {
-			transition: 0.3s;
-		}
-		nav ul li a:hover::after {
-			content: '';
-			position: absolute;
-			top: 100%;
-			left: 50%;
-			transform: translateX(-50%);
-			width: 100%;
-			height: 2px;
-			background-color: #e8e6e3;
-		}
-		main {
-			padding: 20px;
-			animation: slideIn 2s ease;
-		}
-		section {
-			margin-bottom: 20px;
-			background-color: #004ba9;
-			border-radius: 5px;
-			padding: 20px;
-			box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
-		}
-		section h2 {
-			margin-top: 0;
+
+		.project-title {
 			color: #8E7DBE;
+			font-size: 1.5rem;
+			margin-bottom: 1rem;
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
 		}
-		@keyframes slideIn {
-			from {
-				opacity: 0;
-				transform: translateY(-50px);
-			}
-			to {
-				opacity: 1;
-				transform: translateY(0);
-			}
+
+		.project-title a {
+			color: inherit;
+			text-decoration: none;
+		}
+
+		.project-title a:hover {
+			color: #a394d1;
+		}
+
+		.project-description {
+			color: #d8d4ce;
+			line-height: 1.6;
+			max-width: 600px;
+		}
+
+		.github-icon {
+			width: 20px;
+			height: 20px;
+			vertical-align: middle;
+		}
+
+		.projects-section + h3 {
+			margin-top: 3rem;
 		}
 	</style>
 </head>
@@ -82,9 +115,9 @@
 	</header>
 	<nav>
 		<ul>
-			<li><a href="/index.html">About Me</a></li>
-			<li><a href="/apk-modification">APK Modification</a></li>
-			<li><a href="/blog">Blog</a></li>
+			<li><a href="index.html">About Me</a></li>
+			<li><a href="apk-modification.html">APK Modification</a></li>
+			<li><a href="blog.html">Blog</a></li>
 		</ul>
 	</nav>
 	<main>
@@ -101,31 +134,139 @@
 		</section>
 		<section id="projects">
 			<h2>Projects</h2>
-			<p>Personal Projects</p>
+			<p>I have designed several Android applications, typically with a focus on compatibility with older versions to aid in maximizing the life of old devices and providing accessibility to those who cannot afford newer ones. 
+			<br />
+			<br />
+			Many of these apps relate to my interest in reverse engineering and malware analysis of Android apps.</p>
+			<div class="projects-section">
+				<div class="project-card">
+					<div class="project-image">
+						<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/AntiSplit-M/refs/heads/redesign/images/2.0%20settings.jpg" alt="AntiSplit M Screenshot">
+					</div>
+					<div class="project-content">
+						<h3 class="project-title">
+							<a href="https://github.com/AbdurazaaqMohammed/AntiSplit-M" target="_blank">
+								AntiSplit M
+								<svg class="github-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+									<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+									<polyline points="15 3 21 3 21 9"></polyline>
+									<line x1="10" y1="14" x2="21" y2="3"></line>
+								</svg>
+							</a>
+						</h3>
+						<p class="project-description">
+							App to AntiSplit (merge) split APKs (APKS/XAPK/APKM) to regular .APK file on Android.
+							Designed with a two versions; a Material You interface supporting Android 5.0+ and a legacy version for compatibility with Android 1.6+.
+						</p>
+					</div>
+				</div>
+
+				<div class="project-card">
+					<div class="project-image">
+						<img src="images/AXMLEditor.jpg" alt="AXML Editor Screenshot">
+					</div>
+					<div class="project-content">
+						<h3 class="project-title">
+							
+							<a href="https://github.com/AbdurazaaqMohammed/AXML-Editor" target="_blank">
+								AXML Editor
+								<svg class="github-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+									<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+									<polyline points="15 3 21 3 21 9"></polyline>
+									<line x1="10" y1="14" x2="21" y2="3"></line>
+								</svg>
+							</a>
+						</h3>
+						<p class="project-description">
+							Android app to edit android binary XML files (AndroidManifest.xml and layout XML files).
+						</p>
+					</div>
+				</div>
+
+				<div class="project-card">
+					<div class="project-image">
+						<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/APKExtractor/refs/heads/main/fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg" alt="APK Extractor Screenshot">
+					</div>
+					<div class="project-content">
+						<h3 class="project-title">
+							<a href="https://github.com/AbdurazaaqMohammed/APKExtractor" target="_blank">
+								APK Extractor
+								<svg class="github-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+									<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+									<polyline points="15 3 21 3 21 9"></polyline>
+									<line x1="10" y1="14" x2="21" y2="3"></line>
+								</svg>
+							</a>
+						</h3>
+						<p class="project-description">
+							Simple APK extractor app for Android supporting split APKs and saving them as single APK. Also supports every version of Android from 1.6+ and contains features for extracting specific files or attributes of apps such as icons.
+						</p>
+					</div>
+				</div>
+			
+				<div class="project-card">
+					<div class="project-image">
+						<img src="images/APKSigner.jpg" alt="APK Signer Screenshot">
+					</div>
+					<div class="project-content">
+						<h3 class="project-title">
+							<a href="https://github.com/AbdurazaaqMohammed/APKSigner" target="_blank">
+								APK Signer
+								<svg class="github-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+									<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+									<polyline points="15 3 21 3 21 9"></polyline>
+									<line x1="10" y1="14" x2="21" y2="3"></line>
+								</svg>
+							</a>
+						</h3>
+						<p class="project-description">
+							Simple Android app to sign APKs, supports signing split APKs and multiple files at once.
+						</p>
+					</div>
+				</div>
+			</div>
+			
+			<h3>Other Projects</h3>
 			<ul>
-		  		<li><a href="https://github.com/AbdurazaaqMohammed/AntiSplit-M">AntiSplit M</a> - App to AntiSplit (merge) split APKs (APKS/XAPK/APKM) to regular .APK file on Android</li>
-		  		<li><a href="https://github.com/AbdurazaaqMohammed/AXML-Editor">AXML Editor</a> - Android app to edit android binary XML files (AndroidManifest.xml and layout XML files)</li>
-		  		<li><a href="https://github.com/AbdurazaaqMohammed/discord-no-trackers">Discord No Trackers project</a> - Attempt to remove (not disable or block) as many trackers as possible from the code of Discord's Android app.</li>
-		  		<li><a href="https://github.com/AbdurazaaqMohammed/RestoreCRC32">Restore CRC32</a> - Android app to set the CRC32 and date modified of files in an APK or ZIP archive to those from another archive.</li>
-		  		<li><a href="https://github.com/AbdurazaaqMohammed/python-snake">Snake game</a> written in Python</li>
-			  	<li><a href="/apk-modification">APK Modification</a> - notes on modification of APKs (Android Packages)</li>
-				<li><a href="https://github.com/AbdurazaaqMohammed/rgbClock">RGB Clock</a> - Clock app written in Flutter</li>
+				<li><a href="https://github.com/AbdurazaaqMohammed/discord-no-trackers">Discord No Trackers</a> - A project focused on removing (not just disabling) trackers from Discord's Android app, enhancing privacy and performance.</li>
+				<li><a href="https://github.com/AbdurazaaqMohammed/CopyText">CopyText</a> - Simple Android app to copy text from share or view menu to clipboard. Supports all versions of Android with an APK size under 10KB</li>
+				<li><a href="https://github.com/AbdurazaaqMohammed/TapCounter">TapCounter</a> - Basic tap counter website with reset, text size and color changer, offline Android app version available.</li>
+				<li><a href="https://github.com/AbdurazaaqMohammed/axml2xml">axml2xml</a> - Java command line program to decompile and recompile Android binary XML files (AndroidManifest.xml and layout XML files)</li>
+				<li><a href="https://github.com/AbdurazaaqMohammed/RestoreCRC32">RestoreCRC32</a> - Android app to set the CRC32 and date modified of files in an APK or ZIP archive to those from another archive.</li>
+				<li><a href="https://github.com/AbdurazaaqMohammed/python-snake">Snake game</a> written in Python</li>
 				<li><a href="https://github.com/AbdurazaaqMohammed/userscripts">Personal userscripts</a> - Userscripts written mostly for my personal use</li>
-				<li><a href="https://github.com/AbdurazaaqMohammed/JustDoodle">JustDoodle - simple drawing app made in App Inventor (Bruh)</a></li>
+				<li><a href="https://github.com/AbdurazaaqMohammed/JustDoodle">JustDoodle</a> - Simple drawing app made in App Inventor</li>
 				<li><a href="https://github.com/AbdurazaaqMohammed/hisnul-muslim-color">Hisnul Muslim Color</a> - Hisnul Muslim app with customizable colors written in Flutter</li>
-				<li><a href="https://github.com/AbdurazaaqMohammed/my-flutter-ui-skeleton">Flutter UI Skeleton</a> - A skeleton (UI elements only) base for my Flutter apps</li>
 			</ul>
-			<p>Other Contributions</p>
+			
+			<h3>Other Contributions</h3>
 			<ul>
-				<li><a href="https://github.com/AbdurazaaqMohammed/save-on-device">Fork of "Save on Device"</a> - Made optimizations reducing file size to under 100kb</li>
-			</ul>			
+				<li><a href="https://github.com/AbdurazaaqMohammed/save-on-device">Fork of "Save on Device"</a> (Android app for saving files from Share or View menu) - Made optimizations reducing file size to under 100kb</li>
+			</ul>
 		</section>
 		<section id="contact">
 			<h2>Contact Me</h2>
 			<ul>
 				<li>Email: <a href="mailto:zaqasar@gmail.com">zaqasar@gmail.com</a></li>
-				<li>Phone/WhatsApp Contact: +18684741809</li>
-				<li>Discord: faolan6430</li>
 			</ul>
 		</section>
 	</main>
+	<script src="script.js"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', () => {
+			const projectCards = document.querySelectorAll('.project-card');
+			
+			const observer = new IntersectionObserver((entries) => {
+				entries.forEach((entry, index) => {
+					if (entry.isIntersecting) {
+						entry.target.classList.add(index % 2 === 0 ? 'slide-in-left' : 'slide-in-right');
+						observer.unobserve(entry.target);
+					}
+				});
+			}, { threshold: 0.2 });
+
+			projectCards.forEach(card => observer.observe(card));
+		});
+</script>
+</body>
+</html>
