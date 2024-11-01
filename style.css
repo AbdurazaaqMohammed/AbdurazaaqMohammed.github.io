@@ -11,6 +11,10 @@ body {
 	color: #d8d4ce;
 }
 
+a {
+	color: hotpink;
+}
+
 @keyframes twinkle {
 	0% {
 		opacity: 0.5;
