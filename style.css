@@ -6,9 +6,27 @@ body {
 	font-weight: 400;
 	font-style: normal;
 	margin: 0;
-	background: linear-gradient(45deg, #0f0f3f, #000000, #1a0333);
+	background: linear-gradient(180deg, #000428, #004e92);
 	padding: 0;
 	color: #d8d4ce;
+}
+
+@keyframes twinkle {
+	0% {
+		opacity: 0.5;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes move {
+	0% {
+		transform: translate(0, 0);
+	}
+	100% {
+		transform: translate(var(--move-x), var(--move-y));
+	}
 }
 
 header {
