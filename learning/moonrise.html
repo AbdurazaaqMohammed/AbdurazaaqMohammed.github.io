@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Moon Rising CSS animation</title>
+	<style>
+		body, html {
+			background: linear-gradient(180deg, #000428, #004e92);
+			height: 100%;
+			overflow: hidden;
+		}
+
+		.moon {
+			width: 120px;
+			height: 120px;
+			background: radial-gradient(circle at 30% 30%, #fff, #e0e0e0, #b0b0b0);
+			border-radius: 50%;
+			position: absolute;
+			animation: riseArc 6s ease-in-out forwards;
+			box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+		}
+
+		@keyframes riseArc {
+			0% {
+				left: -10%;
+				bottom: -150px;
+			}
+			50% {
+				left: 40%;
+				bottom: 50%;
+			}
+			100% {
+				left: 90%;
+				bottom: 80%;
+			}
+		}
+	</style>
+</head>
+<body>
+	<div class="moon"></div>
+</body>
+</html>

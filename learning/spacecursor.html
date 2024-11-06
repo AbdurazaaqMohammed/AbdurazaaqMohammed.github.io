@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Space theme Cursor</title>
+	<style>
+		body {
+			margin: 0;
+			min-height: 100vh;
+			background: linear-gradient(180deg, #000000, #001e42);
+			overflow: hidden;
+		}
+
+		.star {
+			position: absolute;
+			width: 2px;
+			height: 2px;
+			background: white;
+			border-radius: 50%;
+		}
+
+		.trail-particle {
+			position: fixed;
+			pointer-events: none;
+			mix-blend-mode: screen;
+			border-radius: 50%;
+			transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+		}
+	</style>
+</head>
+<body>
+
+	<script>
+		const body = document.body;
+		let stars = [];
+		let trailParticles = [];
+		let lastX = 0;
+		let lastY = 0;
+
+		class Star {
+			constructor() {
+				this.element = document.createElement('div');
+				this.element.className = 'star';
+				this.reset();
+				body.appendChild(this.element);
+			}
+
+			reset() {
+				this.x = Math.random() * window.innerWidth;
+				this.y = Math.random() * window.innerHeight;
+				this.size = Math.random() * 3 + 1;
+				this.speedX = (Math.random() - 0.5) * 0.3;
+				this.speedY = (Math.random() - 0.5) * 0.3;
+				this.opacity = Math.random() * 0.5 + 0.5;
+				this.element.style.width = this.size + 'px';
+				this.element.style.height = this.size + 'px';
+			}
+
+			update() {
+				this.x += this.speedX;
+				this.y += this.speedY;
+
+				if (this.x < 0) this.x = window.innerWidth;
+				if (this.x > window.innerWidth) this.x = 0;
+				if (this.y < 0) this.y = window.innerHeight;
+				if (this.y > window.innerHeight) this.y = 0;
+
+				this.element.style.transform = `translate(${this.x}px, ${this.y}px)`;
+				this.element.style.opacity = this.opacity;
+			}
+		}
+
+		for (let i = 0; i < 150; i++) stars.push(new Star());
+
+		function createTrailParticle(x, y, velocityX, velocityY) {
+			const particle = document.createElement('div');
+			particle.className = 'trail-particle';
+			
+			const size = Math.random() * 8 + 4;
+			const hue = Math.random() * 40 + 200;
+			
+			particle.style.width = size + 'px';
+			particle.style.height = size + 'px';
+			particle.style.background = `hsla(${hue}, 100%, 70%, 0.8)`;
+			particle.style.transform = `translate(${x}px, ${y}px)`;
+			
+			body.appendChild(particle);
+			
+			const lifetime = Math.random() * 500 + 500;
+			let opacity = 1;
+			
+			const particle_obj = {
+				element: particle,
+				x: x,
+				y: y,
+				velocityX: velocityX * 0.3,
+				velocityY: velocityY * 0.3,
+				size: size,
+				opacity: opacity,
+				lifetime: lifetime,
+				born: Date.now()
+			};
+			
+			trailParticles.push(particle_obj);
+		}
+
+		document.addEventListener('mousemove', (e) => {
+			const velocityX = e.clientX - lastX;
+			const velocityY = e.clientY - lastY;
+
+			if (Math.sqrt(velocityX * velocityX + velocityY * velocityY) > 5) createTrailParticle(e.clientX, e.clientY, velocityX, velocityY);
+
+			lastX = e.clientX;
+			lastY = e.clientY;
+		});
+
+		function animate() {
+			stars.forEach(star => star.update());
+			const now = Date.now();
+			trailParticles = trailParticles.filter(particle => {
+				const age = now - particle.born;
+				if (age > particle.lifetime) {
+					particle.element.remove();
+					return false;
+				}
+				particle.x += particle.velocityX;
+				particle.y += particle.velocityY;
+				particle.velocityX *= 0.95;
+				particle.velocityY *= 0.95;
+				particle.opacity = 1 - (age / particle.lifetime);
+
+				particle.element.style.transform = `translate(${particle.x}px, ${particle.y}px)`;
+				particle.element.style.opacity = particle.opacity;
+				
+				return true;
+			});
+			requestAnimationFrame(animate);
+		}
+		animate();
+	</script>
+</body>
+</html>

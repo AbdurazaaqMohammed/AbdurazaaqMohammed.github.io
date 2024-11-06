@@ -211,39 +211,90 @@ section h2 {
 	opacity: 0.8;
 	border-radius: 50%;
 	background: radial-gradient(circle, #ffffff, rgba(255, 255, 255, 0));
-	box-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(0, 170, 255, 0.7);
 	pointer-events: none;
 	transform: translate(-50%, -50%) scale(1);
 	transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
+.star { box-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(0, 170, 255, 0.7); }
+
 .starry {
 	opacity: 0.35 !important;
 	animation: floatStars 10s linear infinite alternate;
 	animation-timing-function: ease-in-out;
+	animation-iteration-count: infinite;
 }
 
-@keyframes floatStars {
+@keyframes floatStars1 {
 	0% {
 		transform: translate(0, 0) rotate(0deg);
 		opacity: 0.5;
 	}
 	25% {
-		transform: translate(5vw, -10vh) rotate(45deg);
-		opacity: 0.8;
+		transform: translate(6vw, -9vh) rotate(67deg);
+		opacity: 0.7;
 	}
 	50% {
-		transform: translate(-10vw, 5vh) rotate(90deg);
-		opacity: 1;
+		transform: translate(-8vw, 5vh) rotate(154deg);
+		opacity: 0.9;
 	}
 	75% {
-		transform: translate(7vw, -7vh) rotate(135deg);
+		transform: translate(9vw, -8vh) rotate(247deg);
+		opacity: 0.6;
+	}
+	100% {
+		transform: translate(0, 0) rotate(360deg);
+		opacity: 0.5;
+	}
+}
+
+@keyframes floatStars2 {
+	0% {
+		transform: translate(0, 0) rotate(0deg);
+		opacity: 0.6;
+	}
+	33% {
+		transform: translate(-6vw, 7vh) rotate(120deg);
+		opacity: 1;
+	}
+	66% {
+		transform: translate(7vw, -5vh) rotate(240deg);
 		opacity: 0.8;
 	}
 	100% {
-		transform: translate(-5vw, 10vh) rotate(180deg);
-		opacity: 0.5;
+		transform: translate(0, 0) rotate(360deg);
+		opacity: 0.6;
 	}
+}
+
+@keyframes floatStars3 {
+	0% {
+		transform: translate(0, 0) rotate(0deg);
+		opacity: 0.4;
+	}
+	50% {
+		transform: translate(9vw, 9vh) rotate(180deg);
+		opacity: 0.9;
+	}
+	100% {
+		transform: translate(0, 0) rotate(360deg);
+		opacity: 0.4;
+	}
+}
+
+.starry:nth-child(3n+1) {
+	animation: floatStars1 15s infinite;
+	animation-delay: calc(var(--star-index) * -2s);
+}
+
+.starry:nth-child(3n+2) {
+	animation: floatStars2 18s infinite;
+	animation-delay: calc(var(--star-index) * -1.5s);
+}
+
+.starry:nth-child(3n+3) {
+	animation: floatStars3 20s infinite;
+	animation-delay: calc(var(--star-index) * -3s);
 }
 
 #cursor-tracker {
