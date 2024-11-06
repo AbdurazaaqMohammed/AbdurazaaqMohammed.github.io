@@ -1,2 +1,4 @@
-<h1>Regex to find and remove useless (splits related) attributes from AndroidManifest.xml that can cause "App not installed" error</h1>
+<h2>Regex to find and remove useless (splits related) attributes from AndroidManifest.xml that can cause "App not installed" error</h2>
 <code><pre><[^>]*(com\.android\.dynamic\.apk\.fused\.modules|com\.android\.stamp\.source|com\.android\.stamp\.type|com\.android\.vending\.splits|com\.android\.vending\.derived\.apk\.id)[^>]*(.*\n.*\n.*/(?!.*(application|manifest)).*>|.*\n.*/(?!.*(application|manifest))>|>)|(android:isSplitRequired|isSplitRequired)="true"|android:(splitTypes|requiredSplitTypes)=".*"|(splitTypes|requiredSplitTypes)=".*"</pre></code>
+
+Replace with nothing
