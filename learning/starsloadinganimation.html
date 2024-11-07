@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Stars Spiral Loading Animation</title>
+	<style>
+		body {
+			background-color: black;
+		}
+
+		.star {
+			position: fixed;
+			width: 6px;
+			height: 6px;
+			border-radius: 50%;
+			background: radial-gradient(circle, #ffffff, rgba(255, 255, 255, 0));
+			pointer-events: none;
+			box-shadow: 0 0 30px rgba(255, 255, 255, 0.8), 0 0 60px rgba(0, 170, 255, 0.7);
+		}
+	</style>
+</head>
+<body>
+
+	<script>
+		const stars = [];
+		const numStars = 30;
+		let spiralAngle = 0;
+		const spiralRadius = 10; 
+		
+		for (let i = 0; i < numStars; i++) {
+			const star = document.createElement('div');
+			star.classList.add('star');
+			document.body.appendChild(star);
+			stars.push(star);
+		}
+
+		function animateDoubleSpiral() {
+			spiralAngle += 0.01;
+			
+			stars.forEach((star, index) => {
+				const adjustedIndex = index % (numStars / 2);
+				const angle = spiralAngle + (adjustedIndex * (2 * Math.PI / (numStars / 2))) + Math.floor(index / (numStars / 2)) * Math.PI;
+				const radius = spiralRadius + (adjustedIndex * 4); 
+
+				star.style.left = window.innerWidth / 2 + radius * Math.cos(angle) + "px";
+				star.style.top = window.innerHeight / 2 + radius * Math.sin(angle) + "px";
+				star.style.opacity = 0.9;
+				star.style.transform = 'translate(-50%, -50%) scale(1.5)';
+			});
+
+			requestAnimationFrame(animateDoubleSpiral);
+		}
+
+		animateDoubleSpiral();
+	</script>
+</body>
+</html>
