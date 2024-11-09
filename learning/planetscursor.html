@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Space Cursor Effect</title>
+	<style>
+		body {
+			margin: 0;
+			height: 100vh;
+			background: linear-gradient(180deg, #000428, #004e92);
+			overflow: hidden;
+		}
+
+		.planet {
+			position: absolute;
+			border-radius: 50%;
+			pointer-events: none;
+			transition: transform 0.1s;
+		}
+
+		#mercury {
+			width: 5px;
+			height: 5px;
+			background: radial-gradient(circle, gray, darkgray);
+			box-shadow: 0 0 10px rgba(169, 169, 169, 0.7);
+		}
+
+		#venus {
+			width: 7.5px;
+			height: 7.5px;
+			background: radial-gradient(circle, #ffcc00, #ff9900);
+			box-shadow: 0 0 10px rgba(255, 204, 0, 0.7);
+		}
+
+		#earth {
+			width: 10px;
+			height: 10px;
+			background: radial-gradient(circle, #00f, #005);
+			box-shadow: 0 0 10px rgba(0, 0, 255, 0.7);
+		}
+
+		#mars {
+			width: 9px;
+			height: 9px;
+			background: radial-gradient(circle, #ff4d4d, #cc0000);
+			box-shadow: 0 0 10px rgba(255, 77, 77, 0.7);
+		}
+
+		#jupiter {
+			width: 12.5px;
+			height: 12.5px;
+			background: radial-gradient(circle, #ffcc99, #cc9966);
+			box-shadow: 0 0 10px rgba(255, 204, 153, 0.7);
+		}
+
+		#saturn {
+			width: 11px;
+			height: 11px;
+			background: radial-gradient(circle, #f0e68c, #d1c85e);
+			box-shadow: 0 0 10px rgba(240, 230, 140, 0.7);
+		}
+
+		#uranus {
+			width: 10px;
+			height: 10px;
+			background: radial-gradient(circle, #66ccff, #3399cc);
+			box-shadow: 0 0 10px rgba(102, 204, 255, 0.7);
+		}
+
+		#neptune {
+			width: 10px;
+			height: 10px;
+			background: radial-gradient(circle, #0066cc, #003366);
+			box-shadow: 0 0 10px rgba(0, 102, 204, 0.7);
+		}
+	</style>
+</head>
+<body>
+	<script>
+		const body = document.body;
+		const planetClass = 'planet';
+
+		const planetNames = ['mercury', 'venus', 'earth', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune'];
+
+		function createPlanet(name) {
+			const planet = document.createElement('div');
+			planet.classList.add(planetClass);
+			planet.id = name;
+			body.appendChild(planet);
+		}
+
+		planetNames.forEach(createPlanet);
+		const planets = document.querySelectorAll('.planet');
+		let cursorX = 0;
+		let cursorY = 0;
+		let isMoving = false;
+		let idleTimer;
+
+		const radius = 30;
+		let angle = 0;
+
+		document.addEventListener('mousemove', (event) => {
+			cursorX = event.pageX;
+			cursorY = event.pageY;
+			isMoving = true;
+
+			clearTimeout(idleTimer);
+
+			planets.forEach((planet, index) => {
+				const delay = index * 50;
+				setTimeout(() => {
+					planet.style.left = `${event.pageX}px`;
+					planet.style.top = `${event.pageY}px`;
+					planet.style.transform = `scale(${1 + index * 0.01})`;
+				}, delay);
+			});
+
+			idleTimer = setTimeout(() => {
+				isMoving = false;
+				startCircling();
+			}, 1000);
+		});
+
+		function startCircling() {
+			if (!isMoving) {
+				angle += 0.01;
+				planets.forEach((planet, index) => {
+					const offsetX = radius * Math.cos(angle + index);
+					const offsetY = radius * Math.sin(angle + index);
+					
+					planet.style.transition = 'left 0.1s ease, top 0.1s ease';
+					planet.style.left = `${cursorX + offsetX}px`;
+					planet.style.top = `${cursorY + offsetY}px`;
+					planet.style.transform = `scale(${1 + index * 0.01})`;
+					setTimeout(() => {planet.style.transition = 'none';}, 1000)
+				});
+				requestAnimationFrame(startCircling);
+			}
+		}
+	</script>
+</body>
+</html>

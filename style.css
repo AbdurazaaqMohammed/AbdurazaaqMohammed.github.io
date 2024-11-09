@@ -64,25 +64,6 @@ li {
 a {
 	color: hotpink;
 }
-
-@keyframes twinkle {
-	0% {
-		opacity: 0.5;
-	}
-	100% {
-		opacity: 1;
-	}
-}
-
-@keyframes move {
-	0% {
-		transform: translate(0, 0);
-	}
-	100% {
-		transform: translate(var(--move-x), var(--move-y));
-	}
-}
-
 header {
 	color: #fff;
 	padding: 10px 0;
@@ -204,25 +185,16 @@ section h2 {
 	color: #8E7DBE;
 }
 
-.star, .starry {
-	position: fixed;
-	width: 20px;
-	height: 20px;
-	opacity: 0.8;
-	border-radius: 50%;
-	background: radial-gradient(circle, #ffffff, rgba(255, 255, 255, 0));
-	pointer-events: none;
-	transform: translate(-50%, -50%) scale(1);
-	transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.star { box-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(0, 170, 255, 0.7); }
-
 .starry {
-	opacity: 0.35 !important;
-	animation: floatStars 10s linear infinite alternate;
-	animation-timing-function: ease-in-out;
-	animation-iteration-count: infinite;
+	position: fixed;
+	pointer-events: none;
+	width: 4px;
+	height: 4px;
+	background: radial-gradient(circle, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
+	border-radius: 50%;
+	pointer-events: none;
+	transition: transform 0.1s ease;
+	box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.4);
 }
 
 @keyframes floatStars1 {
@@ -295,56 +267,6 @@ section h2 {
 .starry:nth-child(3n+3) {
 	animation: floatStars3 20s infinite;
 	animation-delay: calc(var(--star-index) * -3s);
-}
-
-#cursor-tracker {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	z-index: 10;
-	pointer-events: auto;
-}
-
-#stars-container {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
-	z-index: -1;
-	pointer-events: none;
-}
-
-#particle-container {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	z-index: -1;
-	pointer-events: auto;
-}
-
-.particle {
-	position: absolute;
-	background: rgba(255, 255, 255, 0.3);
-	border-radius: 50%;
-	pointer-events: none;
-	animation: particle-float 5s infinite alternate;
-}
-
-@keyframes particle-float {
-	0% {
-		transform: translateY(0) rotate(0deg);
-		opacity: 0.5;
-	}
-	100% {
-		transform: translateY(-50px) rotate(360deg);
-		opacity: 0.2;
-	}
 }
 
 @keyframes slideIn {
