@@ -123,6 +123,26 @@
 			stroke: #FFD700;
 			font-size: 0.9rem;
 		}
+
+		.cursor {
+			display: inline-block;
+			animation: blink 0.7s steps(1) infinite;
+		}
+
+		@keyframes blink {
+			0%, 100% {
+				opacity: 1;
+			}
+			50% {
+				opacity: 0;
+			}
+		}
+
+		.txt-rotate{
+			border-right: 2px solid;
+			white-space: nowrap;
+			overflow: hidden;
+		}
 	</style>
 </head>
 <body>
@@ -303,6 +323,43 @@
 				starCountElement.textContent = '';
 			});
 		});
+		const words = ["Portfolio", "Developer", "Security Researcher", "Student", "Reverse Engineer", "FOSS Enthusiast"];
+		let wordIndex = 0;
+		let charIndex = 0;
+		let currentWord = '';
+		let isDeleting = false;
+
+		const textElement = document.getElementsByClassName('txt-rotate')[0];
+
+		function typeEffect() {
+			currentWord = words[wordIndex];
+
+			if (isDeleting) {
+				charIndex--;
+			} else {
+				charIndex++;
+			}
+
+			textElement.textContent = currentWord.slice(0, charIndex);
+
+			let typingSpeed = isDeleting ? 50 : 150;
+
+			if (!isDeleting && charIndex === currentWord.length) {
+				typingSpeed = 1000;
+				isDeleting = true;
+			}
+
+			if (isDeleting && charIndex === 0) {
+				isDeleting = false;
+				wordIndex = (wordIndex + 1) % words.length;
+				typingSpeed = 500;
+			}
+
+			setTimeout(typeEffect, typingSpeed);
+		}
+
+		document.addEventListener("DOMContentLoaded", typeEffect);
+
 	</script>
 </body>
 </html>
