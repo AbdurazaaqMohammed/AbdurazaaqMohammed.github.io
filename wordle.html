@@ -79,13 +79,25 @@
 			z-index: 999;
 		}
 		
-		#keyboard {
+		.keyboard {
 			display: grid;
-			align-items: center;
-			grid-template-columns: repeat(10, 0fr);
 			place-content: center;
 			gap: 5px;
+		}
+		
+		.row1 {
 			margin-top: 20px;
+			grid-template-columns: repeat(10, 0fr);
+		}
+		
+		.row2 {
+			margin-top: 5px;
+			grid-template-columns: repeat(9, 0fr);
+		}
+
+		.row3 {
+			margin-top: 5px;
+			grid-template-columns: repeat(10, 0fr);
 		}
 
 		.key {
@@ -102,16 +114,16 @@
 			user-select: none;
 		}
 
-		.key.correct {
+		.correct {
 			background-color: var(--correct-tile-color, green);
 			color: white;
 		}
 
-		.key.partial {
+		.partial {
 			background-color: var(--partial-tile-color, yellow);
 		}
 
-		.key.wrong {
+		.wrong {
 			background-color: var(--wrong-tile-color, gray);
 		}
 
@@ -170,7 +182,9 @@
 		<br><br>
 		<button id="closeSettings">Close</button>
 	</div>
-	<div id="keyboard"></div>
+	<div class="keyboard row1"></div>
+	<div class="keyboard row2"></div>
+	<div class="keyboard row3"></div>
 
 	<script>
 		const words = {
@@ -207,8 +221,8 @@
 				textColor: localStorage.getItem('textColor') || '#000000',
 				defaultTileColor: localStorage.getItem('defaultTileColor') || '#dddddd',
 				correctTileColor: localStorage.getItem('correctTileColor') || '#90ee90',
-				partialTileColor: localStorage.getItem('partialTileColor') || '#FFFFE0',
-				wrongTileColor: localStorage.getItem('wrongTileColor') || '#FF7F7F'
+				partialTileColor: localStorage.getItem('partialTileColor') || '#eee600',
+				wrongTileColor: localStorage.getItem('wrongTileColor') || '#a9a9a9'
 			};
 
 			document.getElementById('bgColor').value = settings.bgColor;
@@ -324,10 +338,15 @@
 				letterCount[char] = (letterCount[char] || 0) + 1;
 			}
 
+			const keys = document.getElementsByClassName('key');
 			for (let i = 0; i < targetWord.length; i++) {
 				if (currentGuess[i] === targetWord[i]) {
 					tiles[start + i].classList.add('correct');
 					letterCount[currentGuess[i]]--;
+					for (let j = 0; j < keys.length; j++) if(keys[j].textContent === currentGuess[i]) {
+						keys[j].classList.add('correct');
+						keys[j].classList.remove('partial');
+					}
 				}
 			}
 
@@ -337,8 +356,14 @@
 					letterCount[currentGuess[i]] > 0
 				) {
 					tiles[start + i].classList.add('partial');
+					for (let j = 0; j < keys.length; j++) if(keys[j].textContent === currentGuess[i]) {
+						if(!keys[j].classList.contains('correct')) keys[j].classList.add('partial');
+					}
 					letterCount[currentGuess[i]]--;
 				} else if (currentGuess[i] !== targetWord[i]) {
+					for (let j = 0; j < keys.length; j++) if(keys[j].textContent === currentGuess[i]) {
+						if(!keys[j].classList.contains('correct') && !keys[j].classList.contains('partial')) keys[j].classList.add('wrong');
+					}
 					tiles[start + i].classList.add('wrong');
 				}
 			}
@@ -359,22 +384,22 @@
 		}
 		
 		function createKeyboard() {
-			const keyboard = document.getElementById('keyboard');
-			keyboard.innerHTML = '';
+			const keyboards = document.getElementsByClassName('keyboard');
+			for(let i = 0; i < keyboards.length; i++) keyboards[i].innerHTML = '';
 			const keys = [
 				'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p',
 				'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l',
-				'z', 'x', 'c', 'v', 'b', 'n', 'm', 'enter', 'backspace'
+				'enter', 'z', 'x', 'c', 'v', 'b', 'n', 'm', 'backspace'
 			];
 			
 			keys.forEach((key, index) => {
-				if(index === 20) keyboard.appendChild(document.createElement('br'));
 				const keyButton = document.createElement('div');
 				keyButton.classList.add('key');
 				keyButton.textContent = key === 'backspace' ? '⌫' : key === 'enter' ? '⏎' : key;
+				if(key === 'enter') keyButton.style.fontSize = '36px';
 				keyButton.setAttribute('data-key', key);
 				keyButton.addEventListener('click', () => handleVirtualKey(key));
-				keyboard.appendChild(keyButton);
+				keyboards[index < 10 ? 0 : index < 19 ? 1 : 2].appendChild(keyButton);
 			});
 		}
 
