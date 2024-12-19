@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Wordle</title>
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap');
+		body {
+			font-family: "Lexend Deca", sans-serif;
+			text-align: center;
+			background-color: var(--bg-color, #f0f0f0);
+			color: var(--text-color, #000000);
+		}
+
+		#gameBoard {
+			display: grid;
+			justify-content: center;
+			margin-top: 20px;
+			gap: 10px;
+		}
+
+		.tile {
+			width: 50px;
+			height: 50px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-size: 24px;
+			border: 1px solid #999;
+			background-color: var(--default-tile-color, #ddd);
+			text-transform: uppercase;
+		}
+
+		.correct {
+			background-color: var(--correct-tile-color, green);
+			color: white;
+		}
+
+		.partial {
+			background-color: var(--partial-tile-color, yellow);
+		}
+
+		.wrong {
+			background-color: var(--wrong-tile-color, gray);
+		}
+
+		#message {
+			margin-top: 20px;
+			font-size: 18px;
+		}
+
+		button {
+			margin-top: 20px;
+			padding: 10px 20px;
+			font-size: 16px;
+		}
+
+		#settingsDialog {
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			background: white;
+			border: 1px solid #ccc;
+			padding: 20px;
+			display: none;
+			z-index: 1000;
+		}
+
+		#overlay {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: rgba(0, 0, 0, 0.5);
+			display: none;
+			z-index: 999;
+		}
+		
+		#keyboard {
+			display: grid;
+			align-items: center;
+			grid-template-columns: repeat(10, 0fr);
+			justify-content: center;
+			gap: 5px;
+			margin-top: 20px;
+		}
+
+		.key {
+			width: 3vw;
+			padding: 5px;
+			font-size: 18px;
+			text-transform: uppercase;
+			background-color: var(--default-tile-color, #ddd);
+			border: 1px solid #999;
+			border-radius: 5px;
+			cursor: pointer;
+			text-align: center;
+			user-select: none;
+		}
+
+		.key.correct {
+			background-color: var(--correct-tile-color, green);
+			color: white;
+		}
+
+		.key.partial {
+			background-color: var(--partial-tile-color, yellow);
+		}
+
+		.key.wrong {
+			background-color: var(--wrong-tile-color, gray);
+		}
+
+		.key:active {
+			transform: scale(0.9);
+		}
+	</style>
+</head>
+<body>
+	<button id="openSettings">Settings</button>
+	<div id="gameBoard"></div>
+	<p id="message"></p>
+	<button id="restartGame" style="display:none; width: 100%;">Restart Game</button>
+
+	<div id="overlay"></div>
+	<div id="settingsDialog">
+		<h2>Settings</h2>
+		<label for="wordLength">Word Length:</label>
+		<select id="wordLength">
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5" selected>5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+			<option value="8">8</option>
+			<option value="9">9</option>
+			<option value="10">10</option>
+		</select>
+		<br><br>
+		<label for="numberOfGuesses">Number of Guesses:</label>
+		<select id="numberOfGuesses">
+			<option value="4">4</option>
+			<option value="5" selected>5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+			<option value="8">8</option>
+		</select>
+		<br><br>
+		<label for="bgColor">Background Color:</label>
+		<input type="color" id="bgColor">
+		<br><br>
+		<label for="textColor">Text Color:</label>
+		<input type="color" id="textColor">
+		<br><br>
+		<label for="defaultTileColor">Default Tile Color:</label>
+		<input type="color" id="defaultTileColor">
+		<br><br>
+		<label for="correctTileColor">Correct Tile Color:</label>
+		<input type="color" id="correctTileColor">
+		<br><br>
+		<label for="partialTileColor">Partial Tile Color:</label>
+		<input type="color" id="partialTileColor">
+		<br><br>
+		<label for="wrongTileColor">Wrong Tile Color:</label>
+		<input type="color" id="wrongTileColor">
+		<br><br>
+		<button id="closeSettings">Close</button>
+	</div>
+	<div id="keyboard"></div>
+
+	<script>
+		const words = {
+			3: ['cat', 'dog', 'bat', 'sun', 'pen'],
+			4: ['tree', 'frog', 'cake', 'snow', 'glow'],
+			5: ['apple', 'grape', 'table', 'flame', 'brick'],
+			6: ['school', 'planet', 'guitar', 'flight', 'pencil'],
+			7: ['picture', 'diamond', 'journey', 'kitchen', 'fishing'],
+			8: ['umbrella', 'sandwich', 'elephant', 'keyboard', 'football'],
+			9: ['adventure', 'chocolate', 'pineapple', 'continent', 'lightning'],
+			10: ['basketball', 'technology', 'watermelon', 'application', 'foundation']
+		};
+
+		let targetWord = '';
+		let currentGuess = '';
+		let guessCount = 0;
+
+		document.getElementById('openSettings').addEventListener('click', () => {
+			document.getElementById('overlay').style.display = 'block';
+			document.getElementById('settingsDialog').style.display = 'block';
+		});
+
+		document.getElementById('closeSettings').addEventListener('click', () => {
+			document.getElementById('overlay').style.display = 'none';
+			document.getElementById('settingsDialog').style.display = 'none';
+			applySettings();
+		});
+
+		document.getElementById('restartGame').addEventListener('click', startGame);
+
+		function loadSettings() {
+			const settings = {
+				bgColor: localStorage.getItem('bgColor') || '#f0f0f0',
+				textColor: localStorage.getItem('textColor') || '#000000',
+				defaultTileColor: localStorage.getItem('defaultTileColor') || '#dddddd',
+				correctTileColor: localStorage.getItem('correctTileColor') || '#90ee90',
+				partialTileColor: localStorage.getItem('partialTileColor') || '#FFFFE0',
+				wrongTileColor: localStorage.getItem('wrongTileColor') || '#FF7F7F'
+			};
+
+			document.getElementById('bgColor').value = settings.bgColor;
+			document.getElementById('textColor').value = settings.textColor;
+			document.getElementById('defaultTileColor').value = settings.defaultTileColor;
+			document.getElementById('correctTileColor').value = settings.correctTileColor;
+			document.getElementById('partialTileColor').value = settings.partialTileColor;
+			document.getElementById('wrongTileColor').value = settings.wrongTileColor;
+			document.getElementById('numberOfGuesses').value = localStorage.getItem('numberOfGuesses') || '6';
+
+			document.body.style.setProperty('--bg-color', settings.bgColor);
+			document.body.style.setProperty('--text-color', settings.textColor);
+			document.body.style.setProperty('--default-tile-color', settings.defaultTileColor);
+			document.body.style.setProperty('--correct-tile-color', settings.correctTileColor);
+			document.body.style.setProperty('--partial-tile-color', settings.partialTileColor);
+			document.body.style.setProperty('--wrong-tile-color', settings.wrongTileColor);
+		}
+
+		function saveSettings() {
+			localStorage.setItem('bgColor', document.getElementById('bgColor').value);
+			localStorage.setItem('textColor', document.getElementById('textColor').value);
+			localStorage.setItem('defaultTileColor', document.getElementById('defaultTileColor').value);
+			localStorage.setItem('correctTileColor', document.getElementById('correctTileColor').value);
+			localStorage.setItem('partialTileColor', document.getElementById('partialTileColor').value);
+			localStorage.setItem('wrongTileColor', document.getElementById('wrongTileColor').value);
+			const numberOfGuesses = document.getElementById('numberOfGuesses').value;
+			if(numberOfGuesses != localStorage.getItem('numberOfGuesses') || '6') {
+				localStorage.setItem('numberOfGuesses', numberOfGuesses);
+				startGame();
+			}
+		}
+
+		function applySettings() {
+			saveSettings();
+			document.body.style.setProperty('--bg-color', document.getElementById('bgColor').value);
+			document.body.style.setProperty('--text-color', document.getElementById('textColor').value);
+			document.body.style.setProperty('--default-tile-color', document.getElementById('defaultTileColor').value);
+			document.body.style.setProperty('--correct-tile-color', document.getElementById('correctTileColor').value);
+			document.body.style.setProperty('--partial-tile-color', document.getElementById('partialTileColor').value);
+			document.body.style.setProperty('--wrong-tile-color', document.getElementById('wrongTileColor').value);
+		}
+
+		document.addEventListener('DOMContentLoaded', () => {
+			loadSettings();
+		});
+
+		function startGame() {
+			const wordLength = document.getElementById('wordLength').value;
+			targetWord = getRandomWord(wordLength);
+			guessCount = 0;
+			currentGuess = '';
+			document.getElementById('gameBoard').innerHTML = '';
+			document.getElementById('message').textContent = '';
+			document.getElementById('restartGame').style.display = 'none';
+
+			const maxGuesses = parseInt(window.localStorage.getItem('numberOfGuesses') || '6');
+			createBoard(wordLength, maxGuesses);
+			createKeyboard();
+			window.addEventListener('keydown', handleKeyInput);
+		}
+
+
+		function createBoard(length, rows) {
+			const gameBoard = document.getElementById('gameBoard');
+			gameBoard.style.gridTemplateColumns = `repeat(${length}, 50px)`;
+			for (let i = 0; i < length * rows; i++) {
+				const tile = document.createElement('div');
+				tile.classList.add('tile');
+				tile.setAttribute('data-index', i);
+				gameBoard.appendChild(tile);
+			}
+		}
+
+
+		function getRandomWord(length) {
+			const wordList = words[length];
+			return wordList[Math.floor(Math.random() * wordList.length)];
+		}
+
+		function handleKeyInput(e) {
+			if (guessCount >= parseInt(window.localStorage.getItem('numberOfGuesses') || '6')) return;
+			const key = e.key.toLowerCase();
+
+			if (key === 'enter') {
+				if (currentGuess.length === targetWord.length) {
+					checkGuess();
+				}
+			} else if (key === 'backspace') {
+				if (currentGuess.length > 0) {
+					currentGuess = currentGuess.slice(0, -1);
+					updateBoard();
+				}
+			} else if (key.length === 1 && key >= 'a' && key <= 'z' && currentGuess.length < targetWord.length) {
+				currentGuess += key;
+				updateBoard();
+			}
+		}
+
+		function updateBoard() {
+			const tiles = document.querySelectorAll('.tile');
+			const start = guessCount * targetWord.length;
+			for (let i = 0; i < targetWord.length; i++) {
+				tiles[start + i].textContent = currentGuess[i] || '';
+			}
+		}
+
+		function checkGuess() {
+			const tiles = document.querySelectorAll('.tile');
+			const start = guessCount * targetWord.length;
+
+			const letterCount = {};
+			for (const char of targetWord) {
+				letterCount[char] = (letterCount[char] || 0) + 1;
+			}
+
+			for (let i = 0; i < targetWord.length; i++) {
+				if (currentGuess[i] === targetWord[i]) {
+					tiles[start + i].classList.add('correct');
+					letterCount[currentGuess[i]]--;
+				}
+			}
+
+			for (let i = 0; i < targetWord.length; i++) {
+				if (
+					currentGuess[i] !== targetWord[i] &&
+					letterCount[currentGuess[i]] > 0
+				) {
+					tiles[start + i].classList.add('partial');
+					letterCount[currentGuess[i]]--;
+				} else if (currentGuess[i] !== targetWord[i]) {
+					tiles[start + i].classList.add('wrong');
+				}
+			}
+
+			if (currentGuess === targetWord) {
+				document.getElementById('message').textContent = 'Congratulations! You guessed the word!';
+				endGame();
+			} else if (++guessCount >= parseInt(window.localStorage.getItem('numberOfGuesses') || '6')) {
+				document.getElementById('message').textContent = `Game Over! The word was "${targetWord}".`;
+				endGame();
+			}
+			currentGuess = '';
+		}
+
+		function endGame() {
+			document.getElementById('restartGame').style.display = 'block';
+			window.removeEventListener('keydown', handleKeyInput);
+		}
+		
+		function createKeyboard() {
+			const keyboard = document.getElementById('keyboard');
+			keyboard.innerHTML = '';
+			const keys = [
+				'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p',
+				'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l',
+				'z', 'x', 'c', 'v', 'b', 'n', 'm', 'enter', 'backspace'
+			];
+			
+			keys.forEach((key, index) => {
+				if(index === 20) keyboard.appendChild(document.createElement('br'));
+				const keyButton = document.createElement('div');
+				keyButton.classList.add('key');
+				keyButton.textContent = key === 'backspace' ? '⌫' : key === 'enter' ? '⏎' : key;
+				keyButton.setAttribute('data-key', key);
+				keyButton.addEventListener('click', () => handleVirtualKey(key));
+				keyboard.appendChild(keyButton);
+			});
+		}
+
+		function updateKeyboard() {
+			const keys = document.querySelectorAll('.key');
+			keys.forEach((keyElement) => {
+				const key = keyElement.getAttribute('data-key');
+				if (key.length === 1) {
+					keyElement.classList.add(targetWord.includes(key) ? ((targetWord.indexOf(key) === currentGuess.indexOf(key)) ? 'correct' : 'partial') : 'wrong');
+				}
+			});
+		}
+
+		function handleVirtualKey(key) {
+			if (guessCount >= parseInt(window.localStorage.getItem('numberOfGuesses') || '6')) return;
+
+			if (key === 'enter') {
+				if (currentGuess.length === targetWord.length) {
+					checkGuess();
+				}
+			} else if (key === 'backspace') {
+				if (currentGuess.length > 0) {
+					currentGuess = currentGuess.slice(0, -1);
+					updateBoard();
+				}
+			} else if (key >= 'a' && key <= 'z' && currentGuess.length < targetWord.length) {
+				currentGuess += key;
+				updateBoard();
+			}
+		}
+		startGame();
+	</script>
+</body>
+</html>
