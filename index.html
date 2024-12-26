@@ -5,29 +5,42 @@
 	<link rel="stylesheet" href="style.css">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<style>
-		@keyframes slideInLeft {
-			from { transform: translateX(-100%); opacity: 0; }
-			to { transform: translateX(0); opacity: 1; }
+	<style> 
+		@keyframes circularFadeIn {
+			0% {
+				transform: scale(0);
+				opacity: 0;
+			}
+			100% {
+				transform: scale(1);
+				opacity: 1;
+			}
 		}
 
-		@keyframes slideInRight {
-			from { transform: translateX(100%); opacity: 0; }
-			to { transform: translateX(0); opacity: 1; }
+		@keyframes circularFadeOut {
+			0% {
+				transform: scale(1);
+				opacity: 1;
+			}
+			100% {
+				transform: scale(0);
+				opacity: 0;
+			}
 		}
 
 		.project-card {
 			opacity: 0;
 			transition: opacity 0.3s ease;
 			position: relative;
+			transform: scale(0);
 		}
 
-		.project-card.slide-in-left {
-			animation: slideInLeft 1s forwards;
+		.project-card.fade-in {
+			animation: circularFadeIn 0.5s forwards;
 		}
 
-		.project-card.slide-in-right {
-			animation: slideInRight 1s forwards;
+		.project-card.fade-out {
+			animation: circularFadeOut 0.5s forwards;
 		}
 
 		.projects-section {
@@ -301,13 +314,14 @@
 	<script>
 		document.addEventListener('DOMContentLoaded', () => {
 			const projectCards = document.querySelectorAll('.project-card');
-			let left = true;
 			const observer = new IntersectionObserver((entries) => {
-				entries.forEach((entry, index) => {
+				entries.forEach((entry) => {
 					if (entry.isIntersecting) {
-						left = !left;
-						entry.target.classList.add(left ? 'slide-in-left' : 'slide-in-right');
-						observer.unobserve(entry.target);
+						entry.target.classList.add('fade-in'); // Add fade-in class
+						entry.target.classList.remove('fade-out'); // Ensure fade-out is removed
+					} else {
+						entry.target.classList.add('fade-out'); // Add fade-out class
+						entry.target.classList.remove('fade-in'); // Ensure fade-in is removed
 					}
 				});
 			}, { threshold: 0.2 });
