@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script>
+		(function() {
+			const currentPath = window.location.pathname;
+
+			if (currentPath.startsWith('/website/')) {
+				window.location.replace(window.location.origin + currentPath.replace(/^\/website\//, '/') + window.location.search + window.location.hash);
+			} else window.location.replace('https://abdurazaaqmohammed.github.io');
+		})();
+	</script>
+</head>
+</html>
