@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<title>Block Blast</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+			touch-action: manipulation;
+		}
+
+		body {
+			background: #2c3e50;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			font-family: Arial, sans-serif;
+			color: white;
+			height: 100vh;
+			overflow: hidden;
+		}
+
+		.game-container {
+			padding: 1vmin;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: space-between;
+			height: 100%;
+			width: 100%;
+			max-width: 600px;
+			margin: 0 auto;
+		}
+
+		.score-board {
+			font-size: 5vmin;
+			margin: 2vmin 0;
+			text-align: center;
+		}
+
+		.main-grid {
+			display: grid;
+			grid-template-columns: repeat(9, 1fr); 
+			gap: 0.5vmin;
+			background: #34495e;
+			padding: 1vmin;
+			border-radius: 2vmin;
+			width: 95vmin;
+			height: 95vmin;
+			max-width: 90vh;
+			max-height: 90vw;
+			touch-action: none;
+			margin: 1vmin 0;
+			position: relative; 
+		}
+
+		.cell {
+			background: black;
+			border-radius: 1vmin;
+			transition: background 0.2s;
+			position: relative; 
+			overflow: hidden; 
+		}
+
+		.cell.filled {
+			background: #e74c3c;
+		}
+
+		.next-blocks {
+			display: flex;
+			gap: 3vmin;
+			margin: 1vmin 0;
+			height: 15vmin;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.block-shape {
+			background: #34495e;
+			padding: 1vmin;
+			border-radius: 1vmin;
+			touch-action: none;
+			user-select: none;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.shape-grid {
+			display: grid;
+			gap: 0.5vmin;
+		}
+
+		.shape-cell {
+			background: #2ecc71;
+			border-radius: 0.5vmin;
+			width: 8vmin;
+			height: 8vmin;
+		}
+
+		.ghost-shape {
+			position: fixed;
+			pointer-events: none;
+			opacity: 0.7;
+			z-index: 10;
+			transition: none;
+			transform: translate(- 50%, -50%); 
+			touch-action: none;
+		}
+
+		.cell.highlight {
+			background: #2ecc71 !important;
+			 outline: 2px solid yellow; 
+			 z-index: 1; 
+		}
+
+		.cell.invalid {
+			background: #e74c3c !important;
+			 outline: 2px solid red; 
+			 z-index: 1;
+		}
+
+		
+		.cell-exploding {
+			animation: explode 0.5s ease-out forwards;
+			transform-origin: center center;
+			z-index: 5; 
+			background-color: #ffacac; 
+		}
+
+		@keyframes explode {
+			0% {
+				transform: scale(1.1);
+				opacity: 1;
+				background-color: #ffffff; 
+				border-radius: 50%; 
+			}
+			50% {
+				transform: scale(1.6); 
+				opacity: 0.8;
+				background-color: #ffddaa; 
+			}
+			100% {
+				transform: scale(0.1);
+				opacity: 0;
+				background-color: transparent; 
+				border-radius: 1vmin; 
+			}
+		}
+		 
+		.game-over {
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			background: rgba(0,0,0,0.9);
+			padding: 4vmin;
+			border-radius: 3vmin;
+			text-align: center;
+			display: none;
+			font-size: 4vmin;
+			z-index: 100; 
+		}
+
+		button {
+			padding: 2vmin 4vmin;
+			font-size: 3.5vmin;
+			background: #27ae60;
+			color: white;
+			border: none;
+			border-radius: 2vmin;
+			margin-top: 2vmin;
+			touch-action: manipulation;
+			cursor: pointer;
+		}
+
+		button:hover {
+			background: #219a52;
+		}
+	</style>
+</head>
+<body>
+	<div class="game-container">
+		<div class="score-board">Score: <span id="score">0</span></div>
+		<div class="main-grid" id="mainGrid"></div>
+		<div class="next-blocks" id="nextBlocks"></div>
+		<button onclick="resetGame()">New Game</button>
+	</div>
+	<div class="game-over" id="gameOver">
+		<h2>Game Over!</h2>
+		<p>Final Score: <span id="finalScore">0</span></p>
+		<button onclick="resetGame()">Play Again</button>
+	</div>
+
+	<script>
+		const GRID_SIZE = 9;
+		const DRAG_THRESHOLD = 8;
+		const EXPLOSION_DURATION_MS = 500 
+		const EXPLOSION_DELAY_FACTOR_MS = 40 
+
+		let score = 0;
+		let currentShapes = [];
+		let board = Array(GRID_SIZE).fill().map(() => Array(GRID_SIZE).fill(0));
+		let selectedShape = null;
+		let selectedShapeIndex = -1;
+		let ghostElement = null;
+		let isDragging = false;
+		let startX, startY;
+		let isAnimating = false  
+		const SHAPES = [
+			[[1]], 
+			[[1, 1]], 
+			[[1], [1]], 
+			[[1, 1, 1]], 
+			[[1], [1], [1]], 
+			[[1, 1], [1, 1]], 
+			[[1, 1, 1], [0, 1, 0]], 
+			[[0, 1, 0], [1, 1, 1]], 
+			[[1, 0, 0], [1, 1, 1]], 
+			[[0, 0, 1], [1, 1, 1]], 
+			[[1, 1, 0], [0, 1, 1]], 
+			[[0, 1, 1], [1, 1, 0]], 
+			[[1, 1], [1, 0]], 
+			[[1, 1], [0, 1]], 
+			[[1, 1, 1, 1]] 
+		];
+
+		function initBoard() {
+			const grid = document.getElementById('mainGrid');
+			grid.innerHTML = '';
+			grid.style.gridTemplateColumns = `repeat(${GRID_SIZE}, 1fr)`;
+
+			for (let i = 0; i < GRID_SIZE; i++) {
+				for (let j = 0; j < GRID_SIZE; j++) {
+					const cell = document.createElement('div') 
+					cell.className = 'cell';
+					cell.style.animation = '' 
+					cell.style.animationDelay = '' 
+					cell.style.backgroundColor = '' 
+
+					if (board[i][j]) {
+						cell.classList.add('filled');
+					}
+					cell.dataset.row = i;
+					cell.dataset.col = j;
+					grid.appendChild(cell);
+				}
+			} 
+		}
+
+		function generateNewShapes() {
+			currentShapes = [];
+			for (let i = 0; i < 3; i++) {
+				currentShapes.push(SHAPES[Math.floor(Math.random() * SHAPES.length)]);
+			} 
+			if (isGameOver()) { 
+				if (document.getElementById('gameOver').style.display !== 'block') { 
+					 setTimeout(showGameOver, 100);
+				}
+			} else {
+				renderNextBlocks();
+			}
+		}
+
+		function renderNextBlocks() {
+			const container = document.getElementById('nextBlocks');
+			container.innerHTML = '' 
+
+			currentShapes.forEach((shape, index) => {
+				if (!shape) return 
+
+				const div = document.createElement('div');
+				div.className = 'block-shape';
+				div.dataset.shapeIndex = index;
+				div.draggable = true 
+				div.addEventListener('touchstart', (e) => handleInteractionStart(e, shape, index));
+				div.addEventListener('dragstart', (e) => handleInteractionStart(e, shape, index));
+
+				const grid = document.createElement('div');
+				grid.className = 'shape-grid';
+				const shapeWidth = shape[0]?.length || 0 
+				const shapeHeight = shape.length;
+				 grid.style.gridTemplateColumns = `repeat(${shapeWidth}, 1fr)`;
+				 grid.style.gridTemplateRows = `repeat(${shapeHeight}, 1fr)`;
+
+				shape.forEach(row => {
+					row.forEach(cell => {
+						const cellDiv = document.createElement('div');
+						cellDiv.className = 'shape-cell';
+						cellDiv.style.visibility = cell ? 'visible' : 'hidden';
+						grid.appendChild(cellDiv);
+					});
+				});
+
+				div.appendChild(grid);
+				container.appendChild(div);
+			});
+		} 
+		function handleInteractionStart(e, shape, index) {
+			if (isAnimating) return 
+
+			let clientX, clientY;
+			if (e.type === 'touchstart') {
+				 if (!e.touches[0]) return;
+				 clientX = e.touches[0].clientX;
+				 clientY = e.touches[0].clientY;
+			} else { 
+				 if (!e.clientX) return 
+				 e.dataTransfer.setData('text/plain', index);
+				 clientX = e.clientX;
+				 clientY = e.clientY;
+			}
+
+			selectedShape = shape;
+			selectedShapeIndex = index;
+			startX = clientX 
+			startY = clientY;
+			isDragging = false 
+
+			createGhostElement(clientX, clientY)  
+			document.addEventListener('touchmove', handleInteractionMove, { passive: false });
+			document.addEventListener('touchend', handleInteractionEnd);
+			document.addEventListener('dragover', handleInteractionMove);
+			document.addEventListener('drop', handleInteractionEnd);
+			document.addEventListener('dragend', cleanupInteraction) 
+		}
+
+		function handleInteractionMove(e) {
+			if (!selectedShape || isAnimating) return;
+
+			let currentX, currentY;
+			if (e.type === 'touchmove') {
+				 e.preventDefault() 
+				 if (!e.touches[0]) return;
+				 currentX = e.touches[0].clientX;
+				 currentY = e.touches[0].clientY;
+			} else if (e.type === 'dragover') {
+				 e.preventDefault() 
+				 currentX = e.clientX;
+				 currentY = e.clientY;
+			} else { return; }
+
+			if (!isDragging) {
+				 const dx = currentX - startX;
+				 const dy = currentY - startY;
+				 if (Math.sqrt(dx*dx + dy*dy) > DRAG_THRESHOLD) {
+					 isDragging = true;
+					 if(ghostElement) ghostElement.style.display = 'block' 
+				 }
+			}
+
+			if (isDragging && ghostElement) { 
+				 ghostElement.style.left = `${currentX}px`;
+				 ghostElement.style.top = `${currentY}px`;
+				 updateGridHighlights(currentX, currentY) 
+			}
+		}
+
+		function handleInteractionEnd(e) {
+			 if (!selectedShape || isAnimating) return;
+
+			 let endX, endY;
+			  if (e.type === 'touchend') {
+				  if (!e.changedTouches[0]) return;
+				  endX = e.changedTouches[0].clientX;
+				  endY = e.changedTouches[0].clientY;
+			  } else if (e.type === 'drop') {
+				   e.preventDefault();
+				   endX = e.clientX;
+				   endY = e.clientY;
+			  } else { return; } 
+
+			 if (isDragging) {
+				  finishPlacement(endX, endY) 
+			 }
+
+			 cleanupInteraction() 
+		}
+		
+		 function cleanupInteraction() {
+			 document.removeEventListener('touchmove', handleInteractionMove);
+			 document.removeEventListener('touchend', handleInteractionEnd);
+			 document.removeEventListener('dragover', handleInteractionMove);
+			 document.removeEventListener('drop', handleInteractionEnd);
+			 document.removeEventListener('dragend', cleanupInteraction);
+
+			 if (ghostElement) {
+				 ghostElement.remove();
+				 ghostElement = null;
+			 }
+			 clearHighlights();
+			 selectedShape = null;
+			 selectedShapeIndex = -1;
+			 isDragging = false;
+		 }
+
+		function createGhostElement(initialX, initialY) {
+			if (ghostElement) ghostElement.remove();
+
+			ghostElement = document.createElement('div');
+			ghostElement.className = 'ghost-shape' 
+			 ghostElement.style.position = 'fixed';
+			 ghostElement.style.left = `${initialX}px`;
+			 ghostElement.style.top = `${initialY}px`;
+			 ghostElement.style.transform = 'translate(-50%, -50%)' 
+			 ghostElement.style.pointerEvents = 'none';
+			 ghostElement.style.opacity = '0.7';
+			 ghostElement.style.zIndex = '10';
+			 ghostElement.style.display = 'none' 
+
+			const grid = document.createElement('div');
+			grid.className = 'shape-grid';
+			const shapeWidth = selectedShape[0]?.length || 0;
+			const shapeHeight = selectedShape.length;
+			 grid.style.gridTemplateColumns = `repeat(${shapeWidth}, 1fr)`;
+			 grid.style.gridTemplateRows = `repeat(${shapeHeight}, 1fr)`;
+
+			selectedShape.forEach(row => {
+				row.forEach(cell => {
+					const cellDiv = document.createElement('div');
+					cellDiv.className = 'shape-cell' 
+					cellDiv.style.visibility = cell ? 'visible' : 'hidden';
+					grid.appendChild(cellDiv);
+				});
+			});
+
+			ghostElement.appendChild(grid);
+			document.body.appendChild(ghostElement);
+		}
+
+		function updateGridHighlights(clientX, clientY) {
+			const grid = document.getElementById('mainGrid');
+			const gridRect = grid.getBoundingClientRect();
+			const cellSize = gridRect.width / GRID_SIZE;
+
+			const shapeWidthCells = selectedShape[0].length;
+			const shapeHeightCells = selectedShape.length 
+			const potentialCol = Math.round((clientX - gridRect.left) / cellSize - shapeWidthCells / 2);
+			const potentialRow = Math.round((clientY - gridRect.top) / cellSize - shapeHeightCells / 2);
+
+			clearHighlights() 
+			if (clientX >= gridRect.left && clientX <= gridRect.right &&
+				clientY >= gridRect.top && clientY <= gridRect.bottom) {
+				if (canPlaceShape(selectedShape, potentialRow, potentialCol)) {
+					highlightCells(potentialRow, potentialCol, selectedShape, 'highlight');
+				} else {
+					highlightCells(potentialRow, potentialCol, selectedShape, 'invalid');
+				}
+			}
+		}
+
+		function finishPlacement(clientX, clientY) {
+			 const grid = document.getElementById('mainGrid');
+			 const gridRect = grid.getBoundingClientRect();
+			 const cellSize = gridRect.width / GRID_SIZE;
+
+			 const shapeWidthCells = selectedShape[0].length;
+			 const shapeHeightCells = selectedShape.length 
+			 const col = Math.round((clientX - gridRect.left) / cellSize - shapeWidthCells / 2);
+			 const row = Math.round((clientY - gridRect.top) / cellSize - shapeHeightCells / 2);
+
+			 tryPlaceShape(row, col)  
+		}
+
+		function tryPlaceShape(row, col) {
+			 if (isAnimating) return false 
+
+			 if (selectedShape && canPlaceShape(selectedShape, row, col)) {
+				  const placementOrigin = { row, col } 
+				  placeShape(selectedShape, row, col) 
+
+				  currentShapes[selectedShapeIndex] = null  
+				  checkCompletedLines(placementOrigin) 
+
+				  if (currentShapes.every(shape => shape === null)) { 
+					  if (!isAnimating) {
+						  generateNewShapes();
+					  }
+				  } else {
+					   renderNextBlocks() 
+				  } 
+				   if (!isAnimating && isGameOver()) { 
+						setTimeout(showGameOver, 100);
+				   }
+
+				  return true 
+			 }
+			 return false 
+		}
+
+		function canPlaceShape(shape, startRow, startCol) {
+			if (!shape) return false 
+			const shapeHeight = shape.length;
+			const shapeWidth = shape[0]?.length || 0;
+
+			if (startRow < 0 || startRow + shapeHeight > GRID_SIZE || startCol < 0 || startCol + shapeWidth > GRID_SIZE) {
+				 return false 
+			}
+
+			for (let i = 0; i < shapeHeight; i++) {
+				for (let j = 0; j < shapeWidth; j++) {
+					if (shape[i][j] && board[startRow + i][startCol + j]) {
+						return false 
+					}
+				}
+			}
+			return true;
+		}
+
+		function placeShape(shape, row, col) {
+			let cellsFilled = 0;
+			for (let i = 0; i < shape.length; i++) {
+				for (let j = 0; j < shape[i].length; j++) {
+					if (shape[i][j]) {
+						 if (row + i < GRID_SIZE && col + j < GRID_SIZE) {
+							 board[row + i][col + j] = 1;
+							 cellsFilled++;
+						 }
+					}
+				}
+			}
+			score += cellsFilled  
+			updateScore();
+			initBoard() 
+		} 
+		 function checkCompletedLines(placementOrigin) {
+			 if (isAnimating) return 
+
+			 let rowsToClear = [];
+			 let colsToClear = [] 
+			 for (let i = 0; i < GRID_SIZE; i++) {
+				 if (board[i].every(cell => cell === 1)) {
+					 rowsToClear.push(i);
+				 }
+			 } 
+			 for (let j = 0; j < GRID_SIZE; j++) {
+				 let colFull = true;
+				 for (let i = 0; i < GRID_SIZE; i++) {
+					 if (board[i][j] === 0) {
+						 colFull = false;
+						 break;
+					 }
+				 }
+				 if (colFull) {
+					 colsToClear.push(j);
+				 }
+			 }
+
+			 if (rowsToClear.length > 0 || colsToClear.length > 0) {
+				 isAnimating = true 
+				 animateLineClear(rowsToClear, colsToClear, placementOrigin);
+			 }
+		 }
+
+		 function animateLineClear(rowsToClear, colsToClear, origin) {
+			  const cellsToAnimate = new Set() 
+			  const animationPromises = []  
+			  rowsToClear.forEach(r => {
+				  for (let c = 0; c < GRID_SIZE; c++) cellsToAnimate.add(`${r},${c}`);
+			  });
+			  colsToClear.forEach(c => {
+				  for (let r = 0; r < GRID_SIZE; r++) cellsToAnimate.add(`${r},${c}`);
+			  });
+
+			  let maxDelay = 0;
+
+			  cellsToAnimate.forEach(coordStr => {
+				   const [r, c] = coordStr.split(',').map(Number);
+				   const cellElement = document.querySelector(`.cell[data-row="${r}"][data-col="${c}"]`);
+
+				   if (cellElement) { 
+						 const dist = Math.abs(r - origin.row) + Math.abs(c - origin.col);
+						 const delay = dist * EXPLOSION_DELAY_FACTOR_MS 
+						 maxDelay = Math.max(maxDelay, delay) 
+						 cellElement.style.animationDelay = `${delay}ms`;
+						 cellElement.classList.add('cell-exploding') 
+						 const animPromise = new Promise(resolve => {
+							  const handleAnimationEnd = () => {
+								   cellElement.removeEventListener('animationend', handleAnimationEnd);
+								   resolve() 
+							  };
+							  cellElement.addEventListener('animationend', handleAnimationEnd);
+						 });
+						 animationPromises.push(animPromise);
+				   }
+			  }) 
+			  const linesCleared = rowsToClear.length + colsToClear.length;
+			  score += linesCleared * GRID_SIZE * linesCleared 
+			  updateScore()  
+			  Promise.all(animationPromises).then(() => {  
+				  cellsToAnimate.forEach(coordStr => {
+					  const [r, c] = coordStr.split(',').map(Number);
+					  board[r][c] = 0  
+					   const cellElement = document.querySelector(`.cell[data-row="${r}"][data-col="${c}"]`);
+					   if (cellElement) {
+							cellElement.classList.remove('cell-exploding');
+							cellElement.style.animationDelay = '';
+							cellElement.style.animation = '' 
+							cellElement.style.backgroundColor = '' 
+					   }
+				  });
+
+				  isAnimating = false 
+
+				  initBoard()  
+				   if (currentShapes.every(shape => shape === null)) {
+						generateNewShapes();
+				   } 
+				  if (isGameOver()) {
+					   showGameOver();
+				  }
+			  });
+		 } 
+		function isGameOver() {
+			 for (const shape of currentShapes) {
+				  if (shape === null) continue 
+
+				  for (let r = 0; r < GRID_SIZE; r++) {
+					  for (let c = 0; c < GRID_SIZE; c++) {
+						  if (canPlaceShape(shape, r, c)) {
+							  return false 
+						  }
+					  }
+				  }
+			 } 
+			 return true;
+		}
+
+		function showGameOver() { 
+			 if (document.getElementById('gameOver').style.display === 'block') return;
+
+			 document.getElementById('finalScore').textContent = score;
+			 document.getElementById('gameOver').style.display = 'block';
+			 isAnimating = true 
+		}
+
+		function highlightCells(row, col, shape, highlightClass) {
+			 if (!shape) return;
+			 const shapeHeight = shape.length;
+			 const shapeWidth = shape[0]?.length || 0;
+
+			 for (let i = 0; i < shapeHeight; i++) {
+				 for (let j = 0; j < shapeWidth; j++) {
+					 if (shape[i][j]) {
+						 const cellRow = row + i;
+						 const cellCol = col + j;
+						 if (cellRow >= 0 && cellRow < GRID_SIZE && cellCol >= 0 && cellCol < GRID_SIZE) {
+							 const cell = document.querySelector(`.cell[data-row="${cellRow}"][data-col="${cellCol}"]`);
+							 if (cell && !cell.classList.contains('cell-exploding')) { 
+								 cell.classList.remove('highlight', 'invalid') 
+								 cell.classList.add(highlightClass);
+							 }
+						 }
+					 }
+				 }
+			 }
+		}
+
+		function clearHighlights() {
+			 document.querySelectorAll('.cell.highlight, .cell.invalid').forEach(cell => {
+				 cell.classList.remove('highlight', 'invalid');
+				 cell.style.outline = '' 
+			 });
+		}
+
+		function updateScore() {
+			document.getElementById('score').textContent = score;
+		}
+
+		function resetGame() {
+			board = Array(GRID_SIZE).fill().map(() => Array(GRID_SIZE).fill(0));
+			score = 0;
+			updateScore();
+			currentShapes = [];
+			isAnimating = false 
+			cleanupInteraction() 
+			document.getElementById('gameOver').style.display = 'none';
+			generateNewShapes() 
+			initBoard() 
+		} 
+		document.addEventListener('DOMContentLoaded', resetGame);
+
+	</script>
+</body>
+</html>
