@@ -1,379 +1,315 @@
 <!DOCTYPE html>
-<html lang=en>
+<html lang="en">
 <head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Abdurazaaq Mohammed - Portfolio</title>
-	<link rel="stylesheet" href="style.css">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<style> 
-		@keyframes circularFadeIn {
-			0% {
-				transform: scale(0);
-				opacity: 0;
-			}
-			100% {
-				transform: scale(1);
-				opacity: 1;
-			}
-		}
-
-		@keyframes circularFadeOut {
-			0% {
-				transform: scale(1);
-				opacity: 1;
-			}
-			100% {
-				transform: scale(0);
-				opacity: 0;
-			}
-		}
-
-		.project-card {
-			opacity: 0;
-			transition: opacity 0.3s ease;
-			position: relative;
-			transform: scale(0);
-		}
-
-		.project-card.fade-in {
-			animation: circularFadeIn 0.5s forwards;
-		}
-
-		.project-card.fade-out {
-			animation: circularFadeOut 0.5s forwards;
-		}
-
-		.projects-section {
-			max-width: 80%;
-			margin: 0 auto;
-		}
-
-		.project-card {
-			display: flex;
-			height: 30vh;
-			min-height: 300px;
-			background-color: rgba(0, 0, 0, 0.5);
-			backdrop-filter: blur(10px);
-			border-radius: 8px;
-			overflow: hidden;
-			margin-bottom: 2rem;
-			transition: all 0.3s ease;
-		}
-
-		.project-card:hover {
-			transform: translateY(-5px);
-			box-shadow: 0 5px 20px rgba(142, 125, 190, 0.3);
-		}
-
-		.project-image {
-			width: 33%;
-			background-color: #2a2a2a;
-			position: relative;
-			overflow: hidden;
-		}
-
-		.project-image img {
-			width: 100%;
-			height: 100%;
-			object-fit: cover;
-		}
-
-		.project-content {
-			width: 67%;
-			padding: 2rem;
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-			text-align: center;
-		}
-
-		.project-title {
-			color: #8E7DBE;
-			font-size: 1.5rem;
-			margin-bottom: 1rem;
-			display: flex;
-			align-items: center;
-			gap: 0.5rem;
-		}
-
-		.project-title a {
-			color: inherit;
-			text-decoration: none;
-		}
-
-		.project-title a:hover {
-			color: #a394d1;
-		}
-
-		.project-description {
-			color: #d8d4ce;
-			line-height: 1.6;
-			max-width: 600px;
-			font-size: 23px;
-		}
-
-		.github-icon {
-			width: 20px;
-			height: 20px;
-			vertical-align: middle;
-		}
-
-		.projects-section + h3 {
-			margin-top: 3rem;
-		}
-		
-		.star-count {
-			position: absolute;
-			top: 10px;
-			right: 10px;
-			background-color: rgba(0, 0, 0, 0.7);
-			color: #FFD700;
-			padding: 5px 10px;
-			border-radius: 5px;
-			fill: #FFD700;
-			display: flex; justify-content: center; align-items: center;
-			stroke: #FFD700;
-			font-size: 0.9rem;
-		}
-
-		.cursor {
-			display: inline-block;
-			animation: blink 0.7s steps(1);
-		}
-
-		@keyframes blink {
-			0%, 100% {
-				opacity: 1;
-			}
-			50% {
-				opacity: 0;
-			}
-		}
-
-		.txt-rotate{
-			border-right: 2px solid;
-			white-space: nowrap;
-			overflow: hidden;
-		}
-	</style>
+	<link rel="stylesheet" href="style.css">
 </head>
 <body>
-	<div class="moon"></div>
-	<header>
-		<h1> Abdurazaaq Mohammed - 
-			<span
-				class="txt-rotate"
-				data-period="2000"
-				data-rotate='["Portfolio", "Developer", "Security Researcher", "Student", "Reverse Engineer", "FOSS Enthusiast"]'></span> </h1>
-	</header>
-	<nav>
-		<ul>
-			<li><a href="index.html">About Me</a></li>
-			<li><a href="apk-modification.html">APK Modification</a></li>
-			<li><a href="blog.html">Blog</a></li>
-		</ul>
-	</nav>
-	<main>
-		<section id="about-me">
-			<h2>About Me</h2>
-			<p>Muslim · Second Year Computing Student at SBCS · Aspiring Android Developer and Security Researcher · YouTuber</p>
-		</section>
-		<section id="qualifications">
-			<h2>My Qualifications</h2>
+	<canvas id="canvas"></canvas>
+	
+	<div class="content-wrapper">
+		<header>
+			<h1>
+				Abdurazaaq Mohammed
+			</h1>
+			<h2>Developer & Security Researcher</h2>
+		</header>
+
+		<nav>
 			<ul>
-				<li><a href="https://drive.google.com/file/d/1Pu17qnicswwT0__X7767j3Ci520wbnwq/view?usp=sharing">Grade One with all As</a> in CSEC Information Technology</li>
-				<li>Completed SBCS Diploma in Computing</li>
+				<li><a class="anim-button" href="index.html">About Me</a></li>
+				<li><a class="anim-button" href="apk-modification.html">APK Modification</a></li>
+				<li><a class="anim-button" href="blog.html">Blog</a></li>
 			</ul>
-		</section>
-		<section id="projects">
-			<h2>Projects</h2>
-			<p>I have designed several Android applications, typically with a focus on compatibility with older versions to aid in maximizing the life of old devices and providing accessibility to those who cannot afford newer ones. 
-			<br />
-			<br />
-			Many of these apps relate to my interest in reverse engineering and malware analysis of Android apps.</p>
-			<div class="projects-section">
-				<div class="project-card">
-					<div class="project-image">
-						<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/AntiSplit-M/refs/heads/redesign/images/2.0%20settings.jpg" alt="AntiSplit M Screenshot">
-					</div>
-					<div class="project-content">
-						<h3 class="project-title">
-							<a href="https://github.com/AbdurazaaqMohammed/AntiSplit-M" target="_blank">
-								AntiSplit M
-								<svg class="github-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-									<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-									<polyline points="15 3 21 3 21 9"></polyline>
-									<line x1="10" y1="14" x2="21" y2="3"></line>
-								</svg>
-							</a>
-						</h3>
-						<p class="project-description">
-							App to AntiSplit (merge) split APKs (APKS/XAPK/APKM) to regular .APK file on Android.
-							Designed with a two versions; a Material You interface supporting Android 5.0+ and a legacy version for compatibility with Android 1.6+.
-						</p>
-						
-						<span class="star-count"> <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M5.315 2.1c.791 -.113 1.9 .145 3.333 .966l.272 .161l.16 .1l.397 -.083a13.3 13.3 0 0 1 4.59 -.08l.456 .08l.396 .083l.161 -.1c1.385 -.84 2.487 -1.17 3.322 -1.148l.164 .008l.147 .017l.076 .014l.05 .011l.144 .047a1 1 0 0 1 .53 .514a5.2 5.2 0 0 1 .397 2.91l-.047 .267l-.046 .196l.123 .163c.574 .795 .93 1.728 1.03 2.707l.023 .295l.007 .272c0 3.855 -1.659 5.883 -4.644 6.68l-.245 .061l-.132 .029l.014 .161l.008 .157l.004 .365l-.002 .213l-.003 3.834a1 1 0 0 1 -.883 .993l-.117 .007h-6a1 1 0 0 1 -.993 -.883l-.007 -.117v-.734c-1.818 .26 -3.03 -.424 -4.11 -1.878l-.535 -.766c-.28 -.396 -.455 -.579 -.589 -.644l-.048 -.019a1 1 0 0 1 .564 -1.918c.642 .188 1.074 .568 1.57 1.239l.538 .769c.76 1.079 1.36 1.459 2.609 1.191l.001 -.678l-.018 -.168a5.03 5.03 0 0 1 -.021 -.824l.017 -.185l.019 -.12l-.108 -.024c-2.976 -.71 -4.703 -2.573 -4.875 -6.139l-.01 -.31l-.004 -.292a5.6 5.6 0 0 1 .908 -3.051l.152 -.222l.122 -.163l-.045 -.196a5.2 5.2 0 0 1 .145 -2.642l.1 -.282l.106 -.253a1 1 0 0 1 .529 -.514l.144 -.047l.154 -.03z" stroke-width="0" fill="currentColor" /> </svg> ~ <svg aria-label="star" role="img" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-star"> <path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Zm0 2.445L6.615 5.5a.75.75 0 0 1-.564.41l-3.097.45 2.24 2.184a.75.75 0 0 1 .216.664l-.528 3.084 2.769-1.456a.75.75 0 0 1 .698 0l2.77 1.456-.53-3.084a.75.75 0 0 1 .216-.664l2.24-2.183-3.096-.45a.75.75 0 0 1-.564-.41L8 2.694Z"></path> </svg> </span>
-					</div>
-				</div>
+		</nav>
 
-				<div class="project-card">
-					<div class="project-image">
-						<img src="images/AXMLEditor.jpg" alt="AXML Editor Screenshot">
-					</div>
-					<div class="project-content">
-						<h3 class="project-title">
-							
-							<a href="https://github.com/AbdurazaaqMohammed/AXML-Editor" target="_blank">
-								AXML Editor
-								<svg class="github-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-									<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-									<polyline points="15 3 21 3 21 9"></polyline>
-									<line x1="10" y1="14" x2="21" y2="3"></line>
-								</svg>
-							</a>
-						</h3>
-						<p class="project-description">
-							Android app to edit android binary XML files (AndroidManifest.xml and layout XML files).
-						</p>
-						<span class="star-count"> <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M5.315 2.1c.791 -.113 1.9 .145 3.333 .966l.272 .161l.16 .1l.397 -.083a13.3 13.3 0 0 1 4.59 -.08l.456 .08l.396 .083l.161 -.1c1.385 -.84 2.487 -1.17 3.322 -1.148l.164 .008l.147 .017l.076 .014l.05 .011l.144 .047a1 1 0 0 1 .53 .514a5.2 5.2 0 0 1 .397 2.91l-.047 .267l-.046 .196l.123 .163c.574 .795 .93 1.728 1.03 2.707l.023 .295l.007 .272c0 3.855 -1.659 5.883 -4.644 6.68l-.245 .061l-.132 .029l.014 .161l.008 .157l.004 .365l-.002 .213l-.003 3.834a1 1 0 0 1 -.883 .993l-.117 .007h-6a1 1 0 0 1 -.993 -.883l-.007 -.117v-.734c-1.818 .26 -3.03 -.424 -4.11 -1.878l-.535 -.766c-.28 -.396 -.455 -.579 -.589 -.644l-.048 -.019a1 1 0 0 1 .564 -1.918c.642 .188 1.074 .568 1.57 1.239l.538 .769c.76 1.079 1.36 1.459 2.609 1.191l.001 -.678l-.018 -.168a5.03 5.03 0 0 1 -.021 -.824l.017 -.185l.019 -.12l-.108 -.024c-2.976 -.71 -4.703 -2.573 -4.875 -6.139l-.01 -.31l-.004 -.292a5.6 5.6 0 0 1 .908 -3.051l.152 -.222l.122 -.163l-.045 -.196a5.2 5.2 0 0 1 .145 -2.642l.1 -.282l.106 -.253a1 1 0 0 1 .529 -.514l.144 -.047l.154 -.03z" stroke-width="0" fill="currentColor" /> </svg> ~ <svg aria-label="star" role="img" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-star"> <path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Zm0 2.445L6.615 5.5a.75.75 0 0 1-.564.41l-3.097.45 2.24 2.184a.75.75 0 0 1 .216.664l-.528 3.084 2.769-1.456a.75.75 0 0 1 .698 0l2.77 1.456-.53-3.084a.75.75 0 0 1 .216-.664l2.24-2.183-3.096-.45a.75.75 0 0 1-.564-.41L8 2.694Z"></path> </svg> </span>
-					</div>
-				</div>
+		<main>
+			<section id="about-me">
+				<h2>About Me</h2>
+				<p>Muslim · Computing Student · Aspiring Android Developer and Security Researcher · YouTuber</p>
+			</section>
 
-				<div class="project-card">
-					<div class="project-image">
-						<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/APKExtractor/refs/heads/main/fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg" alt="APK Extractor Screenshot">
-					</div>
-					<div class="project-content">
-						<h3 class="project-title">
-							<a href="https://github.com/AbdurazaaqMohammed/APKExtractor" target="_blank">
-								APK Extractor
-								<svg class="github-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-									<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-									<polyline points="15 3 21 3 21 9"></polyline>
-									<line x1="10" y1="14" x2="21" y2="3"></line>
-								</svg>
-							</a>
-						</h3>
-						<p class="project-description">
-							Simple APK extractor app for Android supporting split APKs and saving them as single APK. Also supports every version of Android from 1.6+ and contains features for extracting specific files or attributes of apps such as icons.
-						</p>
-						<span class="star-count"> <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M5.315 2.1c.791 -.113 1.9 .145 3.333 .966l.272 .161l.16 .1l.397 -.083a13.3 13.3 0 0 1 4.59 -.08l.456 .08l.396 .083l.161 -.1c1.385 -.84 2.487 -1.17 3.322 -1.148l.164 .008l.147 .017l.076 .014l.05 .011l.144 .047a1 1 0 0 1 .53 .514a5.2 5.2 0 0 1 .397 2.91l-.047 .267l-.046 .196l.123 .163c.574 .795 .93 1.728 1.03 2.707l.023 .295l.007 .272c0 3.855 -1.659 5.883 -4.644 6.68l-.245 .061l-.132 .029l.014 .161l.008 .157l.004 .365l-.002 .213l-.003 3.834a1 1 0 0 1 -.883 .993l-.117 .007h-6a1 1 0 0 1 -.993 -.883l-.007 -.117v-.734c-1.818 .26 -3.03 -.424 -4.11 -1.878l-.535 -.766c-.28 -.396 -.455 -.579 -.589 -.644l-.048 -.019a1 1 0 0 1 .564 -1.918c.642 .188 1.074 .568 1.57 1.239l.538 .769c.76 1.079 1.36 1.459 2.609 1.191l.001 -.678l-.018 -.168a5.03 5.03 0 0 1 -.021 -.824l.017 -.185l.019 -.12l-.108 -.024c-2.976 -.71 -4.703 -2.573 -4.875 -6.139l-.01 -.31l-.004 -.292a5.6 5.6 0 0 1 .908 -3.051l.152 -.222l.122 -.163l-.045 -.196a5.2 5.2 0 0 1 .145 -2.642l.1 -.282l.106 -.253a1 1 0 0 1 .529 -.514l.144 -.047l.154 -.03z" stroke-width="0" fill="currentColor" /> </svg> ~ <svg aria-label="star" role="img" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-star"> <path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Zm0 2.445L6.615 5.5a.75.75 0 0 1-.564.41l-3.097.45 2.24 2.184a.75.75 0 0 1 .216.664l-.528 3.084 2.769-1.456a.75.75 0 0 1 .698 0l2.77 1.456-.53-3.084a.75.75 0 0 1 .216-.664l2.24-2.183-3.096-.45a.75.75 0 0 1-.564-.41L8 2.694Z"></path> </svg> </span>
+			<section id="qualifications">
+				<h2>My Qualifications</h2>
+				<ul>
+					<li><a href="https://drive.google.com/file/d/1Pu17qnicswwT0__X7767j3Ci520wbnwq">Grade One with all As</a> in CSEC Information Technology</li>
+					<li>Completed SBCS Diploma in Computing & HND in Computing</li>
+				</ul>
+			</section>
+
+			<section id="projects">
+				<h2>Projects</h2>
+				<p>I have designed several Android applications, typically with a focus on compatibility with older versions to aid in maximizing the life of old devices and providing accessibility to those who cannot afford newer ones.</p>
+				<p style="margin-top: 15px;">Many of these apps relate to my interest in reverse engineering and malware analysis of Android apps.</p>
+
+				<div class="projects-section">
+					<div class="project-card">
+						<div class="project-image">
+							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/AntiSplit-M/refs/heads/redesign/images/2.0%20settings.jpg" alt="AntiSplit M Screenshot">
+							<span class="star-count" data-repo="AntiSplit-M">★ ~</span>
 						</div>
-				</div>
-			
-				<div class="project-card">
-					<div class="project-image">
-						<img src="images/APKSigner.jpg" alt="APK Signer Screenshot">
+						<div class="project-content">
+							<h3 class="project-title">
+								<a href="https://github.com/AbdurazaaqMohammed/AntiSplit-M" target="_blank">
+									AntiSplit M
+									<svg class="github-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+										<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+										<polyline points="15 3 21 3 21 9"></polyline>
+										<line x1="10" y1="14" x2="21" y2="3"></line>
+									</svg>
+								</a>
+							</h3>
+							<p class="project-description">
+								App to AntiSplit (merge) split APKs (APKS/XAPK/APKM) to regular .APK file on Android. Designed with a two versions; a Material You interface supporting Android 5.0+ and a legacy version for compatibility with Android 1.6+.
+							</p>
+						</div>
 					</div>
-					<div class="project-content">
-						<h3 class="project-title">
-							<a href="https://github.com/AbdurazaaqMohammed/APKSigner" target="_blank">
-								APK Signer
-								<svg class="github-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-									<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-									<polyline points="15 3 21 3 21 9"></polyline>
-									<line x1="10" y1="14" x2="21" y2="3"></line>
-								</svg>
-							</a>
-						</h3>
-						<p class="project-description">
-							Simple Android app to sign APKs, supports signing split APKs and multiple files at once.
-						</p>
-						<span class="star-count"> <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M5.315 2.1c.791 -.113 1.9 .145 3.333 .966l.272 .161l.16 .1l.397 -.083a13.3 13.3 0 0 1 4.59 -.08l.456 .08l.396 .083l.161 -.1c1.385 -.84 2.487 -1.17 3.322 -1.148l.164 .008l.147 .017l.076 .014l.05 .011l.144 .047a1 1 0 0 1 .53 .514a5.2 5.2 0 0 1 .397 2.91l-.047 .267l-.046 .196l.123 .163c.574 .795 .93 1.728 1.03 2.707l.023 .295l.007 .272c0 3.855 -1.659 5.883 -4.644 6.68l-.245 .061l-.132 .029l.014 .161l.008 .157l.004 .365l-.002 .213l-.003 3.834a1 1 0 0 1 -.883 .993l-.117 .007h-6a1 1 0 0 1 -.993 -.883l-.007 -.117v-.734c-1.818 .26 -3.03 -.424 -4.11 -1.878l-.535 -.766c-.28 -.396 -.455 -.579 -.589 -.644l-.048 -.019a1 1 0 0 1 .564 -1.918c.642 .188 1.074 .568 1.57 1.239l.538 .769c.76 1.079 1.36 1.459 2.609 1.191l.001 -.678l-.018 -.168a5.03 5.03 0 0 1 -.021 -.824l.017 -.185l.019 -.12l-.108 -.024c-2.976 -.71 -4.703 -2.573 -4.875 -6.139l-.01 -.31l-.004 -.292a5.6 5.6 0 0 1 .908 -3.051l.152 -.222l.122 -.163l-.045 -.196a5.2 5.2 0 0 1 .145 -2.642l.1 -.282l.106 -.253a1 1 0 0 1 .529 -.514l.144 -.047l.154 -.03z" stroke-width="0" fill="currentColor" /> </svg> ~ <svg aria-label="star" role="img" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-star"> <path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Zm0 2.445L6.615 5.5a.75.75 0 0 1-.564.41l-3.097.45 2.24 2.184a.75.75 0 0 1 .216.664l-.528 3.084 2.769-1.456a.75.75 0 0 1 .698 0l2.77 1.456-.53-3.084a.75.75 0 0 1 .216-.664l2.24-2.183-3.096-.45a.75.75 0 0 1-.564-.41L8 2.694Z"></path> </svg> </span>
+
+					<div class="project-card">
+						<div class="project-image">
+							<img src="images/AXMLEditor.jpg" alt="AXML Editor Screenshot">
+							<span class="star-count" data-repo="AXML-Editor">★ ~</span>
+						</div>
+						<div class="project-content">
+							<h3 class="project-title">
+								<a href="https://github.com/AbdurazaaqMohammed/AXML-Editor" target="_blank">
+									AXML Editor
+									<svg class="github-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+										<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+										<polyline points="15 3 21 3 21 9"></polyline>
+										<line x1="10" y1="14" x2="21" y2="3"></line>
+									</svg>
+								</a>
+							</h3>
+							<p class="project-description">
+								Android app to edit android binary XML files (AndroidManifest.xml and layout XML files).
+							</p>
+						</div>
+					</div>
+
+					<div class="project-card">
+						<div class="project-image">
+							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/APKExtractor/refs/heads/main/fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg" alt="APK Extractor Screenshot">
+							<span class="star-count" data-repo="APKExtractor">★ ~</span>
+						</div>
+						<div class="project-content">
+							<h3 class="project-title">
+								<a href="https://github.com/AbdurazaaqMohammed/APKExtractor" target="_blank">
+									APK Extractor
+									<svg class="github-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+										<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+										<polyline points="15 3 21 3 21 9"></polyline>
+										<line x1="10" y1="14" x2="21" y2="3"></line>
+									</svg>
+								</a>
+							</h3>
+							<p class="project-description">
+								Simple APK extractor app for Android supporting split APKs and saving them as single APK. Also supports every version of Android from 1.6+ and contains features for extracting specific files or attributes of apps such as icons.
+							</p>
+						</div>
+					</div>
+
+					<div class="project-card">
+						<div class="project-image">
+							<img src="images/APKSigner.jpg" alt="APK Signer Screenshot">
+							<span class="star-count" data-repo="APKSigner">★ ~</span>
+						</div>
+						<div class="project-content">
+							<h3 class="project-title">
+								<a href="https://github.com/AbdurazaaqMohammed/APKSigner" target="_blank">
+									APK Signer
+									<svg class="github-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+										<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+										<polyline points="15 3 21 3 21 9"></polyline>
+										<line x1="10" y1="14" x2="21" y2="3"></line>
+									</svg>
+								</a>
+							</h3>
+							<p class="project-description">
+								Simple Android app to sign APKs, supports signing split APKs and multiple files at once.
+							</p>
+						</div>
 					</div>
 				</div>
-			</div>
-			
-			<h3>Other Projects</h3>
-			<ul>
-				<li><a href="https://github.com/AbdurazaaqMohammed/discord-no-trackers">Discord No Trackers</a> - A project focused on removing (not just disabling) trackers from Discord's Android app, enhancing privacy and performance.</li>
-				<li><a href="https://github.com/AbdurazaaqMohammed/CopyText">CopyText</a> - Simple Android app to copy text from share or view menu to clipboard. Supports all versions of Android with an APK size under 10KB</li>
-				<li><a href="https://github.com/AbdurazaaqMohammed/TapCounter">TapCounter</a> - Basic tap counter website with reset, text size and color changer, offline Android app version available.</li>
-				<li><a href="https://github.com/AbdurazaaqMohammed/axml2xml">axml2xml</a> - Java command line program to decompile and recompile Android binary XML files (AndroidManifest.xml and layout XML files)</li>
-				<li><a href="https://github.com/AbdurazaaqMohammed/RestoreCRC32">RestoreCRC32</a> - Android app to set the CRC32 and date modified of files in an APK or ZIP archive to those from another archive.</li>
-				<li><a href="https://github.com/AbdurazaaqMohammed/python-snake">Snake game</a> written in Python</li>
-				<li><a href="https://github.com/AbdurazaaqMohammed/userscripts">Personal userscripts</a> - Userscripts written mostly for my personal use</li>
-				<li><a href="https://github.com/AbdurazaaqMohammed/JustDoodle">JustDoodle</a> - Simple drawing app made in App Inventor</li>
-				<li><a href="https://github.com/AbdurazaaqMohammed/hisnul-muslim-color">Hisnul Muslim Color</a> - Hisnul Muslim app with customizable colors written in Flutter</li>
-			</ul>
-			
-			<h3>Other Contributions</h3>
-			<ul>
-				<li><a href="https://github.com/AbdurazaaqMohammed/save-on-device">Fork of "Save on Device"</a> (Android app for saving files from Share or View menu) - Made optimizations reducing file size to under 100kb</li>
-			</ul>
-		</section>
-		<section id="contact">
-			<h2>Contact Me</h2>
-			<ul>
-				<li>Email: <a href="mailto:zaqasar@gmail.com">zaqasar@gmail.com</a></li>
-			</ul>
-		</section>
-	</main>
-	<script src="script.js"></script>
+
+				<h2 style="margin-top: 40px;">Other Projects</h2>
+				<ul>
+					<li><a href="https://github.com/AbdurazaaqMohammed/CopyText">CopyText</a> - Simple Android app to copy text from share or view menu to clipboard. Supports all versions of Android with an APK size under 10KB</li>
+					<li><a href="https://github.com/AbdurazaaqMohammed/TapCounter">TapCounter</a> - Basic tap counter website with reset, text size and color changer, offline Android app version available.</li>
+					<li><a href="https://github.com/AbdurazaaqMohammed/axml2xml">axml2xml</a> - Java command line program to decompile and recompile Android binary XML files (AndroidManifest.xml and layout XML files)</li>
+					<li><a href="https://github.com/AbdurazaaqMohammed/RestoreCRC32">RestoreCRC32</a> - Android app to set the CRC32 and date modified of files in an APK or ZIP archive to those from another archive.</li>
+					<li><a href="https://github.com/AbdurazaaqMohammed/python-snake">Snake game</a> written in Python</li>
+					<li><a href="https://github.com/AbdurazaaqMohammed/userscripts">Personal userscripts</a> - Userscripts written mostly for my personal use</li>
+					<li><a href="https://github.com/AbdurazaaqMohammed/JustDoodle">JustDoodle</a> - Simple drawing app made in App Inventor</li>
+				</ul>
+
+				<h2 style="margin-top: 40px;">Other Contributions</h2>
+				<ul>
+					<li><a href="https://github.com/AbdurazaaqMohammed/save-on-device">Fork of "Save on Device"</a> (Android app for saving files from Share or View menu) - Made optimizations reducing file size to under 100kb</li>
+				</ul>
+			</section>
+
+			<section id="contact">
+				<h2>Contact Me</h2>
+				<ul>
+					<li>Email: <a href="mailto:zaqasar@gmail.com">zaqasar@gmail.com</a></li>
+				</ul>
+			</section>
+		</main>
+	</div>
+
 	<script>
-		document.addEventListener('DOMContentLoaded', () => {
-			const projectCards = document.querySelectorAll('.project-card');
-			const observer = new IntersectionObserver((entries) => {
-				entries.forEach((entry) => {
-					if (entry.isIntersecting) {
-						entry.target.classList.add('fade-in'); // Add fade-in class
-						entry.target.classList.remove('fade-out'); // Ensure fade-out is removed
-					} else {
-						entry.target.classList.add('fade-out'); // Add fade-out class
-						entry.target.classList.remove('fade-in'); // Ensure fade-in is removed
-					}
-				});
-			}, { threshold: 0.2 });
+		const canvas = document.getElementById('canvas');
+		const ctx = canvas.getContext('2d');
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;
 
-			projectCards.forEach(card => observer.observe(card));
-		});
-		
-		["AntiSplit-M", "AXML-Editor", "APKExtractor", "APKSigner"].forEach((repoName, index) => {
-			const starCountElement = document.getElementsByClassName('star-count')[index];
-			const url = `https://api.github.com/repos/AbdurazaaqMohammed/${repoName}`;
-			fetch(url).then(response => response.json()).then(data => starCountElement.innerHTML = starCountElement.innerHTML.replace("~", "&nbsp;" + data.stargazers_count + "&nbsp;")).catch(error => {
-				console.error('Error fetching data:', error);
-				starCountElement.textContent = '';
-			});
-		});
-		const words = ["Portfolio", "Developer", "Security Researcher", "Student", "Reverse Engineer", "FOSS Enthusiast"];
-		let wordIndex = 0;
-		let charIndex = 0;
-		let currentWord = '';
-		let isDeleting = false;
+		const stars = [];
+		const numStars = 150;
+		const mouse = { x: null, y: null };
+		const connectionDistance = 150;
 
-		const textElement = document.getElementsByClassName('txt-rotate')[0];
-
-		function typeEffect() {
-			currentWord = words[wordIndex];
-
-			if (isDeleting) {
-				charIndex--;
-			} else {
-				charIndex++;
+		class Star {
+			constructor() {
+				this.x = Math.random() * canvas.width;
+				this.y = Math.random() * canvas.height;
+				this.size = Math.random() * 2 + 0.5;
+				this.speedX = (Math.random() - 0.5) * 0.3;
+				this.speedY = (Math.random() - 0.5) * 0.3;
+				this.opacity = Math.random() * 0.5 + 0.3;
 			}
 
-			textElement.textContent = currentWord.slice(0, charIndex);
+			update() {
+				this.x += this.speedX;
+				this.y += this.speedY;
 
-			let typingSpeed = isDeleting ? 50 : 150;
-
-			if (!isDeleting && charIndex === currentWord.length) {
-				typingSpeed = 1000;
-				isDeleting = true;
+				if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+				if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
 			}
 
-			if (isDeleting && charIndex === 0) {
-				isDeleting = false;
-				wordIndex = (wordIndex + 1) % words.length;
-				typingSpeed = 500;
+			draw() {
+				ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+				ctx.beginPath();
+				ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+				ctx.fill();
 			}
-
-			setTimeout(typeEffect, typingSpeed);
 		}
 
-		document.addEventListener("DOMContentLoaded", typeEffect);
+		for (let i = 0; i < numStars; i++) {
+			stars.push(new Star());
+		}
 
+		function drawConnections() {
+			for (let i = 0; i < stars.length; i++) {
+				for (let j = i + 1; j < stars.length; j++) {
+					const dx = stars[i].x - stars[j].x;
+					const dy = stars[i].y - stars[j].y;
+					const distance = Math.sqrt(dx * dx + dy * dy);
+
+					if (distance < connectionDistance) {
+						ctx.strokeStyle = `rgba(99, 102, 241, ${0.15 * (1 - distance / connectionDistance)})`;
+						ctx.lineWidth = 0.5;
+						ctx.beginPath();
+						ctx.moveTo(stars[i].x, stars[i].y);
+						ctx.lineTo(stars[j].x, stars[j].y);
+						ctx.stroke();
+					}
+				}
+
+				if (mouse.x !== null && mouse.y !== null) {
+					const dx = stars[i].x - mouse.x;
+					const dy = stars[i].y - mouse.y;
+					const distance = Math.sqrt(dx * dx + dy * dy);
+
+					if (distance < connectionDistance) {
+						ctx.strokeStyle = `rgba(99, 102, 241, ${0.4 * (1 - distance / connectionDistance)})`;
+						ctx.lineWidth = 1;
+						ctx.beginPath();
+						ctx.moveTo(stars[i].x, stars[i].y);
+						ctx.lineTo(mouse.x, mouse.y);
+						ctx.stroke();
+					}
+				}
+			}
+		}
+
+		function animate() {
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+			for (const star of stars) {
+				star.update();
+				star.draw();
+			}
+
+			drawConnections();
+			requestAnimationFrame(animate);
+		}
+
+		animate();
+
+		window.addEventListener('mousemove', (e) => {
+			mouse.x = e.clientX;
+			mouse.y = e.clientY;
+		});
+
+		window.addEventListener('resize', () => {
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+		});
+
+		const observerOptions = {
+			threshold: 0.1,
+			rootMargin: '0px 0px -50px 0px'
+		};
+
+		const observer = new IntersectionObserver((entries) => {
+			entries.forEach((entry, index) => {
+				if (entry.isIntersecting) {
+					setTimeout(() => {
+						entry.target.classList.add('reveal');
+					}, index * 100);
+					observer.unobserve(entry.target);
+				}
+			});
+		}, observerOptions);
+
+		document.querySelectorAll('section').forEach(section => {
+			observer.observe(section);
+		});
+
+		document.querySelectorAll('.project-card').forEach((card, index) => {
+			setTimeout(() => {
+				const cardObserver = new IntersectionObserver((entries) => {
+					entries.forEach(entry => {
+						if (entry.isIntersecting) {
+							entry.target.classList.add('reveal');
+							cardObserver.unobserve(entry.target);
+						}
+					});
+				}, observerOptions);
+				cardObserver.observe(card);
+			}, index * 50);
+		});
+
+		const repos = ["AntiSplit-M", "AXML-Editor", "APKExtractor", "APKSigner"];
+		for(const repoName of repos) {
+			const starElement = document.querySelector(`[data-repo="${repoName}"]`);
+			if (starElement) {
+				fetch(`https://api.github.com/repos/AbdurazaaqMohammed/${repoName}`)
+					.then(response => response.json())
+					.then(data => {
+						starElement.textContent = `★ ${data.stargazers_count}`;
+					})
+					.catch(error => {
+						console.error('Error fetching stars:', error);
+						starElement.textContent = '';
+					});
+			}
+		}
 	</script>
 </body>
 </html>
