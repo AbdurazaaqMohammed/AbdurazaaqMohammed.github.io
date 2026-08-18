@@ -15,6 +15,7 @@
 	<nav>
 		<ul>
 			<li><a class="anim-button" href="index.html">About Me</a></li>
+			<li><a class="anim-button" href="mpmanager.html">MP Manager</a></li>
 			<li><a class="anim-button" href="apk-modification.html">APK Modification</a></li>
 			<li><a class="anim-button" href="blog.html">Blog</a></li>
 		</ul>
@@ -30,10 +31,9 @@
 		</section>
 		<section id="tools">
 			<h2>Tools</h2>
-			<p>Here are some tools that can be used for APK modification:</p>
 			<ul>
 				<li>
-					<a href="https://mt2.cn/download/">MT Manager</a> - Extremely useful file manager, designed with a major focus on APKs. A paid version is available, but the free version is sufficient for most necessary functions, and alternative tools are available for some. The official website is in Chinese, and the app is also uploaded <a href="https://apkcombo.com/mt-manager/bin.mt.plus/">on APKCombo</a> by the developer, <a href="https://github.com/L-JINBIN">Lin Jin Bin</a>. Useful features include:
+					<a href="https://mt2.cn/download">MT Manager</a> - Extremely useful file manager, designed with a major focus on APKs. A paid version is available, but the free version is sufficient for most necessary functions, and alternative tools are available for some. The official website is in Chinese, and the app is also uploaded <a href="https://apkcombo.com/mt-manager/bin.mt.plus/">on APKCombo</a> by the developer, <a href="https://github.com/L-JINBIN">Lin Jin Bin</a>. Useful features include:
 					<ul>
 						<li>Quick extraction of APKs</li>
 						<li>DEX file editor with features such as:
@@ -51,26 +51,27 @@
 						<li>Automatically signing APKs after modification</li>
 					</ul>
 				</li>
+				<li><a href="https://github.com/AbdurazaaqMohammed/MP-Manager"><strong>MP Manager</strong></a> - A free open source Android file manager with a major focus on APKs, designed by me as an alternative to MT Manager. It integrates many of the tools in this list on-device, including APK decompiling/building, DEX editing, signing, AXML editing, cloning and more. <a href="https://abdurazaaqmohammed.github.io/mpmanager">See the MP Manager page</a> for more details.</li>
 				<li>
 					<a href="https://github.com/iBotPeaches/Apktool">Apktool</a> - A tool for reverse engineering Android APK files. It can decompile and recompile APKs, allowing you to modify the code and resources of an app. It is a command-line tool and requires Java to be installed on your system. Some of its features include:
 					<ul>
 						<li>Decoding and encoding of APK resources</li>
 						<li>Decompiling and recompiling APKs</li>
-						<li>Extracting and injecting resources</li>
 						<li>Debugging and analyzing APK files</li>
 					</ul>
 				</li>
 				<li>
-					<a href="https://github.com/skylot/jadx">JADX</a> - Another tool for decompiling and analyzing Android APK files. It provides a graphical interface and allows you to browse the source code of an app. Some features of JADX include:
+					<a href="https://github.com/skylot/jadx">JADX</a> is a tool that can decompile DEX of APKs into more readable Java code, and can also show resources/manifest contents.
 					<ul>
-						<li>Decompiling and analyzing APK files</li>
-						<li>Browsing source code</li>
+						<li>Extracts DEX bytecode, decompiles into readable code and reconstructs classes/methods/variables as best as possible</li>
 						<li>Searching for specific classes or methods</li>
-						<li>Inspecting resources and assets</li>
-						<li>Exporting source code</li>
+						<li>Handle inner classes and references to some degree so code is easier to follow</li>
+						<li>Some original structure (like exact variable names or comments) may not be recoverable</li>
+						<li>Decompiled code typically cannot be recompiled easily due to reconstruction differences</li>
 					</ul>
+					<b>Note</b>: JADX is integrated in MT Manager (Paid) and Dex Editor and MP Manager (Free)
 				</li>
-				<li><a href="https://maximoff.su/apktool/?lang=en"><strong>Apktool M</strong></a> - Not to be confused with the Java program apktool, APKtool M is an app with many features, including:
+				<li><a href="https://maximoff.su/apktool/?lang=en"><strong>Apktool M</strong></a> - Not to be confused with the Java program apktool, APKTool M is an Android app with many features, including:
 					<ul>
 						<li>Fast decompilation of APK files</li>
 						<li>Several optimizations for APKs. UltraZip is most effective; I have noticed it breaks media pickers in apps.</li>
@@ -88,7 +89,7 @@
 						</li>
 					</ul>
 				</li>
-				<li><a href="https://t.me/WSTprojects/1509"><strong>APK Editor</strong></a> - A very old app, maintained by WSTprojects. Supports decompilation and custom patches, but is quite slow nowadays. It is still fast for quickly modifying XML files, which is a paid feature in MT Manager and requires fully decompiling in APKTool M.</li>
+				<li><a href="https://t.me/WSTprojects/1509"><strong>APK Editor</strong></a> - A very old app, some versions may be maintained by other developers. It supports decompilation and custom patches, but is quite slow and may not work on some modern apps.</li>
 				<li><a href="https://github.com/AbdurazaaqMohammed/AntiSplit-M"><strong>AntiSplit M</strong></a> - An open source app worked on by me to convert split APKs to a single APK.</li>
 				<li><a href="https://github.com/AbdurazaaqMohammed/AXML-Editor"><strong>AXML Editor</strong></a> - Open source editor I worked on to edit Android binary XML files (AndroidManifest.xml and layout XML files).</li>
 				<li><a href="https://github.com/AbdurazaaqMohammed/InjectDocumentsProvider"><strong>InjectDocumentsProvider</strong></a> - Access /Android/data and all data files of an Android app without any permissions by patching its APK file. This is a feature in MT Manager. Due to the lack of existing open source tools to utilize this, I created an app and Java program to inject it.</li>

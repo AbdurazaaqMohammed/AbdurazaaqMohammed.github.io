@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>MP Manager - Abdurazaaq Mohammed</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="style.css">
+	<style>
+		html {
+			scroll-behavior: smooth;
+		}
+
+		.hero {
+			text-align: center;
+			padding: 60px 40px;
+		}
+
+		.hero .app-icon {
+			width: 96px;
+			height: 96px;
+			border-radius: 22px;
+			box-shadow: 0 0 40px rgba(99, 102, 241, 0.5);
+			margin-bottom: 24px;
+		}
+
+		.hero h2 {
+			font-size: clamp(2.2rem, 5vw, 3.2rem);
+			color: #fff;
+			background: linear-gradient(90deg, #00dbde, #818cf8, #fc00ff);
+			-webkit-background-clip: text;
+			background-clip: text;
+			-webkit-text-fill-color: transparent;
+			margin-bottom: 16px;
+		}
+
+		.hero-tagline {
+			max-width: 720px;
+			margin: 0 auto 28px;
+			font-size: 1.15rem;
+			line-height: 1.7;
+			color: #c5cdd8;
+		}
+
+		.hero-badges {
+			display: flex;
+			justify-content: center;
+			gap: 16px;
+			flex-wrap: wrap;
+			margin-bottom: 36px;
+		}
+
+		.badge {
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			padding: 12px 26px;
+			background: rgba(255, 255, 255, 0.05);
+			border: 1px solid rgba(99, 102, 241, 0.4);
+			border-radius: 999px;
+			color: #e0e6ed;
+			font-weight: 500;
+			text-decoration: none;
+			transition: all 0.3s ease;
+			backdrop-filter: blur(10px);
+		}
+
+		.badge:hover {
+			background: rgba(99, 102, 241, 0.18);
+			border-color: #6366f1;
+			color: #fff;
+			transform: translateY(-2px);
+		}
+
+		.badge.download {
+			background: linear-gradient(90deg, #6366f1, #8b5cf6);
+			border-color: transparent;
+			color: #fff;
+		}
+
+		.badge.download:hover {
+			background: linear-gradient(90deg, #818cf8, #a78bfa);
+		}
+
+		.badge .star-count {
+			position: static;
+			background: rgba(0, 0, 0, 0.4);
+			color: #fbbf24;
+			border-radius: 999px;
+			padding: 2px 10px;
+			font-size: 0.85rem;
+			border: 1px solid rgba(251, 191, 36, 0.3);
+		}
+
+		.hero-screens {
+			display: flex;
+			justify-content: center;
+			gap: 20px;
+			flex-wrap: wrap;
+		}
+
+		.hero-screens img {
+			width: 190px;
+			height: auto;
+			border-radius: 14px;
+			border: 1px solid rgba(255, 255, 255, 0.12);
+			box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+			transition: transform 0.3s ease;
+		}
+
+		.hero-screens img:hover {
+			transform: translateY(-6px);
+		}
+
+		.feature-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+			gap: 20px;
+		}
+
+		.feature-card {
+			background: rgba(255, 255, 255, 0.03);
+			border: 1px solid rgba(255, 255, 255, 0.08);
+			border-radius: 12px;
+			padding: 28px;
+			transition: all 0.3s ease;
+			display: flex;
+			flex-direction: column;
+			opacity: 0;
+			transform: translateY(20px);
+		}
+
+		.feature-card.reveal {
+			animation: shimmerReveal 0.8s ease forwards;
+		}
+
+		.feature-card:hover {
+			background: rgba(255, 255, 255, 0.05);
+			border-color: rgba(99, 102, 241, 0.4);
+			transform: translateY(-4px);
+		}
+
+		.feature-icon {
+			width: 44px;
+			height: 44px;
+			border-radius: 10px;
+			background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(252, 0, 255, 0.15));
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin-bottom: 16px;
+			color: #a5b4fc;
+		}
+
+		.feature-icon svg {
+			width: 24px;
+			height: 24px;
+			stroke: currentColor;
+			fill: none;
+			stroke-width: 2;
+			stroke-linecap: round;
+			stroke-linejoin: round;
+		}
+
+		.feature-card h3 {
+			font-size: 1.15rem;
+			font-weight: 500;
+			color: #e0e6ed;
+			margin-bottom: 10px;
+		}
+
+		.feature-card p {
+			font-size: 0.95rem;
+			line-height: 1.65;
+			color: #c5cdd8;
+		}
+
+		.feature-card p a {
+			color: #818cf8;
+		}
+
+		.feature-list {
+			list-style: none;
+			padding-left: 0;
+			margin-top: 8px;
+		}
+
+		.feature-list li {
+			margin: 6px 0;
+			padding-left: 20px;
+			position: relative;
+			font-size: 0.95rem;
+			line-height: 1.65;
+			color: #c5cdd8;
+		}
+
+		.feature-screens {
+			display: none;
+		}
+
+		.screens-btn {
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			margin-top: 16px;
+			align-self: flex-start;
+			padding: 8px 16px;
+			background: rgba(99, 102, 241, 0.12);
+			border: 1px solid rgba(99, 102, 241, 0.4);
+			border-radius: 8px;
+			color: #a5b4fc;
+			font-family: inherit;
+			font-size: 0.9rem;
+			cursor: pointer;
+			transition: all 0.3s ease;
+		}
+
+		.screens-btn:hover {
+			background: rgba(99, 102, 241, 0.25);
+			border-color: #6366f1;
+			color: #fff;
+			transform: translateY(-2px);
+		}
+
+		.screens-btn svg {
+			width: 18px;
+			height: 18px;
+			stroke: currentColor;
+			fill: none;
+			stroke-width: 2;
+			stroke-linecap: round;
+			stroke-linejoin: round;
+		}
+
+		.lightbox {
+			position: fixed;
+			inset: 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: rgba(0, 0, 0, 0.92);
+			z-index: 1000;
+			opacity: 0;
+			visibility: hidden;
+			transition: opacity 0.3s ease, visibility 0.3s ease;
+		}
+
+		.lightbox.open {
+			opacity: 1;
+			visibility: visible;
+		}
+
+		.lightbox img {
+			max-width: 85vw;
+			max-height: 85vh;
+			border-radius: 12px;
+			box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+		}
+
+		.lightbox-btn {
+			position: absolute;
+			background: rgba(255, 255, 255, 0.1);
+			border: 1px solid rgba(255, 255, 255, 0.2);
+			color: #fff;
+			border-radius: 50%;
+			width: 44px;
+			height: 44px;
+			font-size: 1.5rem;
+			line-height: 1;
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			transition: background 0.3s ease;
+			z-index: 1001;
+		}
+
+		.lightbox-btn:hover {
+			background: rgba(255, 255, 255, 0.25);
+		}
+
+		.lightbox-close {
+			top: 20px;
+			right: 20px;
+		}
+
+		.lightbox-prev {
+			left: 16px;
+			top: 50%;
+			transform: translateY(-50%);
+		}
+
+		.lightbox-next {
+			right: 16px;
+			top: 50%;
+			transform: translateY(-50%);
+		}
+
+		.lightbox-caption {
+			position: absolute;
+			bottom: 20px;
+			left: 50%;
+			transform: translateX(-50%);
+			color: #c5cdd8;
+			font-size: 0.9rem;
+			text-align: center;
+			white-space: nowrap;
+		}
+
+		.todo-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+			gap: 16px;
+		}
+
+		.todo-item {
+			background: rgba(255, 255, 255, 0.03);
+			border: 1px solid rgba(255, 255, 255, 0.08);
+			border-radius: 10px;
+			padding: 18px 22px;
+			color: #c5cdd8;
+			display: flex;
+			align-items: center;
+			gap: 12px;
+		}
+
+		.todo-item svg {
+			width: 20px;
+			height: 20px;
+			flex-shrink: 0;
+			color: #f59e0b;
+			stroke: currentColor;
+			fill: none;
+			stroke-width: 2;
+			stroke-linecap: round;
+			stroke-linejoin: round;
+		}
+
+		.page-layout {
+			display: block;
+		}
+
+		.toc {
+			background: rgba(255, 255, 255, 0.03);
+			border: 1px solid rgba(255, 255, 255, 0.08);
+			border-radius: 12px;
+			padding: 24px;
+			backdrop-filter: blur(10px);
+			margin-bottom: 30px;
+		}
+
+		.toc h2 {
+			font-size: 1.1rem;
+			margin-bottom: 16px;
+		}
+
+		.toc ul {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+
+		.toc li {
+			margin: 2px 0;
+			padding: 0;
+		}
+
+		.toc li a {
+			display: block;
+			padding: 8px 12px;
+			border-radius: 8px;
+			border-left: 2px solid transparent;
+			color: #c5cdd8;
+			text-decoration: none;
+			font-size: 0.95rem;
+			transition: all 0.25s ease;
+		}
+
+		.toc li a:hover {
+			background: rgba(99, 102, 241, 0.12);
+			color: #a5b4fc;
+		}
+
+		.toc li a.active {
+			background: rgba(99, 102, 241, 0.18);
+			color: #fff;
+			border-left-color: #6366f1;
+		}
+
+		@media (min-width: 1024px) and (orientation: landscape) {
+			.page-layout {
+				display: grid;
+				grid-template-columns: 240px minmax(0, 1fr);
+				gap: 30px;
+				align-items: start;
+			}
+
+			.toc {
+				position: sticky;
+				top: 24px;
+				max-height: calc(100vh - 48px);
+				overflow-y: auto;
+				margin-bottom: 0;
+			}
+
+			.page-content {
+				min-width: 0;
+			}
+		}
+
+		@media (max-width: 768px) {
+			.hero {
+				padding: 40px 20px;
+			}
+			.hero-screens img {
+				width: 150px;
+			}
+		}
+	</style>
+</head>
+<body>
+	<canvas id="canvas"></canvas>
+	<script src="script.js"></script>
+
+	<div class="content-wrapper">
+		<header>
+			<h2>Abdurazaaq Mohammed</h2>
+		</header>
+
+		<nav>
+			<ul>
+				<li><a class="anim-button" href="index.html">About Me</a></li>
+				<li><a class="anim-button" href="mpmanager.html">MP Manager</a></li>
+				<li><a class="anim-button" href="apk-modification.html">APK Modification</a></li>
+				<li><a class="anim-button" href="blog.html">Blog</a></li>
+			</ul>
+		</nav>
+
+		<main>
+			<section id="hero" class="hero">
+				<img class="app-icon" src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" alt="MP Manager icon">
+				<h2>MP Manager</h2>
+				<p class="hero-tagline">A free dual pane, Material Design file manager for Android with focus on APKs and the goal to be an open source alternative to MT Manager.</p>
+				<div class="hero-badges">
+					<a class="badge download" href="https://github.com/AbdurazaaqMohammed/MP-Manager/releases">Download</a>
+					<a class="badge" href="https://github.com/AbdurazaaqMohammed/MP-Manager">GitHub <span class="star-count" data-repo="MP-Manager">★ ~</span></a>
+					<a class="badge" href="https://t.me/MP_Manager_Discussion">Telegram Discussion</a>
+				</div>
+				<div class="hero-screens">
+					<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/Ss1.png" alt="MP Manager screenshot">
+					<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/Ss2.png" alt="MP Manager screenshot">
+				</div>
+			</section>
+
+			<div class="page-layout">
+				<aside id="toc" class="toc">
+					<h2>Contents</h2>
+					<ul>
+						<li><a href="#file-manager">File Manager</a></li>
+						<li><a href="#media">Media</a></li>
+						<li><a href="#apk-tools">APK Tools</a></li>
+						<li><a href="#editing-comparing">Editing and Comparing</a></li>
+						<li><a href="#apk-extractor">APK Extractor</a></li>
+						<li><a href="#ftp">FTP</a></li>
+						<li><a href="#utilities">Utilities</a></li>
+						<li><a href="#todo">Roadmap</a></li>
+					</ul>
+				</aside>
+				<div class="page-content">
+			<section id="file-manager">
+				<h2>File Manager</h2>
+				<div class="feature-grid">
+					<section>
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><rect x="3" y="4" width="8" height="16" rx="2"/><rect x="13" y="4" width="8" height="16" rx="2"/></svg>
+						</div>
+						<h3>Dual pane navigation</h3>
+						<p>Browse two folders side by side, making it easy to move or copy files from one pane to the other.</p>
+						<ul class="feature-list">
+							<li>Separate home folder for each pane</li>
+							<li>Back and forward buttons</li>
+							<li>Sync both panes to the same folder</li>
+							<li>New file/folder button</li>
+							<li>Parent folder button</li>
+						</ul>
+					</section>
+					<section>
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+						</div>
+						<h3>Bookmarks and history</h3>
+						<p>Add any folder to bookmarks and manage them from a bottom drawer.</p>
+						<ul class="feature-list">
+							<li>Opens by swiping up on the bottom bar</li>
+							<li>Tabs for bookmarks and navigation history</li>
+							<li>Delete a bookmark by long pressing on it</li>
+						</ul>
+						<div class="feature-screens">
+							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/bookmarks.png" alt="Bookmarks and history drawer">
+						</div>
+					</section>
+					<section>
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+						</div>
+						<h3>Filtering, sorting and hidden files</h3>
+						<ul class="feature-list">
+							<li>Filter the current folder as you type</li>
+							<li>Sort by name, size, date or type, with reverse order</li>
+							<li>Choose whether a sort applies to the current folder or everywhere</li>
+							<li>Hide files from the list and show or hide system hidden files (dot folders)</li>
+							<li>Edit the list of manually hidden files later</li>
+						</ul>
+						<div class="feature-screens">
+							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/filter.png" alt="Filter the current folder">
+							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/sort.png" alt="Sort dialog">
+							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/hidefiles.png" alt="File hiding">
+						</div>
+					</section>
+					<section>
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+						</div>
+						<h3>Advanced search</h3>
+						<p>Search the current folder by file name, optionally recursing into subfolders.</p>
+						<ul class="feature-list">
+							<li>Match case and regular expressions</li>
+							<li>Search for text inside file contents</li>
+							<li>Set a minimum or maximum file size</li>
+							<li>Recent searches saved for quick reuse</li>
+						</ul>
+						<div class="feature-screens">
+							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/search.png" alt="Search dialog">
+						</div>
+					</div>
+					<section>
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+						</div>
+						<h3>File operations</h3>
+						<ul class="feature-list">
+							<li>Create, rename, copy, move and delete files and folders with progress reporting</li>
+							<li>Extract archives and add files to ZIP and APK archives, with an auto sign option for APKs</li>
+							<li>Rename several files at once using templates with prefix, suffix, numbering and find/replace</li>
+						</ul>
+					</section>
+					<section>
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+						</div>
+						<h3>File properties and sharing</h3>
+						<ul class="feature-list">
+							<li>View type, size and last modified date</li>
+							<li>Long press to copy any value to the clipboard</li>
+							<li>Share files or open them with another app</li>
+						</ul>
+					</div>
+				</div>
+			</section>
+			<section id="media">
+				<h2>Media</h2>
+				<div class="feature-grid">
+					<section>
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polygon points="10 9 15 12 10 15 10 9"/></svg>
+						</div>
+						<h3>Built-in audio and video player</h3>
+						<p>Play audio and video files without leaving the app.</p>
+						<ul class="feature-list">
+							<li>Mini player dialog with artwork, seek bar and playback controls</li>
+							<li>Plays in the background or expands into a full player</li>
+						</ul>
+					</section>
+					<section>
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+						</div>
+						<h3>Image viewer</h3>
+						<ul class="feature-list">
+							<li>Swipe between pictures in the directory</li>
+							<li>EXIF metadata shown for supported files</li>
+							<li>Delete or share images from the viewer</li>
+						</ul>
+					</section>
+				</div>
+			</section>
+
+			<section id="apk-tools">
+				<h2>APK Tools</h2>
+				<div class="feature-grid">
+					<section>
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+						</div>
+						<h3>APK information and install</h3>
+						<p>Tap an APK to see its icon, name, version code and name, package name, signature schemes used (V1, V2, V3, V4) and whether it is protected.</p>
+						<ul class="feature-list">
+							<li>View files inside the APK</li>
+							<li>Install regular and split APKS</li>
+						</ul>
+						<div class="feature-screens">
+							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/apkdialog.png" alt="APK info dialog">
+						</div>
+					</section>
+					<section>
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+						</div>
+						<h3>Sign APK and split APKs</h3>
+						<ul class="feature-list">
+							<li>Sign APKs and split APKs with your own or default (Debug) key</li>
+							<li>JKS and PKCS12 keystores, plus PK8/PEM keys</li>
+							<li>Generate new keys inside the app</li>
+							<li>Toggle and configure automatic signing after modification</li>
+							<li>Option to use biometrics instead of entering the password every time</li>
+						</ul>
+					</section>
+					<section>
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+						</div>
+						<h3>Decompile, build and protect</h3>
+						<p>All functions from <a href="https://github.com/REAndroid/APKEditor">REAndroid APKEditor</a> are available:</p>
+						<ul class="feature-list">
+							<li>Decompile an APK</li>
+							<li>Build an APK from a decompiled folder</li>
+							<li>Merge (AntiSplit)</li>
+							<li>Refactor obfuscated resource names</li>
+							<li>Protect</li>
+						</ul>
+						<div class="feature-screens">
+							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/decomp.png" alt="Decompiling">
+						</div>
+					</section>
+					<section>
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+						</div>
+						<h3>Quick edit APK attributes</h3>
+						<ul class="feature-list">
+							<li>Change launcher icon, app name, install location, version code and name, min SDK and target SDK in a dialog</li>
+							<li>Edit every activity and property in the manifest from a tree view, including disabling entries</li>
+						</ul>
+						<div class="feature-screens">
+							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/quick-edit.png" alt="Quick edit attributes dialog">
+						</div>
+					</section>
+					<section>
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><rect x="8" y="8" width="14" height="14" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+						</div>
+						<h3>APK optimization and cloning</h3>
+						<ul class="feature-list">
+							<li>Optimize APKs by removing chosen files</li>
+							<li>Edit the default list of common tracker and metadata files</li>
+							<li>Clone an <a href="https://github.com/developer-krushna/ApkCloner">APK</a> with a new package name</li>
+						</ul>
+						<div class="feature-screens">
+							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/clone.png" alt="Clone APK dialog">
+						</div>
+					</section>
+					<section>
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><path d="M10 12.5 8 15l2 2.5"/><path d="m14 12.5 2 2.5-2 2.5"/><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+						</div>
+						<h3>Dex editing</h3>
+						<p>Edit dex files with <a href="https://github.com/developer-krushna/Dex-Editor-Android">DEX Editor Pro</a> by developer-krushna.</p>
+						<ul class="feature-list">
+							<li>Choose which dex files to load when editing inside an APK</li>
+							<li>Saving asks whether to add the modified file back into the APK and sign it</li>
+							<li>A .bak backup is created when an APK is modified</li>
+						</ul>
+						<div class="feature-screens">
+							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/multidex.png" alt="Dex selection">
+							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/dexe.png" alt="Dex Editor">
+						</div>
+					</section>
+				</div>
+			</section>
+			<section id="editing-comparing">
+				<h2>Editing and Comparing</h2>
+				<div class="feature-grid">
+					<section>
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v5h5"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
+						</div>
+						<h3>Text editor</h3>
+						<p>A full text editor based on <a href="https://github.com/Rosemoe/sora-editor">Sora Editor</a>.</p>
+						<ul class="feature-list">
+							<li>Customizable bottom bar</li>
+							<li>Regex find and replace</li>
+							<li>Binary Android XML (AXML) files decoded for editing and re-encoded on save automatically</li>
+						</ul>
+						<div class="feature-screens">
+							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/axml.png" alt="AXML decoded in the editor">
+						</div>
+					</section>
+					<section>
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 0 1 2 2v7"/><path d="M11 18H8a2 2 0 0 1-2-2V9"/></svg>
+						</div>
+						<h3>Compare tools</h3>
+						<ul class="feature-list">
+							<li>Compare two text files</li>
+							<li>Compare two ZIP/APK files</li>
+							<li>Compare two resources.arsc files</li>
+						</ul>
+						<p>Select one item in each pane and the matching compare option appears in the file menu.</p>
+						<div class="feature-screens">
+							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/compared.png" alt="Compare ARSC">
+							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/diff.png" alt="Diff view">
+						</div>
+					</section>
+				</div>
+			</section>
+
+			<section id="apk-extractor">
+				<h2>APK Extractor</h2>
+				<div class="feature-grid">
+					<section>
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+						</div>
+						<h3>Extract and share APK parts</h3>
+						<p>Extract APKs in batch and pull out specific parts: the app icon, resources.arsc, classes.dex, AndroidManifest.xml, base.apk, splits and native libs, as well as the launch activity.</p>
+						<ul class="feature-list">
+							<li>Merge split APKs into a single APK before extracting</li>
+							<li>Share anything directly</li>
+						</ul>
+					</section>
+				</div>
+			</section>
+
+			<section id="ftp">
+				<h2>FTP</h2>
+				<div class="feature-grid">
+					<section>
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><path d="M6 6h.01"/><path d="M6 18h.01"/></svg>
+						</div>
+						<h3>FTP server</h3>
+						<ul class="feature-list">
+							<li>Custom port, username and password</li>
+							<li>Notification while running so it can be stopped easily</li>
+							<li>Save connection settings as profiles</li>
+							<li>Copy or share the device IP</li>
+						</ul>
+						<div class="feature-screens">
+							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/ftps.png" alt="FTP server dialog">
+						</div>
+					</section>
+					<section>
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+						</div>
+						<h3>FTP client</h3>
+						<ul class="feature-list">
+							<li>Browse remote folders in either pane with the same navigation controls as local files</li>
+							<li>Upload files from the device</li>
+							<li>Save connection details as profiles to connect to multiple devices easily</li>
+						</ul>
+						<div class="feature-screens">
+							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/ftpc.png" alt="FTP client dialog">
+						</div>
+					</section>
+				</div>
+			</section>
+
+			<section id="utilities">
+				<h2>Utilities</h2>
+				<div class="feature-grid">
+					<section>
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg>
+						</div>
+						<h3>Screen color picker</h3>
+						<p><a href="https://github.com/codehasan/ScreenColorPicker">Use a floating overlay to find out colors anywhere on the screen.</a></p>
+						<div class="feature-screens">
+							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/colorpicker.png" alt="Screen color picker dialog">
+							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/colorpicking.png" alt="Screen color picker active">
+						</div>
+					</section>
+					<section>
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+						</div>
+						<h3>Layout inspector</h3>
+						<p><a href="https://github.com/AbdurazaaqMohammed/Layout-Inspector">Inspect the view hierarchy of any app through a floating overlay window.</a></p>
+						<div class="feature-screens">
+							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/li.png" alt="Layout Inspector">
+						</div>
+					</section>
+					<section>
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+						</div>
+						<h3>Command Helper</h3>
+						<ul class="feature-list">
+							<li>Create templates for commands that can be applied to any selected file</li>
+							<li>Generate commands for several files at once</li>
+							<li>Preview, copy or run them directly in Termux</li>
+							<li>Quickly run command line tools like dex2c on files via MP Manager</li>
+						</ul>
+						<div class="feature-screens">
+							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/cmdhp.png" alt="Profile creation">
+							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/cmdh.png" alt="Generated command">
+						</div>
+					</section>
+					<section>
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/><path d="M7 15h0"/></svg>
+						</div>
+						<h3>Appearance and storage info</h3>
+						<ul class="feature-list">
+							<li>System, light, dark and black themes with Material Theme and Dynamic Colors</li>
+							<li>Sidebar shows mounted storages with used and free space</li>
+						</ul>
+						<div class="feature-screens">
+							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/sidebar.png" alt="Sidebar with storage info">
+						</div>
+					</section>
+				</div>
+			</section>
+		</div>
+		</div>
+		</main>
+	</div>
+
+	<div class="lightbox" id="lightbox" aria-hidden="true">
+		<button class="lightbox-btn lightbox-close" aria-label="Close">×</button>
+		<button class="lightbox-btn lightbox-prev" aria-label="Previous screenshot">‹</button>
+		<img id="lightbox-img" src="" alt="">
+		<button class="lightbox-btn lightbox-next" aria-label="Next screenshot">›</button>
+		<div class="lightbox-caption" id="lightbox-caption"></div>
+	</div>
+
+	<script>
+		const repos = ["MP-Manager"];
+		for(const repoName of repos) {
+			const starElement = document.querySelector(`[data-repo="${repoName}"]`);
+			if (starElement) {
+				fetch(`https://api.github.com/repos/AbdurazaaqMohammed/${repoName}`)
+					.then(response => response.json())
+					.then(data => {
+						starElement.textContent = `★ ${data.stargazers_count}`;
+					})
+					.catch(error => {
+						console.error('Error fetching stars:', error);
+						starElement.textContent = '';
+					});
+			}
+		}
+
+		const lightbox = document.getElementById('lightbox');
+		const lightboxImg = document.getElementById('lightbox-img');
+		const lightboxCaption = document.getElementById('lightbox-caption');
+		const lightboxPrev = document.querySelector('.lightbox-prev');
+		const lightboxNext = document.querySelector('.lightbox-next');
+		let lightboxImages = [];
+		let lightboxIndex = 0;
+
+		function updateLightbox() {
+			lightboxImg.src = lightboxImages[lightboxIndex].src;
+			lightboxImg.alt = lightboxImages[lightboxIndex].alt;
+			lightboxCaption.textContent = lightboxImages.length > 1
+				? `${lightboxIndex + 1} / ${lightboxImages.length}`
+				: lightboxImages[lightboxIndex].alt;
+		}
+
+		function openLightbox(images, index) {
+			lightboxImages = images;
+			lightboxIndex = index;
+			updateLightbox();
+			lightbox.classList.add('open');
+			lightbox.setAttribute('aria-hidden', 'false');
+			document.body.style.overflow = 'hidden';
+		}
+
+		function closeLightbox() {
+			lightbox.classList.remove('open');
+			lightbox.setAttribute('aria-hidden', 'true');
+			document.body.style.overflow = '';
+		}
+
+		lightboxPrev.addEventListener('click', () => {
+			lightboxIndex = (lightboxIndex - 1 + lightboxImages.length) % lightboxImages.length;
+			updateLightbox();
+		});
+
+		lightboxNext.addEventListener('click', () => {
+			lightboxIndex = (lightboxIndex + 1) % lightboxImages.length;
+			updateLightbox();
+		});
+
+		document.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+
+		lightbox.addEventListener('click', (event) => {
+			if (event.target === lightbox) {
+				closeLightbox();
+			}
+		});
+
+		document.addEventListener('keydown', (event) => {
+			if (!lightbox.classList.contains('open')) return;
+			if (event.key === 'Escape') {
+				closeLightbox();
+			} else if (event.key === 'ArrowLeft' && lightboxImages.length > 1) {
+				lightboxIndex = (lightboxIndex - 1 + lightboxImages.length) % lightboxImages.length;
+				updateLightbox();
+			} else if (event.key === 'ArrowRight' && lightboxImages.length > 1) {
+				lightboxIndex = (lightboxIndex + 1) % lightboxImages.length;
+				updateLightbox();
+			}
+		});
+
+		for (const card of document.getElementsByClassName('feature-card')) {
+			const screens = card.querySelector('.feature-screens');
+			if (!screens) return;
+			const images = Array.from(screens.querySelectorAll('img'));
+			if (!images.length) return;
+
+			const button = document.createElement('button');
+			button.type = 'button';
+			button.className = 'screens-btn';
+			button.innerHTML = `<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg> View screenshots${images.length > 1 ? ` (${images.length})` : ''}`;
+			button.addEventListener('click', () => openLightbox(images, 0));
+			card.insertBefore(button, screens);
+		}
+
+		const heroScreens = document.querySelector('.hero-screens');
+		if (heroScreens) {
+			const heroImages = Array.from(heroScreens.querySelectorAll('img'));
+			for(let i = 0; i < heroImages.length; i++) {
+				const img = heroImages[i];
+				img.style.cursor = 'zoom-in';
+				img.addEventListener('click', () => openLightbox(heroImages, i));
+			}
+		}
+
+		const tocLinks = Array.from(document.querySelectorAll('.toc a'));
+		if (tocLinks.length) {
+			const tocSections = tocLinks
+				.map(link => document.querySelector(link.getAttribute('href')))
+				.filter(section => section);
+			const tocObserver = new IntersectionObserver((entries) => {
+				for(const entry of entries) {
+					if (entry.isIntersecting) {
+						for(const link of tocLinks) link.classList.remove('active');
+						const activeLink = document.querySelector(`.toc a[href="#${entry.target.id}"]`);
+						if (activeLink) activeLink.classList.add('active');
+					}
+				}
+			}, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+			for(const section of tocSections) tocObserver.observe(section);
+		}
+	</script>
+</body>
+</html>
