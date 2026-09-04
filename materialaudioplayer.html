@@ -330,7 +330,7 @@
 		function changeTheme() {
 			const themeSlider = document.getElementById('themeSlider');
 			const themeValue = parseInt(themeSlider.value);
-			const themeIcons = document.querySelectorAll('.theme-icon');
+			const themeIcons = document.getElementsByClassName('theme-icon');
 			
 			document.body.classList.remove('light-mode', 'dark-mode', 'black-mode');
 			themeIcons.forEach(icon => icon.classList.remove('active'));

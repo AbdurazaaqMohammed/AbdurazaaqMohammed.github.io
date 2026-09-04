@@ -133,15 +133,17 @@ document.addEventListener("DOMContentLoaded", () => {
 	mutationObserver.observe(document.body, { childList: true, subtree: true });
 
 	const cardObserver = new IntersectionObserver((entries) => {
-		entries.forEach(entry => {
+		for (const entry of entries) {
 			if (entry.isIntersecting) {
 				entry.target.classList.add('reveal');
 				cardObserver.unobserve(entry.target);
 			}
-		});
+		}
 	}, observerOptions);
 
-	document.querySelectorAll('.project-card').forEach(card => cardObserver.observe(card));
+	for (const card of document.getElementsByClassName('project-card')) {
+		cardObserver.observe(card);
+	}
 
 	const starRepos = ["MP-Manager", "AntiSplit-M", "AXML-Editor", "APKExtractor"];
 	for (const repoName of starRepos) {
