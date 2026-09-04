@@ -29,7 +29,7 @@ export async function encryptKeys(passphrase, keys) {
 	const data = {};
 	for (const [name, value] of Object.entries(keys)) {
 		if (!value) { data[name] = ''; continue; }
-f		const iv = crypto.getRandomValues(new Uint8Array(12));
+		const iv = crypto.getRandomValues(new Uint8Array(12));
 		const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, ENC.encode(value));
 		data[name] = { iv: bufferToBase64(iv), ct: bufferToBase64(ct) };
 	}
