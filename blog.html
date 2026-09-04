@@ -1,10 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="style.css">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>	
-	<title>Blog Post - Abdurazaaq Mohammed</title>
+	<title>Blog - Abdurazaaq Mohammed</title>
+	<meta name="description" content="Blog posts mainly about Android development, APK modification, security research and tool building.">
+	<meta property="og:title" content="Blog - Abdurazaaq Mohammed">
+	<meta property="og:description" content="Blog posts about Android development, APK modification and security research.">
+	<meta property="og:type" content="website">
+	<link rel="icon" type="image/svg+xml" href="favicon.svg">
 	<style>
 		#table-of-contents a:link {
 			color: green;
@@ -23,6 +30,8 @@
 			background-size: 100%;
 			background-color: transparent;
 			background-repeat: no-repeat;
+			border: none;
+			cursor: pointer;
 		}
 		
 		.expanded-content {
@@ -37,16 +46,14 @@
 	fetch('https://api.github.com/repos/AbdurazaaqMohammed/AbdurazaaqMohammed.github.io/contents/blogposts')
 		.then(response => response.json())
 		.then(data => {
-		//	console.log(data);
-
 			if (!Array.isArray(data)) {
 				throw new Error('Invalid response from GitHub API');
 			}
 
 			data.sort((a, b) => {
-				const dateA = new Date(a?.commit?.author?.date);
-				const dateB = new Date(b?.commit?.author?.date);
-				return dateA.toLocaleString().localeCompare(dateB.toLocaleString());
+				const dateA = a.name || '';
+				const dateB = b.name || '';
+				return dateB.localeCompare(dateA);
 			});
 
 			const promises = data.map(file => {
@@ -54,7 +61,7 @@
 					.then(response => response.text())
 					.then(content => {
 						const title = content.split('\n')[0];
-						const fileName = file.name.replace(".txt", "");
+						const fileName = file.name.replace(".txt", "").replace(/\(\d+\)/, '').trim();
 						return {
 							title: title,
 							content: content.split(title)[1],
@@ -69,6 +76,7 @@
 			const main = document.querySelector('main');
 			posts.forEach(post => {
 				const postElement = document.createElement('section');
+				postElement.style.position = 'relative';
 				postElement.innerHTML = `<h2>${post.title}</h2>`;
 				const expandButton = document.createElement('button');
 				expandButton.classList.add('expand-button');
