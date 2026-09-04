@@ -238,7 +238,6 @@ function resetLockTimer() {
 for (const evt of ['click', 'keydown', 'pointerdown']) {
 	document.addEventListener(evt, () => { if (state.unlocked) resetLockTimer(); }, { passive: true });
 }
-document.addEventListener('visibilitychange', () => { if (document.hidden && state.unlocked) doLock(); });
 
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
