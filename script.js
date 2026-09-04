@@ -22,7 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
 		update() {
 			this.x += this.speedX;
 			this.y += this.speedY;
-
 			if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
 			if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
 		}
@@ -75,12 +74,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	function animate() {
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
-
 		for (const star of stars) {
 			star.update();
 			star.draw();
 		}
-
 		drawConnections();
 		requestAnimationFrame(animate);
 	}
@@ -96,7 +93,6 @@ document.addEventListener("DOMContentLoaded", () => {
 		canvas.width = window.innerWidth;
 		canvas.height = window.innerHeight;
 	});
-
 
 	const observerOptions = {
 		threshold: 0.1,
@@ -118,21 +114,68 @@ document.addEventListener("DOMContentLoaded", () => {
 		observer.observe(section);
 	};
 
-	for(const d of document.getElementsByTagName('section')) observeSection(d);
+	for (const d of document.getElementsByTagName('section')) observeSection(d);
 
 	const mutationObserver = new MutationObserver((mutations) => {
 		for (const mutation of mutations) {
-			for(const node of mutation.addedNodes) {
+			for (const node of mutation.addedNodes) {
 				if (node.nodeType === Node.ELEMENT_NODE) {
 					if (node.matches && node.matches('section')) {
 						observeSection(node);
 					}
 					if (node.querySelectorAll) {
-						for(const d of node.getElementsByTagName('section')) observeSection(node);
+						for (const d of node.getElementsByTagName('section')) observeSection(d);
 					}
 				}
 			}
 		}
 	});
 	mutationObserver.observe(document.body, { childList: true, subtree: true });
+
+	const cardObserver = new IntersectionObserver((entries) => {
+		entries.forEach(entry => {
+			if (entry.isIntersecting) {
+				entry.target.classList.add('reveal');
+				cardObserver.unobserve(entry.target);
+			}
+		});
+	}, observerOptions);
+
+	document.querySelectorAll('.project-card').forEach(card => cardObserver.observe(card));
+
+	const starRepos = ["MP-Manager", "AntiSplit-M", "AXML-Editor", "APKExtractor"];
+	for (const repoName of starRepos) {
+		const starElement = document.querySelector(`[data-repo="${repoName}"]`);
+		if (starElement) {
+			fetch(`https://api.github.com/repos/AbdurazaaqMohammed/${repoName}`)
+				.then(response => response.json())
+				.then(data => {
+					starElement.textContent = `\u2605 ${data.stargazers_count}`;
+				})
+				.catch(() => {
+					starElement.textContent = '';
+				});
+		}
+	}
+
+	fetch('https://api.github.com/users/AbdurazaaqMohammed')
+		.then(response => response.json())
+		.then(data => {
+			const reposEl = document.getElementById('stat-repos');
+			const followersEl = document.getElementById('stat-followers');
+			if (reposEl) reposEl.textContent = data.public_repos;
+			if (followersEl) followersEl.textContent = data.followers;
+		})
+		.catch(() => {});
+
+	fetch('https://api.github.com/users/AbdurazaaqMohammed/repos?per_page=100')
+		.then(response => response.json())
+		.then(data => {
+			if (Array.isArray(data)) {
+				const totalStars = data.reduce((sum, repo) => sum + (repo.stargazers_count || 0), 0);
+				const starsEl = document.getElementById('stat-stars');
+				if (starsEl) starsEl.textContent = totalStars;
+			}
+		})
+		.catch(() => {});
 });
