@@ -41,7 +41,7 @@
 		}
 
 		.hero-tagline {
-			max-width: 720px;
+			max-width: 760px;
 			margin: 0 auto 28px;
 			font-size: 1.15rem;
 			line-height: 1.7;
@@ -132,12 +132,6 @@
 			transition: all 0.3s ease;
 			display: flex;
 			flex-direction: column;
-			opacity: 0;
-			transform: translateY(20px);
-		}
-
-		.feature-card.reveal {
-			animation: shimmerReveal 0.8s ease forwards;
 		}
 
 		.feature-card:hover {
@@ -169,16 +163,17 @@
 		}
 
 		.feature-card h3 {
-			font-size: 1.15rem;
-			font-weight: 500;
+			font-size: 1.2rem;
+			font-weight: 600;
 			color: #e0e6ed;
 			margin-bottom: 10px;
 		}
 
 		.feature-card p {
-			font-size: 0.95rem;
-			line-height: 1.65;
+			font-size: 0.97rem;
+			line-height: 1.7;
 			color: #c5cdd8;
+			margin-bottom: 12px;
 		}
 
 		.feature-card p a {
@@ -188,16 +183,24 @@
 		.feature-list {
 			list-style: none;
 			padding-left: 0;
-			margin-top: 8px;
+			margin-top: 0;
+			flex: 1;
 		}
 
 		.feature-list li {
-			margin: 6px 0;
+			margin: 7px 0;
 			padding-left: 20px;
 			position: relative;
-			font-size: 0.95rem;
-			line-height: 1.65;
+			font-size: 0.94rem;
+			line-height: 1.6;
 			color: #c5cdd8;
+		}
+
+		.feature-list li:before {
+			content: "\25B8";
+			position: absolute;
+			left: 0;
+			color: #6366f1;
 		}
 
 		.feature-screens {
@@ -311,6 +314,7 @@
 			font-size: 0.9rem;
 			text-align: center;
 			white-space: nowrap;
+			max-width: 90vw;
 		}
 
 		.todo-grid {
@@ -393,6 +397,33 @@
 			border-left-color: #6366f1;
 		}
 
+		.overview {
+			background: rgba(255, 255, 255, 0.03);
+			border: 1px solid rgba(255, 255, 255, 0.08);
+			border-radius: 12px;
+			padding: 28px;
+			margin-bottom: 30px;
+		}
+
+		.overview p {
+			margin-bottom: 12px;
+		}
+
+		.overview p:last-child {
+			margin-bottom: 0;
+		}
+
+		.section-heading {
+			margin-bottom: 6px;
+		}
+
+		.section-intro {
+			font-size: 1rem;
+			line-height: 1.7;
+			color: #a0aec0;
+			margin-bottom: 24px;
+		}
+
 		@media (min-width: 1024px) and (orientation: landscape) {
 			.page-layout {
 				display: grid;
@@ -420,6 +451,9 @@
 			}
 			.hero-screens img {
 				width: 150px;
+			}
+			.feature-grid {
+				grid-template-columns: 1fr;
 			}
 		}
 	</style>
@@ -458,6 +492,12 @@
 				</div>
 			</section>
 
+			<section id="overview" class="overview">
+				<h2>Overview</h2>
+				<p>MP Manager is a free, open source, dual pane file manager for Android built on Material Design principles. It is designed as a practical alternative to MT Manager, with particular attention paid to working with APKs, archives and native Android storage.</p>
+				<p>Everything below is grouped by area. Each feature card includes a description, what it does in practice, and a button that opens the screenshots in a lightbox where one exists. The two panes allow files to be moved, copied or compared side by side without leaving the screen.</p>
+			</section>
+
 			<div class="page-layout">
 				<aside id="toc" class="toc">
 					<h2>Contents</h2>
@@ -473,48 +513,53 @@
 					</ul>
 				</aside>
 				<div class="page-content">
+
 			<section id="file-manager">
-				<h2>File Manager</h2>
+				<h2 class="section-heading">File Manager</h2>
+				<p class="section-intro">The core of the app: navigating and managing files across two panes, with archiving, searching, root access and a built-in viewer for common formats.</p>
 				<div class="feature-grid">
-					<section>
+					<div class="feature-card">
 						<div class="feature-icon">
 							<svg viewBox="0 0 24 24"><rect x="3" y="4" width="8" height="16" rx="2"/><rect x="13" y="4" width="8" height="16" rx="2"/></svg>
 						</div>
 						<h3>Dual pane navigation</h3>
-						<p>Browse two folders side by side, making it easy to move or copy files from one pane to the other.</p>
+						<p>Browse two folders side by side, making it easy to move or copy files from one pane to the other. Each pane is independent, so you can keep a source open in one pane while working in a destination in the other.</p>
 						<ul class="feature-list">
 							<li>Separate home folder for each pane</li>
 							<li>Back and forward buttons</li>
 							<li>Sync both panes to the same folder</li>
-							<li>New file/folder button</li>
-							<li>Parent folder button</li>
+							<li>New file/folder and parent folder buttons</li>
+							<li>Pull down to refresh the current folder</li>
+							<li>Optionally highlight the active pane with a coloured, animated border</li>
 						</ul>
-					</section>
-					<section>
+					</div>
+					<div class="feature-card">
 						<div class="feature-icon">
 							<svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
 						</div>
 						<h3>Bookmarks and history</h3>
-						<p>Add any folder to bookmarks and manage them from a bottom drawer.</p>
+						<p>Add any folder to bookmarks and manage them from a bottom drawer that opens by swiping up on the bottom bar. The drawer holds tabs for your bookmarks and your navigation history.</p>
 						<ul class="feature-list">
-							<li>Opens by swiping up on the bottom bar</li>
-							<li>Tabs for bookmarks and navigation history</li>
-							<li>Delete a bookmark by long pressing on it</li>
+							<li>Organise bookmarks into groups, edit and delete them by long pressing</li>
+							<li>Choose which tab new bookmarks are added to</li>
+							<li>Reorder bookmarks with drag and drop</li>
+							<li>Optionally show bookmarks and groups in the sidebar</li>
 						</ul>
 						<div class="feature-screens">
 							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/bookmarks.png" alt="Bookmarks and history drawer">
 						</div>
-					</section>
-					<section>
+					</div>
+					<div class="feature-card">
 						<div class="feature-icon">
 							<svg viewBox="0 0 24 24"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
 						</div>
 						<h3>Filtering, sorting and hidden files</h3>
+						<p>Control how the current folder is presented. You can filter as you type, choose a sort order, and decide which files stay out of sight.</p>
 						<ul class="feature-list">
 							<li>Filter the current folder as you type</li>
 							<li>Sort by name, size, date or type, with reverse order</li>
-							<li>Choose whether a sort applies to the current folder or everywhere</li>
-							<li>Hide files from the list and show or hide system hidden files (dot folders)</li>
+							<li>Apply a sort to the current folder only or everywhere</li>
+							<li>Hide files and show or hide system dot folders</li>
 							<li>Edit the list of manually hidden files later</li>
 						</ul>
 						<div class="feature-screens">
@@ -522,231 +567,419 @@
 							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/sort.png" alt="Sort dialog">
 							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/hidefiles.png" alt="File hiding">
 						</div>
-					</section>
-					<section>
+					</div>
+					<div class="feature-card">
 						<div class="feature-icon">
 							<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
 						</div>
 						<h3>Advanced search</h3>
-						<p>Search the current folder by file name, optionally recursing into subfolders.</p>
+						<p>Search the current folder by file name, optionally recursing into subfolders. Results open in a persistent panel that stays on screen while you work, so you can open several matches in a row.</p>
 						<ul class="feature-list">
 							<li>Match case and regular expressions</li>
-							<li>Search for text inside file contents</li>
+							<li>Search for text inside file contents, including inside ZIP and APK archives</li>
 							<li>Set a minimum or maximum file size</li>
 							<li>Recent searches saved for quick reuse</li>
+							<li>Persistent results with real-time progress and a stop button</li>
+							<li>Save edits made from search results back into the APK</li>
 						</ul>
 						<div class="feature-screens">
 							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/search.png" alt="Search dialog">
 						</div>
 					</div>
-					<section>
+					<div class="feature-card">
 						<div class="feature-icon">
 							<svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
 						</div>
 						<h3>File operations</h3>
+						<p>Everyday file management with progress reporting, plus batch operations that scale up to many files at once.</p>
 						<ul class="feature-list">
 							<li>Create, rename, copy, move and delete files and folders with progress reporting</li>
-							<li>Extract archives and add files to ZIP and APK archives, with an auto sign option for APKs</li>
-							<li>Rename several files at once using templates with prefix, suffix, numbering and find/replace</li>
+							<li>Extract archives and add files to ZIP and APK, with an auto sign and zipalign option for APKs</li>
+							<li>Rename several files at once with templates using prefix, suffix, numbering and find/replace, with a preview</li>
+							<li>Resolve conflicts with replace, skip or rename across all remaining files</li>
+							<li>Keep the original modification date when copying, and edit dates in properties</li>
 						</ul>
-					</section>
-					<section>
+					</div>
+					<div class="feature-card">
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><path d="M21 8V21H3V8"/><path d="M1 3h22v5H1z"/><path d="M10 12h4"/></svg>
+						</div>
+						<h3>Archives and built-in viewers</h3>
+						<p>Archives are handled as first class citizens. Browse them directly, including nested archives, without extracting first. MIUI and Android backup files are recognised and read correctly.</p>
+						<ul class="feature-list">
+							<li>Browse archives and backups directly, including nested ones</li>
+							<li>Support for MIUI and Android backup (.bak) archives, handled by original extension</li>
+							<li>Open PDF files in a built-in viewer</li>
+							<li>Preview fonts and view HTML files</li>
+							<li>Open, edit or execute shell scripts, optionally with root, showing output and exit code</li>
+						</ul>
+					</div>
+					<div class="feature-card">
 						<div class="feature-icon">
 							<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
 						</div>
 						<h3>File properties and sharing</h3>
+						<p>Inspect a file's details from a single dialog, including checksums, permissions and the MIME type detected from the file contents.</p>
 						<ul class="feature-list">
-							<li>View type, size and last modified date</li>
-							<li>Long press to copy any value to the clipboard</li>
-							<li>Share files or open them with another app</li>
+							<li>View type, size and last modified date, and copy any value with a long press</li>
+							<li>Edit the name and last modified date inline with a picker</li>
+							<li>Compute, verify and compare checksums, with CRC32 for ZIP entries</li>
+							<li>With root, edit permissions, owner, group and special flags</li>
+							<li>Share files or open them with another app, and set or clear a default app per type</li>
+							<li>Show signature details on press for signed files</li>
 						</ul>
+						<div class="feature-screens">
+							<img src="https://github.com/user-attachments/assets/d8094e02-0c77-4c4e-ae82-d32468af1674" alt="Properties">
+						</div>
+					</div>
+					<div class="feature-card">
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><path d="M12 22v-4"/><path d="M5 17H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h2l2-3h6l2 3h2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-2"/></svg>
+						</div>
+						<h3>Root and Shizuku file management</h3>
+						<p>Browse and manage files that are normally off limits, including Android/data, obb and media on Android 11+. With Shizuku you can also read locations the shell can access but the app cannot, such as system folders.</p>
+						<ul class="feature-list">
+							<li>Access Android/data, obb and media folders</li>
+							<li>With Shizuku, open locations like /storage/emulated and system folders, read-only where modification is not permitted</li>
+							<li>Cached root listing for speed, safe on paths with spaces</li>
+							<li>Editors write back through root when needed</li>
+							<li>Root directory added to the sidebar in root or Shizuku mode</li>
+						</ul>
+						<div class="feature-screens">
+							<img src="https://github.com/user-attachments/assets/87aa9d8d-d2ae-4430-a407-7bf69771e0a7" alt="Viewing /Android/data and /data/data with root">
+						</div>
+					</div>
+					<div class="feature-card">
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+						</div>
+						<h3>DocumentsProvider viewer</h3>
+						<p>Browse app data folders through the Storage Access Framework without root. DocumentsProviders on the device are listed in a dedicated tool and can be opened in a pane like a regular folder.</p>
+						<ul class="feature-list">
+							<li>List installed DocumentsProviders in Tools → Documents providers</li>
+							<li>Open a provider in a pane like a normal folder</li>
+							<li>Reach locations granted via providers, including ones injected by patchers</li>
+						</ul>
+					</div>
+					<div class="feature-card">
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M2 10h6M9 7h6M10 11h6M17 16h6M18 12h6"/></svg>
+						</div>
+						<h3>Customizable file menu</h3>
+						<p>Reorder the long press file menu by dragging items anywhere, so the actions you use most are where you expect them.</p>
+						<ul class="feature-list">
+							<li>Reorder menu items with drag and drop</li>
+							<li>Show the menu as a bottom sheet or in two columns</li>
+							<li>Uses Material colours consistent with the theme</li>
+						</ul>
+						<div class="feature-screens">
+							<img src="https://github.com/user-attachments/assets/ffbd2e8a-5f29-4229-a6ec-d73a5511ffe6" alt="File menu order">
+						</div>
 					</div>
 				</div>
 			</section>
+
 			<section id="media">
-				<h2>Media</h2>
+				<h2 class="section-heading">Media</h2>
+				<p class="section-intro">Audio, video and images play in the app, so you do not need to switch away to preview or inspect a file.</p>
 				<div class="feature-grid">
-					<section>
+					<div class="feature-card">
 						<div class="feature-icon">
 							<svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polygon points="10 9 15 12 10 15 10 9"/></svg>
 						</div>
 						<h3>Built-in audio and video player</h3>
-						<p>Play audio and video files without leaving the app.</p>
+						<p>Play audio and video files without leaving the app. A mini player with artwork, seek bar and controls plays in the background or expands into a full player.</p>
 						<ul class="feature-list">
-							<li>Mini player dialog with artwork, seek bar and playback controls</li>
-							<li>Plays in the background or expands into a full player</li>
+							<li>Mini player dialog that can play in the background</li>
+							<li>Expands into a full player</li>
+							<li>Fast startup with background loading of sibling tracks</li>
+							<li>Swipe to seek video frames during playback</li>
+							<li>Keep the screen on and set the skip duration in settings</li>
 						</ul>
-					</section>
-					<section>
+					</div>
+					<div class="feature-card">
 						<div class="feature-icon">
 							<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
 						</div>
-						<h3>Image viewer</h3>
+						<h3>Image viewer and editor</h3>
+						<p>Open images with swipe between pictures in the directory. EXIF metadata is shown for supported files, and images can be deleted or shared from the viewer.</p>
 						<ul class="feature-list">
 							<li>Swipe between pictures in the directory</li>
-							<li>EXIF metadata shown for supported files</li>
-							<li>Delete or share images from the viewer</li>
+							<li>EXIF metadata shown, and editable, for supported files</li>
+							<li>Crop single or multiple images with standard or lossless JPEG quality</li>
+							<li>Rotate, flip and strip EXIF metadata in single or batch mode</li>
 						</ul>
-					</section>
+					</div>
 				</div>
 			</section>
 
 			<section id="apk-tools">
-				<h2>APK Tools</h2>
+				<h2 class="section-heading">APK Tools</h2>
+				<p class="section-intro">The most distinctive part of MP Manager. Everything from inspecting and installing an APK to signing, patching, decompiling, dumping and deduplicating it.</p>
 				<div class="feature-grid">
-					<section>
+					<div class="feature-card">
 						<div class="feature-icon">
 							<svg viewBox="0 0 24 24"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
 						</div>
 						<h3>APK information and install</h3>
-						<p>Tap an APK to see its icon, name, version code and name, package name, signature schemes used (V1, V2, V3, V4) and whether it is protected.</p>
+						<p>Tap an APK to see its icon, name, version code and name, package name, signature schemes used (V1, V2, V3, V4) and whether it is protected. Full signature details can be shown on press. Both regular and split APKs can be installed.</p>
 						<ul class="feature-list">
 							<li>View files inside the APK</li>
 							<li>Install regular and split APKS</li>
+							<li>For installed packages, APK and data directories shown with root</li>
+							<li>Show signature details on press</li>
+							<li>Candidate version code shown beside the version name</li>
 						</ul>
 						<div class="feature-screens">
 							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/apkdialog.png" alt="APK info dialog">
 						</div>
-					</section>
-					<section>
+					</div>
+					<div class="feature-card">
 						<div class="feature-icon">
 							<svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
 						</div>
 						<h3>Sign APK and split APKs</h3>
+						<p>Sign APKs and split APKs with your own or default (Debug) key. Signing supports JKS and PKCS12 keystores as well as PK8/PEM keys, and new keys can be generated inside the app.</p>
 						<ul class="feature-list">
-							<li>Sign APKs and split APKs with your own or default (Debug) key</li>
 							<li>JKS and PKCS12 keystores, plus PK8/PEM keys</li>
 							<li>Generate new keys inside the app</li>
 							<li>Toggle and configure automatic signing after modification</li>
-							<li>Option to use biometrics instead of entering the password every time</li>
+							<li>Use biometrics instead of entering the password each time</li>
 						</ul>
-					</section>
-					<section>
+						<div class="feature-screens">
+							<img src="https://github.com/user-attachments/assets/15e71c8c-af20-4fb9-a650-92be8dffd7e3" alt="Signature settings">
+						</div>
+					</div>
+					<div class="feature-card">
 						<div class="feature-icon">
 							<svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
 						</div>
 						<h3>Decompile, build and protect</h3>
-						<p>All functions from <a href="https://github.com/REAndroid/APKEditor">REAndroid APKEditor</a> are available:</p>
+						<p>All functions from <a href="https://github.com/REAndroid/APKEditor">REAndroid APKEditor</a> are available: decompile an APK, build an APK from a decompiled folder, merge (AntiSplit), refactor obfuscated resource names and protect.</p>
 						<ul class="feature-list">
 							<li>Decompile an APK</li>
 							<li>Build an APK from a decompiled folder</li>
-							<li>Merge (AntiSplit)</li>
-							<li>Refactor obfuscated resource names</li>
-							<li>Protect</li>
+							<li>Merge split APKs (AntiSplit), choosing which splits to include</li>
+							<li>Refactor obfuscated resource names and protect</li>
+							<li>Set compression level and sign the merged APK automatically</li>
 						</ul>
 						<div class="feature-screens">
 							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/decomp.png" alt="Decompiling">
 						</div>
-					</section>
-					<section>
+					</div>
+					<div class="feature-card">
 						<div class="feature-icon">
 							<svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
 						</div>
 						<h3>Quick edit APK attributes</h3>
+						<p>Change common attributes quickly in a dialog, or edit the manifest deeply from a tree view. A .bak backup is created on edit and can be restored.</p>
 						<ul class="feature-list">
-							<li>Change launcher icon, app name, install location, version code and name, min SDK and target SDK in a dialog</li>
+							<li>Change launcher icon, app name, install location, version code and name, min SDK and target SDK</li>
 							<li>Edit every activity and property in the manifest from a tree view, including disabling entries</li>
 						</ul>
 						<div class="feature-screens">
 							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/quick-edit.png" alt="Quick edit attributes dialog">
 						</div>
-					</section>
-					<section>
+					</div>
+					<div class="feature-card">
 						<div class="feature-icon">
 							<svg viewBox="0 0 24 24"><rect x="8" y="8" width="14" height="14" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
 						</div>
 						<h3>APK optimization and cloning</h3>
+						<p>Optimize APKs by removing chosen files, with a default list of common tracker and metadata files that can be edited. You can also clone an <a href="https://github.com/developer-krushna/ApkCloner">APK</a> with a new package name.</p>
 						<ul class="feature-list">
 							<li>Optimize APKs by removing chosen files</li>
 							<li>Edit the default list of common tracker and metadata files</li>
-							<li>Clone an <a href="https://github.com/developer-krushna/ApkCloner">APK</a> with a new package name</li>
+							<li>Clone an APK with a new package name</li>
 						</ul>
 						<div class="feature-screens">
 							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/clone.png" alt="Clone APK dialog">
 						</div>
-					</section>
-					<section>
+					</div>
+					<div class="feature-card">
 						<div class="feature-icon">
 							<svg viewBox="0 0 24 24"><path d="M10 12.5 8 15l2 2.5"/><path d="m14 12.5 2 2.5-2 2.5"/><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
 						</div>
 						<h3>Dex editing</h3>
-						<p>Edit dex files with <a href="https://github.com/developer-krushna/Dex-Editor-Android">DEX Editor Pro</a> by developer-krushna.</p>
+						<p>Edit dex files with <a href="https://github.com/developer-krushna/Dex-Editor-Android">DEX Editor Pro</a>. When editing a dex file inside an APK you can choose which dex files to load. Saving asks whether to add the modified file back into the APK and sign it, with a .bak backup created.</p>
 						<ul class="feature-list">
 							<li>Choose which dex files to load when editing inside an APK</li>
-							<li>Saving asks whether to add the modified file back into the APK and sign it</li>
-							<li>A .bak backup is created when an APK is modified</li>
+							<li>Import and edit .class and .smali files with folder navigation</li>
+							<li>Fast dex to smali conversion without extracting the APK</li>
+							<li>Improved search with find usages and find overriding methods</li>
 						</ul>
 						<div class="feature-screens">
 							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/multidex.png" alt="Dex selection">
 							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/dexe.png" alt="Dex Editor">
 						</div>
-					</section>
+					</div>
+					<div class="feature-card">
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-4-4 4 4 0 0 0-4-4h-2M8 8v.01"/></svg>
+						</div>
+						<h3>ARSC editing</h3>
+						<p>Edit resources.arsc with the built-in ARSC Editor or ARSC Editor Plus. Search by resource value or ID, browse the string pool, and get automatic backups on save.</p>
+						<ul class="feature-list">
+							<li>Search by value or ID, copy IDs and jump to an ID</li>
+							<li>Browse the string pool and TEXT tab</li>
+							<li>ARSC Editor Plus translation mode with side-by-side editing</li>
+							<li>Batch import and export of entries and whole string pools</li>
+							<li>Floating resource querier for names, IDs and colour values</li>
+						</ul>
+						<div class="feature-screens">
+							<img src="https://github.com/user-attachments/assets/fcd7bf38-03d4-4fe9-abdb-3503180037ae" alt="ARSC Editor">
+							<img src="https://github.com/user-attachments/assets/2ce11f22-b8e9-45b7-9185-0d5cbc821fb9" alt="ARSC Editor Plus">
+						</div>
+					</div>
+					<div class="feature-card">
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+						</div>
+						<h3>Xposed patcher</h3>
+						<p>Patch an APK with <a href="https://github.com/nep-Timeline/NPatch">NPatch</a> or <a href="https://github.com/JingMatrix/LSPatch">LSPatch</a> in integrated mode. An Xposed loader is embedded so selected modules run standalone without a manager app, and the output is signed with the key under Sign Settings.</p>
+						<ul class="feature-list">
+							<li>Choose NPatch or LSPatch engine and a signature bypass level</li>
+							<li>Embed module APKs so the patched app runs standalone</li>
+							<li>Per-engine options: MicroG redirect, hiding libs, forcing cleartext traffic, overriding target SDK or version code, and more</li>
+							<li>Save, load and delete patch profiles</li>
+							<li>Inject a DocumentsProvider for file picker access to app data</li>
+						</ul>
+					</div>
+					<div class="feature-card">
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg>
+						</div>
+						<h3>APK data multiplexing</h3>
+						<p>Multiplex (deduplicate) an APK by redirecting entries that are byte-identical to entries inside the stored embedded APK, so duplicated data is stored only once and the file shrinks.</p>
+						<ul class="feature-list">
+							<li>Reduce the size of patcher outputs and similar packages</li>
+							<li>Signed in place with the V2/V3 raw-file signer using your key</li>
+							<li>Preserves the deduplication after signing</li>
+						</ul>
+					</div>
+					<div class="feature-card">
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M18 22V4H6a2 2 0 0 0-2 2v16l3-2 2 2 2-2 2 2 2-2 3 2z"/></svg>
+						</div>
+						<h3>IL2CPP runtime dumper</h3>
+						<p>Dump Unity IL2CPP games at runtime without root or hooking. libil2cppdumper.so is injected into the APK and loaded from a chosen class. When the patched app runs, it writes a C#-like dump of every managed type plus IDA/Ghidra scripts.</p>
+						<ul class="feature-list">
+							<li>Choose an injection point (Application class or an activity)</li>
+							<li>Writes dump.cs plus IDA/Ghidra scripts (script.json)</li>
+							<li>No hooking or root needed on the target</li>
+							<li>Optionally expose the dump through a DocumentsProvider</li>
+						</ul>
+					</div>
+					<div class="feature-card">
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><path d="M7 3 2 8l3 3 1.5-1.5L8 8l2 2 3-3-2-2 1.5-1.5L12 3z"/><path d="M17 21l5-5-3-3-1.5 1.5L17 16l-2-2-3 3 2 2-1.5 1.5L14 21z"/></svg>
+						</div>
+						<h3>Native library patcher</h3>
+						<p>Patch native .so libraries with instruction stubs (port of LibPatcher) so a function returns a fixed value. Enter hex offsets from Ghidra, IDA or r2.</p>
+						<ul class="feature-list">
+							<li>Patch boolean, integer, long, float, double or void return values</li>
+							<li>Enter multiple hex offsets separated by commas</li>
+							<li>Supports armeabi-v7a and arm64-v8a</li>
+						</ul>
+					</div>
 				</div>
 			</section>
+
 			<section id="editing-comparing">
-				<h2>Editing and Comparing</h2>
+				<h2 class="section-heading">Editing and Comparing</h2>
+				<p class="section-intro">Full featured text, hex and comparison tools for working with code, resources and binary files.</p>
 				<div class="feature-grid">
-					<section>
+					<div class="feature-card">
 						<div class="feature-icon">
 							<svg viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v5h5"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
 						</div>
 						<h3>Text editor</h3>
-						<p>A full text editor based on <a href="https://github.com/Rosemoe/sora-editor">Sora Editor</a>.</p>
+						<p>A full text editor based on <a href="https://github.com/Rosemoe/sora-editor">Sora Editor</a> with a customizable bottom bar, regex find and replace, and many editor features. Multiple files can be open at once in tabs.</p>
 						<ul class="feature-list">
-							<li>Customizable bottom bar</li>
-							<li>Regex find and replace</li>
-							<li>Binary Android XML (AXML) files decoded for editing and re-encoded on save automatically</li>
+							<li>Syntax highlighting, jump to line, word wrap and a read only mode</li>
+							<li>Regex find and replace with previous/next navigation</li>
+							<li>Line actions: duplicate, delete and case conversion, comment toggling</li>
+							<li>Method and field list, with click, long press and extra button actions</li>
+							<li>Binary Android XML (AXML) files decoded for editing and re-encoded on save</li>
 						</ul>
 						<div class="feature-screens">
 							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/axml.png" alt="AXML decoded in the editor">
 						</div>
-					</section>
-					<section>
+					</div>
+					<div class="feature-card">
 						<div class="feature-icon">
 							<svg viewBox="0 0 24 24"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 0 1 2 2v7"/><path d="M11 18H8a2 2 0 0 1-2-2V9"/></svg>
 						</div>
-						<h3>Compare tools</h3>
+						<h3>Hex editor</h3>
+						<p>View and edit any file in hex with goto offset, search and selectable encodings. Changes can be saved back directly.</p>
 						<ul class="feature-list">
-							<li>Compare two text files</li>
-							<li>Compare two ZIP/APK files</li>
-							<li>Compare two resources.arsc files</li>
+							<li>Goto offset, search and selectable encodings</li>
+							<li>Paste data from hex, decimal, binary, ASCII or base64 text</li>
+							<li>Search and replace as string, integer or other data types in either endianness</li>
+							<li>Revert unsaved changes</li>
 						</ul>
-						<p>Select one item in each pane and the matching compare option appears in the file menu.</p>
 						<div class="feature-screens">
-							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/compared.png" alt="Compare ARSC">
-							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/diff.png" alt="Diff view">
+							<img src="https://github.com/user-attachments/assets/62f82e7d-121f-4172-aaa7-bec697e70f39" alt="Hex editor">
 						</div>
-					</section>
+					</div>
+					<div class="feature-card">
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><path d="M10 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h4"/><path d="M14 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 8h4"/><path d="M10 12h4"/><path d="M10 16h4"/></svg>
+						</div>
+						<h3>Compare tools</h3>
+						<p>Compare two text files, two ZIP/APK files, two resources.arsc files, or two dex files. Select one item in each pane and the matching compare option appears in the file menu.</p>
+						<ul class="feature-list">
+							<li>Dex comparison summarises added, removed and changed classes</li>
+							<li>Ignore debug info, optimizations, register counts and nop instructions</li>
+							<li>Show differences side by side or unified with navigation</li>
+							<li>Export and import Dex comparison results in MT-compatible .mtcr format</li>
+						</ul>
+						<div class="feature-screens">
+							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/compared.png" alt="Comparing DEX">
+							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/diff.png" alt="Diff view of file">
+						</div>
+					</div>
 				</div>
 			</section>
 
 			<section id="apk-extractor">
-				<h2>APK Extractor</h2>
+				<h2 class="section-heading">APK Extractor</h2>
+				<p class="section-intro">Extract installed apps and their parts, manage apps and merge split APKs, all from one list.</p>
 				<div class="feature-grid">
-					<section>
+					<div class="feature-card">
 						<div class="feature-icon">
 							<svg viewBox="0 0 24 24"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
 						</div>
 						<h3>Extract and share APK parts</h3>
-						<p>Extract APKs in batch and pull out specific parts: the app icon, resources.arsc, classes.dex, AndroidManifest.xml, base.apk, splits and native libs, as well as the launch activity.</p>
+						<p>Extract APKs in batch and pull out specific parts: the app icon, resources.arsc, classes.dex, AndroidManifest.xml, base.apk, splits and native libs, as well as the launch activity. Split APKs can be merged into a single APK before extracting, and anything can be shared directly.</p>
 						<ul class="feature-list">
 							<li>Merge split APKs into a single APK before extracting</li>
 							<li>Share anything directly</li>
+							<li>Pull down to refresh the app list</li>
+							<li>With root, launch through an activity picker, stop, disable or enable apps, clear data or uninstall</li>
+							<li>Badges for split APKs and app data directories</li>
 						</ul>
-					</section>
+						<div class="feature-screens">
+							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/extract1.png" alt="App info">
+							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/extract2.png" alt="Extraction options">
+						</div>
+					</div>
 				</div>
 			</section>
 
 			<section id="ftp">
-				<h2>FTP</h2>
+				<h2 class="section-heading">FTP</h2>
+				<p class="section-intro">Run a server on the device or connect to a remote one, with profiles for quick reuse.</p>
 				<div class="feature-grid">
-					<section>
+					<div class="feature-card">
 						<div class="feature-icon">
 							<svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><path d="M6 6h.01"/><path d="M6 18h.01"/></svg>
 						</div>
 						<h3>FTP server</h3>
+						<p>Use FTP server with a custom port, username and password, with optional FTPS explicit or implicit TLS. The server keeps a notification while running so it can be stopped easily.</p>
 						<ul class="feature-list">
 							<li>Custom port, username and password</li>
+							<li>Optional FTPS explicit or implicit TLS</li>
 							<li>Notification while running so it can be stopped easily</li>
 							<li>Save connection settings as profiles</li>
 							<li>Copy or share the device IP</li>
@@ -754,12 +987,13 @@
 						<div class="feature-screens">
 							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/ftps.png" alt="FTP server dialog">
 						</div>
-					</section>
-					<section>
+					</div>
+					<div class="feature-card">
 						<div class="feature-icon">
 							<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
 						</div>
 						<h3>FTP client</h3>
+						<p>Connect to an FTP server with optional FTPS and browse remote folders in either pane, with the same navigation controls as local files. Files can be uploaded from the device.</p>
 						<ul class="feature-list">
 							<li>Browse remote folders in either pane with the same navigation controls as local files</li>
 							<li>Upload files from the device</li>
@@ -768,14 +1002,15 @@
 						<div class="feature-screens">
 							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/ftpc.png" alt="FTP client dialog">
 						</div>
-					</section>
+					</div>
 				</div>
 			</section>
 
 			<section id="utilities">
-				<h2>Utilities</h2>
+				<h2 class="section-heading">Utilities</h2>
+				<p class="section-intro">Supporting tools for picking colours, inspecting layouts, running commands, managing storage and customising the app.</p>
 				<div class="feature-grid">
-					<section>
+					<div class="feature-card">
 						<div class="feature-icon">
 							<svg viewBox="0 0 24 24"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg>
 						</div>
@@ -785,8 +1020,8 @@
 							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/colorpicker.png" alt="Screen color picker dialog">
 							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/colorpicking.png" alt="Screen color picker active">
 						</div>
-					</section>
-					<section>
+					</div>
+					<div class="feature-card">
 						<div class="feature-icon">
 							<svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
 						</div>
@@ -795,40 +1030,98 @@
 						<div class="feature-screens">
 							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/li.png" alt="Layout Inspector">
 						</div>
-					</section>
-					<section>
+					</div>
+					<div class="feature-card">
 						<div class="feature-icon">
 							<svg viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
 						</div>
 						<h3>Command Helper</h3>
+						<p>Create templates for commands that can be quickly applied to any selected file, generated for several files at once, and previewed, copied or run in Termux.</p>
 						<ul class="feature-list">
-							<li>Create templates for commands that can be applied to any selected file</li>
-							<li>Generate commands for several files at once</li>
-							<li>Preview, copy or run them directly in Termux</li>
-							<li>Quickly run command line tools like dex2c on files via MP Manager</li>
+							<li>Create command templates with placeholder variables</li>
+							<li>Generate commands for several files at once and preview them</li>
+							<li>Copy or run them in Termux, one by one or all at once</li>
+							<li>Run command line tools like dex2c on files via MP Manager</li>
 						</ul>
 						<div class="feature-screens">
 							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/cmdhp.png" alt="Profile creation">
 							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/cmdh.png" alt="Generated command">
 						</div>
-					</section>
-					<section>
+					</div>
+					<div class="feature-card">
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 5.17-9 2.7 2.7 0 0 1 3.66 0 11 11 0 0 1 5.17 9"/><path d="M2 12.5h20"/><path d="M8.5 9.5c.5 3.5 0 5.5 1.5 9.5"/><path d="M15.5 9.5c-.5 3.5 0 5.5-1.5 9.5"/></svg>
+						</div>
+						<h3>Plugins and tool packs</h3>
+						<p>Plugins install as regular apps and are listed in a hub, together with tool packs downloaded in the app. Each plugin runs in its own process and permissions, and its certificate is verified on first use.</p>
+						<ul class="feature-list">
+							<li>Plugins add entries to the sidebar, settings, file menu, text editor or APK dialog</li>
+							<li>Tool packs group Media, Device, Network, Math, Text and Code, Notes and Random tools</li>
+							<li>Trust, disable, update or remove plugins, or give them a launcher shortcut</li>
+							<li>Refresh the pack catalog and change the hosting server</li>
+						</ul>
+					</div>
+					<div class="feature-card">
 						<div class="feature-icon">
 							<svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/><path d="M7 15h0"/></svg>
 						</div>
+						<h3>Wi-Fi Manager</h3>
+						<p>Shows the current connection with link speed, gateway, IP and MAC details, together with data usage for the device and the app.</p>
+						<ul class="feature-list">
+							<li>Read, search, export or share saved Wi-Fi passwords with root, including as a QR code</li>
+							<li>Switch private DNS between saved profiles with one tap</li>
+							<li>Quick settings tile cycles the profiles</li>
+						</ul>
+					</div>
+					<div class="feature-card">
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M12 3v18"/></svg>
+						</div>
+						<h3>Storage Manager</h3>
+						<p>Shows mounted volumes with used and free space, the space used by files grouped by type, and the largest files on the device, which can be filtered by type and deleted.</p>
+						<ul class="feature-list">
+							<li>Space used by file type</li>
+							<li>Largest files on the device, filterable and deletable</li>
+							<li>List and clear app caches with root or accessibility service</li>
+						</ul>
+					</div>
+					<div class="feature-card">
+						<div class="feature-icon">
+							<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+						</div>
 						<h3>Appearance and storage info</h3>
+						<p>Control how the app looks and behaves, and see storage usage in the sidebar.</p>
 						<ul class="feature-list">
 							<li>System, light, dark and black themes with Material Theme and Dynamic Colors</li>
+							<li>Custom fonts for the app and dialogs, adjustable list size and date/time format</li>
+							<li>Show folder size in the file list: always, only in archives, or never</li>
 							<li>Sidebar shows mounted storages with used and free space</li>
+							<li>Language can be picked manually, with automatic update checking</li>
 						</ul>
 						<div class="feature-screens">
 							<img src="https://raw.githubusercontent.com/AbdurazaaqMohammed/MP-Manager/main/images/sidebar.png" alt="Sidebar with storage info">
 						</div>
-					</section>
+					</div>
 				</div>
 			</section>
-		</div>
-		</div>
+
+			<section id="todo">
+				<h2 class="section-heading">Roadmap</h2>
+				<p class="section-intro">The app is still under active development and has a lot of work remaining. These are the areas currently being looked at.</p>
+				<div class="todo-grid">
+					<div class="todo-item">
+						<svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+						Add a patcher to support multiple patch formats like APK Editor and Lucky Patcher
+					</div>
+					<div class="todo-item">
+						<svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+						Add improvements to APK optimization
+					</div>
+				</div>
+			</section>
+
+				</div>
+			</div>
 		</main>
 	</div>
 
@@ -921,9 +1214,9 @@
 
 		for (const card of document.getElementsByClassName('feature-card')) {
 			const screens = card.querySelector('.feature-screens');
-			if (!screens) return;
+			if (!screens) continue;
 			const images = Array.from(screens.querySelectorAll('img'));
-			if (!images.length) return;
+			if (!images.length) continue;
 
 			const button = document.createElement('button');
 			button.type = 'button';
